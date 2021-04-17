@@ -1,9 +1,10 @@
 import AuthService from "./../../service/auth.service";
 
 const user = JSON.parse(localStorage.getItem('user'));
-const initialState = user
-  ? { status: { loggedIn: true }, user }
-  : { status: { loggedIn: false }, user: null };
+const token = JSON.parse(localStorage.getItem('token'));
+const initialState = user && token
+  ? { status: { loggedIn: true }, user, token }
+  : { status: { loggedIn: false }, user: null, token: null };
 
 const userModule = {
   namespaced: true,
@@ -24,9 +25,9 @@ const userModule = {
   },
   actions: {
     login({ commit }, user) {
-      
       return AuthService.login(user).then(
         user => {
+          console.log(user)
           commit('loginSuccess', user);
           return Promise.resolve(user);
         },
@@ -51,10 +52,13 @@ const userModule = {
       return state.status.loggedIn;
     },
     getToken: (state) => {
-      return state.user ? state.user.token:'';
+      return state.user ? state.token:'';
     },
     getUser: (state) => {
       return state.user ? state.user.data : null;
+    },
+    restrictTo: (state) => (...role) => {
+      return state.user && state.user.role && role.includes(state.user.role.perfilCode);
     },
   },
 };

@@ -50,18 +50,18 @@ export default {
       const router = this.$router;
 
       if (this.user.email && this.user.password) {
-        console.log(this.user);
         this.login(this.user).then(
           () => {
             router.push('/');
           },
           error => {
+            console.log(error)
             this.loading = false;
             this.message =
               (error.response && error.response.data) ||
               error.message ||
               error.toString();
-              this.notifyVue(this.message.status===403 ? 'Credenciais Inválidas':this.message.message, 'warning');
+              this.notifyVue(this.message.status===403 ? 'Credenciais Inválidas':this.message.message, 'danger');
           }
         );
       }
@@ -73,7 +73,7 @@ export default {
         icon: "add_alert",
         horizontalAlign: 'right',
         verticalAlign: 'top',
-        type: this.type
+        type: type
       });
     },
   },

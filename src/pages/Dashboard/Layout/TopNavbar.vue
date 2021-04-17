@@ -23,7 +23,7 @@
 
         <div class="md-collapse">
           <md-list>
-            <md-list-item href="#">
+            <md-list-item @click="logout()">
               <i class="material-icons">logout</i>
               <p>Sair</p>
             </md-list-item>
@@ -35,11 +35,22 @@
 </template>
 
 <script>
+
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("userModule");
+
 export default {
   data() {
     return {};
   },
   methods: {
+    ...mapActions({
+      logoutStore: "logout",
+    }),
+    logout(){
+      this.logoutStore();
+      this.$router.push('/login');
+    },
     toggleSidebar() {
       this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
     },
@@ -47,7 +58,9 @@ export default {
       if (this.$sidebar) {
         this.$sidebar.toggleMinimize();
       }
-    }
-  }
+    },
+  },
+  computed:{
+  },
 };
 </script>
