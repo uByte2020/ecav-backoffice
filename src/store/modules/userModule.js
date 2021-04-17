@@ -73,7 +73,7 @@ const userModule = {
       return state.user ? state.token:'';
     },
     getUser: (state) => {
-      return state.user ? state.user.data : null;
+      return state.user ? state.user : null;
     },
     restrictTo: (state) => (...role) => {
       return state.user && state.user.role && role.includes(state.user.role.perfilCode);

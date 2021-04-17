@@ -63,7 +63,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: "Vue MD PRO"
+      default: "ECAV"
     },
     activeColor: {
       type: String,

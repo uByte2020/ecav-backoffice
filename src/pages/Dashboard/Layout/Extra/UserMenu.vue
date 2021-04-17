@@ -11,7 +11,7 @@
         @click.capture="clicked"
       >
         <span>
-          {{ title }}
+          {{ user? user.name:'Undefined' }}
         </span>
       </a>
     </div>
@@ -19,6 +19,8 @@
 </template>
 <script>
 import { CollapseTransition } from "vue2-transitions";
+import { createNamespacedHelpers } from "vuex";
+const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
 
 export default {
   components: {
@@ -31,7 +33,7 @@ export default {
     },
     avatar: {
       type: String,
-      default: "./img/faces/avatar.jpg"
+      default: "./img/default.png"
     }
   },
   data() {
@@ -46,6 +48,9 @@ export default {
     toggleMenu: function() {
       this.isClosed = !this.isClosed;
     }
+  },
+  computed:{
+    ...mapGetters({ user: "getUser" }),
   }
 };
 </script>
