@@ -24,7 +24,6 @@ class AuthService {
               'endereco',
               'photo'
             );
-            console.log(filtedUser)
             localStorage.setItem("user", JSON.stringify(filtedUser));
             localStorage.setItem("token", JSON.stringify(response.data.token));
             axios.defaults.headers.common['Authorization'] = response.data.token;
@@ -36,6 +35,34 @@ class AuthService {
   logout() {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+  }
+
+  register(user) {
+    return axios.post(requestURL.SIGN_UP, {
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      passwordConfirm: user.passwordConfirm, 
+      role: user.role, 
+      telemovel: user.telemovel, 
+      endereco: user.endereco, 
+    }).then((response) => {
+      if (response.data && response.data.data.user) {
+        const filtedUser = filterObj(
+            response.data.data.user,
+            'name',
+            'email',
+            'role',
+            'telemovel',
+            'endereco',
+            'photo'
+          );
+          localStorage.setItem("user", JSON.stringify(filtedUser));
+          localStorage.setItem("token", JSON.stringify(response.data.token));
+          axios.defaults.headers.common['Authorization'] = response.data.token;
+        return filtedUser;
+      }
+    });
   }
 }
 

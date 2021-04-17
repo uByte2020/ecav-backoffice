@@ -22,6 +22,12 @@ const userModule = {
       state.status.loggedIn = false;
       state.user = null;
     },
+    registerSuccess(state) {
+      state.status.loggedIn = false;
+    },
+    registerFailure(state) {
+      state.status.loggedIn = false;
+    }
   },
   actions: {
     login({ commit }, user) {
@@ -45,6 +51,18 @@ const userModule = {
     logout({commit}){
       commit('logout');
       AuthService.logout();
+    },
+    register({ commit }, user) {
+      return AuthService.register(user).then(
+        response => {
+          commit('registerSuccess');
+          return Promise.resolve(response.data);
+        },
+        error => {
+          commit('registerFailure');
+          return Promise.reject(error);
+        }
+      );
     }
   },
   getters: {

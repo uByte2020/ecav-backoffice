@@ -16,9 +16,9 @@
           <label>Password</label>
           <md-input v-model="user.password" type="password" v-on:keyup.enter="handleLogin()"></md-input>
         </md-field>
-        <md-button slot="footer" class="md-simple md-success md-lg" @click="handleLogin()">
-          Entrar
-        </md-button>
+        <md-button href class="md-success md-round mt-4" slot="footer" @click="handleLogin()"
+            >Entrar</md-button
+        >
       </login-card>
     </div>
   </div>
@@ -36,7 +36,7 @@ export default {
   data() {
     return {
       type: ["", "info", "success", "warning", "danger"],
-      user: new User('',''),
+      user: new User('','',''),
       loading: false,
       message: ''
     };

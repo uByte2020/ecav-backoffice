@@ -11,7 +11,7 @@
         filter-color="black"
         :style="setBgImage"
       >
-        <div class="container md-offset">
+        <div class="container md-offset da-container">
           <zoom-center-transition
             :duration="pageTransitionDuration"
             mode="out-in"
@@ -157,5 +157,8 @@ $zoomOutEnd: 0.46;
 }
 .wrapper-full-page .zoomOut {
   animation-name: zoomOut8;
+}
+.da-container{
+  justify-content: center;
 }
 </style>

@@ -1,11 +1,12 @@
 <template>
-  <md-card class="md-card-signup">
+  <md-card class="md-card-signup da-card-signup">
     <slot name="title"></slot>
 
     <md-card-content>
       <div class="md-layout">
         <slot name="content-left"></slot>
         <slot name="content-right"></slot>
+        <slot name="content-center"></slot>
       </div>
     </md-card-content>
 
@@ -21,4 +22,9 @@ export default {
 };
 </script>
 
-<style lang="css"></style>
+<style lang="css">
+.da-card-signup{
+  margin-top: 0!important;
+  margin-bottom: 0!important;
+}
+</style>
