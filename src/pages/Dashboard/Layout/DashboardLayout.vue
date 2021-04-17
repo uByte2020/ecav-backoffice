@@ -19,6 +19,15 @@
           :link="{ name: 'Dashboard', icon: 'dashboard', path: '/dashboard' }"
         >
         </sidebar-item>
+        <sidebar-item
+          :link="{ name: 'Utilizadores', icon: 'people', path: '/calendar' }"
+        ></sidebar-item>
+        <sidebar-item
+          :link="{ name: 'Alunos', icon: 'people', path: '/calendar' }"
+        ></sidebar-item>
+        <sidebar-item
+          :link="{ name: 'Marcações', icon: 'date_range', path: '/calendar' }"
+        ></sidebar-item>
       </template>
     </side-bar>
     <div class="main-panel">
