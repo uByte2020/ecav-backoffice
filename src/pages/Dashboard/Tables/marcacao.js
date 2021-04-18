@@ -3,9 +3,10 @@ export default [
     {
         id: 1,
         name: "Dakota Rice",
-        salary: "$36.738",
-        country: "Niger",
+        aula: "$36.738",
+        categoria: "Niger",
         data: "18-04-2021",
+        formacao: "Formação1",
         icon1: "person",
         icon2: "edit",
         icon3: "close"
@@ -13,9 +14,10 @@ export default [
       {
         id: 2,
         name: "Minerva Hooper",
-        salary: "$23,789",
-        country: "Curaçao",
+        aula: "$23,789",
+        categoria: "Curaçao",
         data: "18-04-2021",
+        formacao: "Formação2",
         icon1: "person",
         icon2: "edit",
         icon3: "close"
@@ -23,9 +25,10 @@ export default [
       {
         id: 3,
         name: "Sage Rodriguez",
-        salary: "$56,142",
-        country: "Netherlands",
+        aula: "$56,142",
+        categoria: "Netherlands",
         data: "18-04-2021",
+        formacao: "Formação3",
         icon1: "person",
         icon2: "edit",
         icon3: "close"
@@ -33,9 +36,10 @@ export default [
       {
         id: 4,
         name: "Philip Chaney",
-        salary: "$38,735",
-        country: "Korea, South",
+        aula: "$38,735",
+        categoria: "Korea, South",
         data: "18-04-2021",
+        formacao: "Formação4",
         icon1: "person",
         icon2: "edit",
         icon3: "close"
@@ -43,9 +47,10 @@ export default [
       {
         id: 5,
         name: "Doris Greene",
-        salary: "$63,542",
-        country: "Malawi",
+        aula: "$63,542",
+        categoria: "Malawi",
         data: "18-04-2021",
+        formacao: "Formação5",
         icon1: "person",
         icon2: "edit",
         icon3: "close"

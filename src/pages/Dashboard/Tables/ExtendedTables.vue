@@ -1,6 +1,6 @@
 <template>
   <div class="md-layout">
-    <div class="md-layout-item">
+    <div class="md-layout-item" >
       <md-card>
         <md-card-header class="md-card-header-icon md-card-header-green">
           <div class="card-icon">
@@ -47,29 +47,30 @@
               <md-table-cell md-label="Aluno" md-sort-by="name">{{
                 item.name
               }}</md-table-cell>
-              <md-table-cell md-label="Email" md-sort-by="email">{{
-                item.email
+              <md-table-cell md-label="Aula" md-sort-by="aula">{{
+                item.aula
               }}</md-table-cell>
-              <md-table-cell md-label="Idade"> {{ item.age }}</md-table-cell>
-              <!-- <md-table-cell md-label="Salary">{{ item.salary }}</md-table-cell> -->
+              <md-table-cell md-label="Data"> {{ item.data }}</md-table-cell>
+              <md-table-cell md-label="Categoria">{{ item.categoria }}</md-table-cell>
+              <md-table-cell md-label="Formação">{{ item.formacao }}</md-table-cell>
               <md-table-cell md-label="Actions">
                 <md-button
                   class="md-just-icon md-info md-simple"
                   @click.native="handleLike(item)"
                 >
-                  <md-icon>favorite</md-icon>
+                  <md-icon>{{item.icon1}}</md-icon>
                 </md-button>
                 <md-button
                   class="md-just-icon md-warning md-simple"
                   @click.native="handleEdit(item)"
                 >
-                  <md-icon>dvr</md-icon>
+                  <md-icon>{{item.icon2}}</md-icon>
                 </md-button>
                 <md-button
                   class="md-just-icon md-danger md-simple"
                   @click.native="handleDelete(item)"
                 >
-                  <md-icon>close</md-icon>
+                  <md-icon>{{item.icon3}}</md-icon>
                 </md-button>
               </md-table-cell>
             </md-table-row>
@@ -118,7 +119,6 @@ import { Pagination } from "@/components";
 import marcacao from "./marcacao";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
-// import userModule from '../../../store/modules/userModule'
 
 export default {
   components: {
@@ -161,9 +161,9 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
-      footerTable: ["Name", "Email", "Idade",  "Actions"],
+      footerTable: ["Name", "Aula", "Data","Categoria" ,"Formação" , "Actions"],
       searchQuery: "",
-      propsToSearch: ["name", "email", "age"],
+      propsToSearch: ["name", "formação", "data"],
       tableData: marcacao,
       searchedData: [],
       fuseSearch: null
