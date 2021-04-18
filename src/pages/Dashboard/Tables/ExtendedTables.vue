@@ -6,18 +6,18 @@
           <div class="card-icon">
             <md-icon>assignment</md-icon>
           </div>
-          <h4 class="title">Simple Table</h4>
+          <h4 class="title">Marcações</h4>
         </md-card-header>
         <md-card-content>
           <md-table v-model="tableData">
             <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell md-label="#">{{ item.id }}</md-table-cell>
-              <md-table-cell md-label="Name">{{ item.name }}</md-table-cell>
-              <md-table-cell md-label="Country">{{
+              <md-table-cell md-label="Id">{{ item.id }}</md-table-cell>
+              <md-table-cell md-label="Aluno">{{ item.name }}</md-table-cell>
+              <md-table-cell md-label="Aula">{{
                 item.country
               }}</md-table-cell>
-              <md-table-cell md-label="City">{{ item.city }}</md-table-cell>
-              <md-table-cell md-label="Salary">{{ item.salary }}</md-table-cell>
+              <md-table-cell md-label="Data">{{ item.data }}</md-table-cell>
+              <md-table-cell md-label="Lição">{{ item.salary }}</md-table-cell>
               <md-table-cell md-label="Actions" :class="getAlignClasses(item)">
                 <md-button
                   class="md-just-icon"

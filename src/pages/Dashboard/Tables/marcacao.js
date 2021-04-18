@@ -5,7 +5,7 @@ export default [
         name: "Dakota Rice",
         salary: "$36.738",
         country: "Niger",
-        city: "Oud-Turnhout",
+        data: "18-04-2021",
         icon1: "person",
         icon2: "edit",
         icon3: "close"
@@ -15,7 +15,7 @@ export default [
         name: "Minerva Hooper",
         salary: "$23,789",
         country: "Curaçao",
-        city: "Sinaai-Waas",
+        data: "18-04-2021",
         icon1: "person",
         icon2: "edit",
         icon3: "close"
@@ -25,7 +25,7 @@ export default [
         name: "Sage Rodriguez",
         salary: "$56,142",
         country: "Netherlands",
-        city: "Baileux",
+        data: "18-04-2021",
         icon1: "person",
         icon2: "edit",
         icon3: "close"
@@ -35,7 +35,7 @@ export default [
         name: "Philip Chaney",
         salary: "$38,735",
         country: "Korea, South",
-        city: "Overland Park",
+        data: "18-04-2021",
         icon1: "person",
         icon2: "edit",
         icon3: "close"
@@ -45,7 +45,7 @@ export default [
         name: "Doris Greene",
         salary: "$63,542",
         country: "Malawi",
-        city: "Feldkirchen in Kärnten",
+        data: "18-04-2021",
         icon1: "person",
         icon2: "edit",
         icon3: "close"
