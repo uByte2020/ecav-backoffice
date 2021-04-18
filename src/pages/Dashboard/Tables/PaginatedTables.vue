@@ -6,7 +6,7 @@
           <div class="card-icon">
             <md-icon>assignment</md-icon>
           </div>
-          <h4 class="title">Paginated Tables</h4>
+          <h4 class="title">Alunos</h4>
         </md-card-header>
         <md-card-content>
           <md-table
@@ -45,14 +45,14 @@
             </md-table-toolbar>
 
             <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell md-label="Name" md-sort-by="name">{{
+              <md-table-cell md-label="Nome" md-sort-by="name">{{
                 item.name
               }}</md-table-cell>
               <md-table-cell md-label="Email" md-sort-by="email">{{
                 item.email
               }}</md-table-cell>
-              <md-table-cell md-label="Age">{{ item.age }}</md-table-cell>
-              <md-table-cell md-label="Salary">{{ item.salary }}</md-table-cell>
+              <md-table-cell md-label="Idade"> {{ item.age }}</md-table-cell>
+              <!-- <md-table-cell md-label="Salary">{{ item.salary }}</md-table-cell> -->
               <md-table-cell md-label="Actions">
                 <md-button
                   class="md-just-icon md-info md-simple"
@@ -119,6 +119,7 @@ import { Pagination } from "@/components";
 import users from "./users";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
+// import userModule from '../../../store/modules/userModule'
 
 export default {
   components: {
@@ -161,7 +162,7 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
-      footerTable: ["Name", "Email", "Age", "Salary", "Actions"],
+      footerTable: ["Name", "Email", "Idade",  "Actions"],
       searchQuery: "",
       propsToSearch: ["name", "email", "age"],
       tableData: users,

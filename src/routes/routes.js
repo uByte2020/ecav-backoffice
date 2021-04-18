@@ -264,6 +264,11 @@ const routes = [
         path: "PaginatedTables",
         name: "PaginatedTables",
         components: { default: PaginatedTables }
+      },
+      {
+        path: "ExtendedTables",
+        name: "ExtendedTables",
+        components: { default: ExtendedTables }
       }
     ]
   }
