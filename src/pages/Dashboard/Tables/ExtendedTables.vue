@@ -6,7 +6,7 @@
           <div class="card-icon">
             <md-icon>assignment</md-icon>
           </div>
-          <h4 class="title">Alunos</h4>
+          <h4 class="title">Marcação</h4>
         </md-card-header>
         <md-card-content>
           <md-table
@@ -44,15 +44,14 @@
               </md-field>
             </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell md-label="Aluno" md-sort-by="name">{{
-                item.name
-              }}</md-table-cell>
-              <md-table-cell md-label="Aula" md-sort-by="aula">{{
-                item.aula
-              }}</md-table-cell>
-              <md-table-cell md-label="Data"> {{ item.data }}</md-table-cell>
-              <md-table-cell md-label="Categoria">{{ item.categoria }}</md-table-cell>
-              <md-table-cell md-label="Formação">{{ item.formacao }}</md-table-cell>
+              <md-table-cell md-label="Aluno" md-sort-by="name">
+                {{item.name}}</md-table-cell>
+              <md-table-cell md-label="Formação" md-sort-by="aula">
+                {{item.formacao}}</md-table-cell>
+              <md-table-cell md-label="Categoria"> {{item.categoria}}</md-table-cell>
+              <md-table-cell md-label="Lição">{{item.aula}}</md-table-cell>
+              <md-table-cell md-label="Data">{{item.data}}</md-table-cell>
+              <md-table-cell md-label="Hora">{{item.hora}}</md-table-cell>
               <md-table-cell md-label="Actions">
                 <md-button
                   class="md-just-icon md-info md-simple"
@@ -161,7 +160,7 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
-      footerTable: ["Name", "Aula", "Data","Categoria" ,"Formação" , "Actions"],
+      footerTable: ["Aluno","Formação","Categoria","Lição", "Data","Formação","Hora","Actions"],
       searchQuery: "",
       propsToSearch: ["name", "formação", "data"],
       tableData: marcacao,
