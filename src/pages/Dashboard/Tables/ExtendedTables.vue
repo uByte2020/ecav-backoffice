@@ -32,6 +32,7 @@
                 <md-button
                   class="md-just-icon"
                   :class="getClass(item.icon3, item.id)"
+                  @click.native="handleDelete(item, item.id)"
                   ><md-icon>{{ item.icon3 }}</md-icon></md-button
                 >
               </md-table-cell>
@@ -44,6 +45,7 @@
 </template>
 <script>
 import marcacao from './marcacao'
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -58,6 +60,38 @@ export default {
     }
   },
   methods: {
+    handleDelete(item, id) {
+      console.log(`Id excluido ${item.id}`)
+      Swal.fire({
+        title: "Are you sure?",
+        text: `You won't be able to revert this!`,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "md-button md-success btn-fill",
+        cancelButtonClass: "md-button md-danger btn-fill",
+        confirmButtonText: "Yes, delete it!",
+        buttonsStyling: false
+      }).then(result => {
+        if (result.value) {
+          this.deleteRow(id);
+          Swal.fire({
+            title: "Deleted!",
+            text: `You deleted ${item.name}`,
+            type: "success",
+            confirmButtonClass: "md-button md-success btn-fill",
+            buttonsStyling: false
+          });
+        }
+      });
+    },
+    deleteRow(item) {
+      let indexToDelete = this.tableData.findIndex(
+        tableRow => tableRow.id === item.id
+      );
+      if (indexToDelete >= 0) {
+        this.tableData.splice(indexToDelete, 1);
+      }
+    },
     getClass: function(item, id) {
       let classes = "";
       switch (item) {
