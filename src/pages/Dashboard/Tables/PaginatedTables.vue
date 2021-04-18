@@ -43,7 +43,6 @@
                 </md-input>
               </md-field>
             </md-table-toolbar>
-
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell md-label="Nome" md-sort-by="name">{{
                 item.name

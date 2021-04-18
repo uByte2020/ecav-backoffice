@@ -60,8 +60,22 @@ export default {
     }
   },
   methods: {
+    handleLike(item) {
+      Swal.fire({
+        title: `You liked ${item.name}`,
+        buttonsStyling: false,
+        type: "success",
+        confirmButtonClass: "md-button md-success"
+      });
+    },
+    handleEdit(item) {
+      Swal.fire({
+        title: `You want to edit ${item.name}`,
+        buttonsStyling: false,
+        confirmButtonClass: "md-button md-info"
+      });
+    },
     handleDelete(item, id) {
-      console.log(`Id excluido ${item.id}`)
       Swal.fire({
         title: "Are you sure?",
         text: `You won't be able to revert this!`,
