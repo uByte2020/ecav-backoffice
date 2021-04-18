@@ -1,396 +1,258 @@
 <template>
   <div class="md-layout">
-    <div class="md-layout-item md-size-100">
+    <div class="md-layout-item" >
       <md-card>
         <md-card-header class="md-card-header-icon md-card-header-green">
           <div class="card-icon">
             <md-icon>assignment</md-icon>
           </div>
-          <h4 class="title">Simple Table</h4>
+          <h4 class="title">Marcação</h4>
         </md-card-header>
         <md-card-content>
-          <md-table v-model="tableData">
-            <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell md-label="#">{{ item.id }}</md-table-cell>
-              <md-table-cell md-label="Name">{{ item.name }}</md-table-cell>
-              <md-table-cell md-label="Country">{{
-                item.country
-              }}</md-table-cell>
-              <md-table-cell md-label="City">{{ item.city }}</md-table-cell>
-              <md-table-cell md-label="Salary">{{ item.salary }}</md-table-cell>
-              <md-table-cell md-label="Actions" :class="getAlignClasses(item)">
-                <md-button
-                  class="md-just-icon"
-                  :class="getClass(item.icon1, item.id)"
-                  ><md-icon>{{ item.icon1 }}</md-icon></md-button
-                >
-                <md-button
-                  class="md-just-icon"
-                  :class="getClass(item.icon2, item.id)"
-                  ><md-icon>{{ item.icon2 }}</md-icon></md-button
-                >
-                <md-button
-                  class="md-just-icon"
-                  :class="getClass(item.icon3, item.id)"
-                  ><md-icon>{{ item.icon3 }}</md-icon></md-button
-                >
-              </md-table-cell>
-            </md-table-row>
-          </md-table>
-        </md-card-content>
-      </md-card>
-    </div>
-    <div class="md-layout-item md-size-100">
-      <md-card>
-        <md-card-header class="md-card-header-icon md-card-header-green">
-          <div class="card-icon">
-            <md-icon>assignment</md-icon>
-          </div>
-          <h4 class="title">Striped Table with Checkboxes</h4>
-        </md-card-header>
-        <md-card-content>
-          <md-table v-model="tableDataStriped" class="table-striped">
-            <md-table-row
-              slot="md-table-row"
-              slot-scope="{ item }"
-              md-selectable="multiple"
-              md-auto-select
-            >
-              <md-table-cell md-label="#">{{ item.id }}</md-table-cell>
-              <md-table-cell md-label="Product Name">{{
-                item.name
-              }}</md-table-cell>
-              <md-table-cell md-label="Type">{{ item.type }}</md-table-cell>
-              <md-table-cell md-label="Qty">{{ item.qty }}</md-table-cell>
-              <md-table-cell md-label="Price">{{ item.price }}</md-table-cell>
-              <md-table-cell md-label="Amount" :class="getAlignClasses(item)">{{
-                item.amount
-              }}</md-table-cell>
-            </md-table-row>
-          </md-table>
-          <div class="table table-stats table-striped">
-            <div class="td-price">
-              <div class="td-total">
-                Total
-              </div>
-              <span>
-                <small>€</small>
-                €12,999
-              </span>
-            </div>
-          </div>
-        </md-card-content>
-      </md-card>
-    </div>
-    <div class="md-layout-item md-size-100">
-      <md-card>
-        <md-card-header class="md-card-header-icon md-card-header-green">
-          <div class="card-icon">
-            <md-icon>assignment</md-icon>
-          </div>
-          <h4 class="title">Shopping Cart Table</h4>
-        </md-card-header>
-        <md-card-content>
-          <md-table v-model="shoppingCartTable" class="table-shopping">
-            <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell md-label="">
-                <div class="img-container">
-                  <img :src="item.image" alt="products" />
-                </div>
-              </md-table-cell>
-              <md-table-cell md-label="Product" class="td-name">
-                <a href="#jacket">{{ item.product }}</a>
-                <br />
-                <small>{{ item.category }}</small>
-              </md-table-cell>
-              <md-table-cell md-label="Color">{{ item.color }}</md-table-cell>
-              <md-table-cell md-label="Size">{{ item.size }}</md-table-cell>
-              <md-table-cell md-label="Price" class="td-number">
-                <small>€</small>
-                {{ item.price }}
-              </md-table-cell>
-              <md-table-cell md-label="Qty" class="td-number">
-                {{ item.qty }}
-                <div class="md-group">
-                  <md-button
-                    class="md-round md-info md-just-icon"
-                    @click.native="increaseQuantity(item)"
-                    ><md-icon>add</md-icon></md-button
+          <md-table
+            :value="queriedData"
+            :md-sort.sync="currentSort"
+            :md-sort-order.sync="currentSortOrder"
+            :md-sort-fn="customSort"
+            class="paginated-table table-striped table-hover"
+          >
+            <md-table-toolbar>
+              <md-field>
+                <label for="pages">Per page</label>
+                <md-select v-model="pagination.perPage" name="pages">
+                  <md-option
+                    v-for="item in pagination.perPageOptions"
+                    :key="item"
+                    :label="item"
+                    :value="item"
                   >
-                  <md-button
-                    class="md-round md-info md-just-icon"
-                    @click.native="decreaseQuantity(item)"
-                    ><md-icon>remove</md-icon></md-button
-                  >
-                </div>
-              </md-table-cell>
-              <md-table-cell md-label="Amount" class="td-number">
-                <small>€</small>
-                {{ item.amount }}
-              </md-table-cell>
-              <md-table-cell>
-                <md-button class="md-just-icon md-round md-simple"
-                  ><md-icon>close</md-icon></md-button
+                    {{ item }}
+                  </md-option>
+                </md-select>
+              </md-field>
+
+              <md-field>
+                <md-input
+                  type="search"
+                  class="mb-3"
+                  clearable
+                  style="width: 200px"
+                  placeholder="Search records"
+                  v-model="searchQuery"
                 >
+                </md-input>
+              </md-field>
+            </md-table-toolbar>
+            <md-table-row slot="md-table-row" slot-scope="{ item }">
+              <md-table-cell md-label="Aluno" md-sort-by="name">
+                {{item.name}}</md-table-cell>
+              <md-table-cell md-label="Formação" md-sort-by="aula">
+                {{item.formacao}}</md-table-cell>
+              <md-table-cell md-label="Categoria"> {{item.categoria}}</md-table-cell>
+              <md-table-cell md-label="Lição">{{item.aula}}</md-table-cell>
+              <md-table-cell md-label="Data">{{item.data}}</md-table-cell>
+              <md-table-cell md-label="Hora">{{item.hora}}</md-table-cell>
+              <md-table-cell md-label="Actions">
+                <md-button
+                  class="md-just-icon md-info md-simple"
+                  @click.native="handleLike(item)"
+                >
+                  <md-icon>{{item.icon1}}</md-icon>
+                </md-button>
+                <md-button
+                  class="md-just-icon md-warning md-simple"
+                  @click.native="handleEdit(item)"
+                >
+                  <md-icon>{{item.icon2}}</md-icon>
+                </md-button>
+                <md-button
+                  class="md-just-icon md-danger md-simple"
+                  @click.native="handleDelete(item)"
+                >
+                  <md-icon>{{item.icon3}}</md-icon>
+                </md-button>
               </md-table-cell>
             </md-table-row>
           </md-table>
-          <div class="table table-stats">
-            <div class="td-price">
-              <div class="td-total">
-                Total
-              </div>
-              <span>
-                <small>€</small>
-                {{ shoppingTotal }}
-              </span>
-            </div>
-            <div class="text-right">
-              <md-button class="md-info md-round">
-                Complete Purchase
-                <md-icon>keyboard_arrow_right</md-icon>
-              </md-button>
-            </div>
+          <div class="footer-table md-table">
+            <table>
+              <tfoot>
+                <tr>
+                  <th
+                    v-for="item in footerTable"
+                    :key="item.name"
+                    class="md-table-head"
+                  >
+                    <div class="md-table-head-container md-ripple md-disabled">
+                      <div class="md-table-head-label">
+                        {{ item }}
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
           </div>
         </md-card-content>
+        <md-card-actions md-alignment="space-between">
+          <div class="">
+            <p class="card-category">
+              Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+            </p>
+          </div>
+          <pagination
+            class="pagination-no-border pagination-success"
+            v-model="pagination.currentPage"
+            :per-page="pagination.perPage"
+            :total="total"
+          >
+          </pagination>
+        </md-card-actions>
       </md-card>
     </div>
   </div>
 </template>
+
 <script>
+import { Pagination } from "@/components";
+import marcacao from "./marcacao";
+import Fuse from "fuse.js";
+import Swal from "sweetalert2";
+
 export default {
-  data() {
-    return {
-      tableData: [
-        {
-          id: 1,
-          name: "Dakota Rice",
-          salary: "$36.738",
-          country: "Niger",
-          city: "Oud-Turnhout",
-          icon1: "person",
-          icon2: "edit",
-          icon3: "close"
-        },
-        {
-          id: 2,
-          name: "Minerva Hooper",
-          salary: "$23,789",
-          country: "Curaçao",
-          city: "Sinaai-Waas",
-          icon1: "person",
-          icon2: "edit",
-          icon3: "close"
-        },
-        {
-          id: 3,
-          name: "Sage Rodriguez",
-          salary: "$56,142",
-          country: "Netherlands",
-          city: "Baileux",
-          icon1: "person",
-          icon2: "edit",
-          icon3: "close"
-        },
-        {
-          id: 4,
-          name: "Philip Chaney",
-          salary: "$38,735",
-          country: "Korea, South",
-          city: "Overland Park",
-          icon1: "person",
-          icon2: "edit",
-          icon3: "close"
-        },
-        {
-          id: 5,
-          name: "Doris Greene",
-          salary: "$63,542",
-          country: "Malawi",
-          city: "Feldkirchen in Kärnten",
-          icon1: "person",
-          icon2: "edit",
-          icon3: "close"
-        }
-      ],
-      tableDataStriped: [
-        {
-          id: 1,
-          name: "Moleskine Agenda",
-          type: "Office",
-          qty: "25",
-          price: "€ 49",
-          amount: "€ 1,225"
-        },
-        {
-          id: 2,
-          name: "Stabilo Pen",
-          type: "Office",
-          qty: "30",
-          price: "€ 10",
-          amount: "€ 300"
-        },
-        {
-          id: 3,
-          name: "A4 Paper Pack",
-          type: "Office",
-          qty: "50",
-          price: "€ 10.99",
-          amount: "€ 109"
-        },
-        {
-          id: 4,
-          name: "Apple Ipad",
-          type: "Meeting",
-          qty: "10",
-          price: "€ 499.00",
-          amount: "€ 4,990"
-        },
-        {
-          id: 5,
-          name: "Apple Iphone",
-          type: "Communication",
-          qty: "10",
-          price: "€ 599.00",
-          amount: "€ 5,990"
-        }
-      ],
-      shoppingCartTable: [
-        {
-          image: "./img/product1.jpg",
-          product: "Spring Jacket",
-          category: "by Dolce&Gabbana",
-          color: "Red",
-          size: "M",
-          price: 549,
-          qty: 1,
-          amount: 549
-        },
-        {
-          image: "./img/product2.jpg",
-          product: "Short Pants",
-          category: "by Gucci",
-          color: "Purple",
-          size: "M",
-          price: 499,
-          qty: 2,
-          amount: 998
-        },
-        {
-          image: "./img/product3.jpg",
-          product: "Pencil Skirt",
-          category: "by Valentino",
-          color: "Red",
-          size: "M",
-          price: 799,
-          qty: 1,
-          amount: 799
-        }
-      ]
-    };
+  components: {
+    Pagination
   },
   computed: {
-    shoppingTotal() {
-      return this.shoppingCartTable.reduce((accumulator, current) => {
-        return accumulator + current.amount;
-      }, 0);
+    /***
+     * Returns a page from the searched data or the whole data. Search is performed in the watch section below
+     */
+    queriedData() {
+      let result = this.tableData;
+      if (this.searchedData.length > 0) {
+        result = this.searchedData;
+      }
+      return result.slice(this.from, this.to);
+    },
+    to() {
+      let highBound = this.from + this.pagination.perPage;
+      if (this.total < highBound) {
+        highBound = this.total;
+      }
+      return highBound;
+    },
+    from() {
+      return this.pagination.perPage * (this.pagination.currentPage - 1);
+    },
+    total() {
+      return this.searchedData.length > 0
+        ? this.searchedData.length
+        : this.tableData.length;
     }
   },
+  data() {
+    return {
+      currentSort: "name",
+      currentSortOrder: "asc",
+      pagination: {
+        perPage: 5,
+        currentPage: 1,
+        perPageOptions: [5, 10, 25, 50],
+        total: 0
+      },
+      footerTable: ["Aluno","Formação","Categoria","Lição", "Data","Formação","Hora","Actions"],
+      searchQuery: "",
+      propsToSearch: ["name", "formação", "data"],
+      tableData: marcacao,
+      searchedData: [],
+      fuseSearch: null
+    };
+  },
   methods: {
-    getClass: function(item, id) {
-      let classes = "";
-      switch (item) {
-        case "person": {
-          classes = "md-info";
-          break;
+    customSort(value) {
+      return value.sort((a, b) => {
+        const sortBy = this.currentSort;
+        if (this.currentSortOrder === "desc") {
+          return a[sortBy].localeCompare(b[sortBy]);
         }
-        case "edit": {
-          classes = "md-success";
-          break;
-        }
-        case "close": {
-          classes = "md-danger";
-          break;
-        }
-      }
-      switch (id) {
-        case 1:
-        case 5: {
-          break;
-        }
-        case 2:
-        case 4: {
-          classes = `${classes} md-round`;
-          break;
-        }
-        case 3: {
-          classes = `${classes} md-simple`;
-          break;
-        }
-      }
-      return classes;
+        return b[sortBy].localeCompare(a[sortBy]);
+      });
     },
-    getAlignClasses: ({ id }) => ({
-      "text-right": id
-    }),
-    increaseQuantity(item) {
-      item.qty++;
-      this.computeAmount(item);
+    handleLike(item) {
+      Swal.fire({
+        title: `You liked ${item.name}`,
+        buttonsStyling: false,
+        type: "success",
+        confirmButtonClass: "md-button md-success"
+      });
     },
-    decreaseQuantity(item) {
-      if (item.qty > 1) {
-        item.qty--;
-        this.computeAmount(item);
+    handleEdit(item) {
+      Swal.fire({
+        title: `You want to edit ${item.name}`,
+        buttonsStyling: false,
+        confirmButtonClass: "md-button md-info"
+      });
+    },
+    handleDelete(item) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: `You won't be able to revert this!`,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "md-button md-success btn-fill",
+        cancelButtonClass: "md-button md-danger btn-fill",
+        confirmButtonText: "Yes, delete it!",
+        buttonsStyling: false
+      }).then(result => {
+        if (result.value) {
+          this.deleteRow(item);
+          Swal.fire({
+            title: "Deleted!",
+            text: `You deleted ${item.name}`,
+            type: "success",
+            confirmButtonClass: "md-button md-success btn-fill",
+            buttonsStyling: false
+          });
+        }
+      });
+    },
+    deleteRow(item) {
+      let indexToDelete = this.tableData.findIndex(
+        tableRow => tableRow.id === item.id
+      );
+      if (indexToDelete >= 0) {
+        this.tableData.splice(indexToDelete, 1);
       }
-    },
-    computeAmount(item) {
-      item.amount = item.qty * item.price;
+    }
+  },
+  mounted() {
+    // Fuse search initialization.
+    this.fuseSearch = new Fuse(this.tableData, {
+      keys: ["name", "email"],
+      threshold: 0.3
+    });
+  },
+  watch: {
+    /**
+     * Searches through the table data by a given query.
+     * NOTE: If you have a lot of data, it's recommended to do the search on the Server Side and only display the results here.
+     * @param value of the query
+     */
+    searchQuery(value) {
+      let result = this.tableData;
+      if (value !== "") {
+        result = this.fuseSearch.search(this.searchQuery);
+      }
+      this.searchedData = result;
     }
   }
 };
 </script>
-<style lang="scss" scoped>
-.text-right .md-table-cell-container {
-  display: flex;
-  justify-content: flex-end;
-}
-.md-table .md-table-head:last-child {
-  text-align: right;
-}
 
-.table-stats {
-  display: flex;
-  align-items: center;
-  text-align: right;
-  flex-flow: row wrap;
-
-  .td-price .td-total {
-    display: inline-flex;
-    font-weight: 500;
-    font-size: 1.0625rem;
-    margin-right: 50px;
-  }
-
-  &.table-striped .td-price {
-    border-bottom: 0;
-  }
-
-  .td-price {
-    font-size: 26px;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .td-price,
-  > div {
-    flex: 0 0 100%;
-    padding: 12px 8px;
-  }
-}
-
-.table-shopping .md-table-head:nth-child(5),
-.table-shopping .md-table-head:nth-child(7),
-.table-shopping .md-table-head:nth-child(6) {
-  text-align: right;
+<style lang="css" scoped>
+.md-card .md-card-actions {
+  border: 0;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 </style>

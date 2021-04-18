@@ -259,6 +259,16 @@ const routes = [
         path: "widgets",
         name: "Widgets",
         components: { default: Widgets }
+      },
+      {
+        path: "PaginatedTables",
+        name: "PaginatedTables",
+        components: { default: PaginatedTables }
+      },
+      {
+        path: "ExtendedTables",
+        name: "ExtendedTables",
+        components: { default: ExtendedTables }
       }
     ]
   }
