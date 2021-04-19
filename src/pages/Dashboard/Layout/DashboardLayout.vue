@@ -23,10 +23,14 @@
           :link="{ name: 'Utilizadores', icon: 'people', path: '/calendar' }"
         ></sidebar-item>
         <sidebar-item
-          :link="{ name: 'Alunos', icon: 'people', path: '/calendar' }"
+          :link="{ name: 'Alunos', icon: 'people', path: '/PaginatedTables' }"
         ></sidebar-item>
         <sidebar-item
+<<<<<<< HEAD
           :link="{ name: 'Marcações', icon: 'date_range', path: '/marcacao' }"
+=======
+          :link="{ name: 'Marcações', icon: 'date_range', path: '/ExtendedTables' }"
+>>>>>>> e2adcfdcf68c85e8437e66b5f81d98284cf0328f
         ></sidebar-item>
       </template>
     </side-bar>

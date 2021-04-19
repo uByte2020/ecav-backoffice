@@ -262,9 +262,20 @@ const routes = [
         components: { default: Widgets }
       },
       {
+<<<<<<< HEAD
         path: "marcacao",
         name: "Marcações",
         components: { default: MarcacaoTables }
+=======
+        path: "PaginatedTables",
+        name: "PaginatedTables",
+        components: { default: PaginatedTables }
+      },
+      {
+        path: "ExtendedTables",
+        name: "ExtendedTables",
+        components: { default: ExtendedTables }
+>>>>>>> e2adcfdcf68c85e8437e66b5f81d98284cf0328f
       }
     ]
   }
