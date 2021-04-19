@@ -22,10 +22,7 @@
         <sidebar-item v-show="restrictTo(0)"
           :link="{ name: 'Utilizadores', icon: 'people', path: '/calendar' }"
         ></sidebar-item>
-        <sidebar-item v-if="restrictTo(0,1)"
-          :link="{ name: 'Alunos', icon: 'people', path: '/PaginatedTables' }"
-        ></sidebar-item>
-        <sidebar-item v-else
+        <sidebar-item v-show="restrictTo(0,1)"
           :link="{ name: 'Alunos', icon: 'people', path: '/PaginatedTables' }"
         ></sidebar-item>
         <sidebar-item v-show="restrictTo(0, 1, 2)"

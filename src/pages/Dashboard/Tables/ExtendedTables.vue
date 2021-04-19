@@ -32,7 +32,7 @@
               </md-field>
 
               <md-field>
-                <md-input
+                <!-- <md-input
                   type="search"
                   class="mb-3"
                   clearable
@@ -40,11 +40,12 @@
                   placeholder="Search records"
                   v-model="searchQuery"
                 >
-                </md-input>
+                </md-input> -->
+                <button class="btn" @click="showModal">Criar Marcação</button>
               </md-field>
             </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell md-label="Aluno" md-sort-by="name">
+              <md-table-cell md-label="Formador" md-sort-by="name">
                 {{item.name}}</md-table-cell>
               <md-table-cell md-label="Formação" md-sort-by="aula">
                 {{item.formacao}}</md-table-cell>
@@ -110,29 +111,50 @@
         </md-card-actions>
       </md-card>
     </div>
+    <template>
+          <Modal
+            v-show="isModalVisible"
+            @close="closeModal"
+          /></template>
   </div>
 </template>
 
 <script>
-import { Pagination } from "@/components";
+import { Pagination, Modal } from "@/components";
 import marcacao from "./marcacao";
+import marcacaoUser from "./marcacaoUser";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
+import { createNamespacedHelpers } from "vuex";
+const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
 
 export default {
   components: {
-    Pagination
+    Pagination,
+    Modal
   },
   computed: {
+    ...mapGetters({restricao: 'restrictTo'}),
+    restrictTo(){
+      return this.restricao;
+    },
     /***
      * Returns a page from the searched data or the whole data. Search is performed in the watch section below
      */
     queriedData() {
-      let result = this.tableData;
-      if (this.searchedData.length > 0) {
-        result = this.searchedData;
+      if(this.restrictTo(0,1)){
+        let result = this.tableData;
+        if (this.searchedData.length > 0) {
+          result = this.searchedData;
+        }
+        return result.slice(this.from, this.to);
+      }else{
+        let result = this.tabeleFormador;
+        if (this.searchedData.length > 0) {
+          result = this.searchedData;
+        }
+        return result.slice(this.from, this.to);
       }
-      return result.slice(this.from, this.to);
     },
     to() {
       let highBound = this.from + this.pagination.perPage;
@@ -145,13 +167,19 @@ export default {
       return this.pagination.perPage * (this.pagination.currentPage - 1);
     },
     total() {
-      return this.searchedData.length > 0
-        ? this.searchedData.length
-        : this.tableData.length;
+      if(this.restrictTo(0,1))
+        return this.searchedData.length > 0
+          ? this.searchedData.length
+          : this.tableData.length;
+      else
+        return this.searchedData.length > 0
+          ? this.searchedData.length
+          : this.tabeleFormador.length;
     }
   },
   data() {
     return {
+      aluno: true,
       currentSort: "name",
       currentSortOrder: "asc",
       pagination: {
@@ -165,10 +193,18 @@ export default {
       propsToSearch: ["name", "formação", "data"],
       tableData: marcacao,
       searchedData: [],
-      fuseSearch: null
+      tabeleFormador:marcacaoUser,
+      fuseSearch: null,
+      isModalVisible: false,
     };
   },
-  methods: {
+  methods: { 
+    showModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+    },
     customSort(value) {
       return value.sort((a, b) => {
         const sortBy = this.currentSort;
@@ -254,5 +290,18 @@ export default {
   border: 0;
   margin-left: 20px;
   margin-right: 20px;
+}
+.btn{
+  background-color: #4FA953;
+  border: none;
+  border-radius: 10px;
+  height: 30px;
+}
+.btn:hover{
+  background-color: #307539;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  height: 30px;
 }
 </style>

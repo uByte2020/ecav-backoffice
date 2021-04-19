@@ -211,7 +211,7 @@
 import { createNamespacedHelpers } from "vuex";
 const { mapGetters } = createNamespacedHelpers("clienteModule");
 export default {
-  name: "model",
+  name: "Modal",
   props: {
     showDialogProp: {
       type: Boolean,
