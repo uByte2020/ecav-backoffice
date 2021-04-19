@@ -26,7 +26,7 @@
           :link="{ name: 'Alunos', icon: 'people', path: '/calendar' }"
         ></sidebar-item>
         <sidebar-item
-          :link="{ name: 'Marcações', icon: 'date_range', path: '/calendar' }"
+          :link="{ name: 'Marcações', icon: 'date_range', path: '/marcacao' }"
         ></sidebar-item>
       </template>
     </side-bar>
