@@ -32,7 +32,7 @@ import Wizard from "@/pages/Dashboard/Forms/Wizard.vue";
 import RegularTables from "@/pages/Dashboard/Tables/RegularTables.vue";
 import ExtendedTables from "@/pages/Dashboard/Tables/ExtendedTables.vue";
 import PaginatedTables from "@/pages/Dashboard/Tables/PaginatedTables.vue";
-import MarcacaoTables from "@/pages/Dashboard/Tables/MarcacaoTables.vue";
+// import MarcacaoTables from "@/pages/Dashboard/Tables/MarcacaoTables.vue";
 
 // Maps pages
 import GoogleMaps from "@/pages/Dashboard/Maps/GoogleMaps.vue";
@@ -261,12 +261,15 @@ const routes = [
         name: "Widgets",
         components: { default: Widgets }
       },
+      // {
+      //   path: "marcacao",
+      //   name: "Marcações",
+      //   components: { default: MarcacaoTables },
+      //   path: "PaginatedTables",
+      //   name: "PaginatedTables",
+      //   components: { default: PaginatedTables }
+      // },
       {
-<<<<<<< HEAD
-        path: "marcacao",
-        name: "Marcações",
-        components: { default: MarcacaoTables }
-=======
         path: "PaginatedTables",
         name: "PaginatedTables",
         components: { default: PaginatedTables }
@@ -275,7 +278,6 @@ const routes = [
         path: "ExtendedTables",
         name: "ExtendedTables",
         components: { default: ExtendedTables }
->>>>>>> e2adcfdcf68c85e8437e66b5f81d98284cf0328f
       }
     ]
   }

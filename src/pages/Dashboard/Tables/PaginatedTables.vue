@@ -116,24 +116,38 @@
 <script>
 import { Pagination } from "@/components";
 import users from "./users";
+import formador from "./formador";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
-// import userModule from '../../../store/modules/userModule'
+import { createNamespacedHelpers } from "vuex";
+const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
 
 export default {
   components: {
     Pagination
   },
   computed: {
+    ...mapGetters({restricao: 'restrictTo'}),
+    restrictTo(){
+      return this.restricao;
+    },
     /***
      * Returns a page from the searched data or the whole data. Search is performed in the watch section below
      */
     queriedData() {
-      let result = this.tableData;
-      if (this.searchedData.length > 0) {
-        result = this.searchedData;
+      if(this.restrictTo(0,1)){
+        let result = this.tableData;
+        if (this.searchedData.length > 0) {
+          result = this.searchedData;
+        }
+        return result.slice(this.from, this.to);
+      }else{
+        let result = this.tabeleFormador;
+        if (this.searchedData.length > 0) {
+          result = this.searchedData;
+        }
+        return result.slice(this.from, this.to);
       }
-      return result.slice(this.from, this.to);
     },
     to() {
       let highBound = this.from + this.pagination.perPage;
@@ -146,9 +160,14 @@ export default {
       return this.pagination.perPage * (this.pagination.currentPage - 1);
     },
     total() {
-      return this.searchedData.length > 0
-        ? this.searchedData.length
-        : this.tableData.length;
+      if(this.restrictTo(0,1))
+        return this.searchedData.length > 0
+          ? this.searchedData.length
+          : this.tableData.length;
+      else
+        return this.searchedData.length > 0
+          ? this.searchedData.length
+          : this.tabeleFormador.length;
     }
   },
   data() {
@@ -165,6 +184,7 @@ export default {
       searchQuery: "",
       propsToSearch: ["name", "email", "age"],
       tableData: users,
+      tabeleFormador: formador,
       searchedData: [],
       fuseSearch: null
     };

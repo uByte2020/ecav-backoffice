@@ -19,18 +19,17 @@
           :link="{ name: 'Dashboard', icon: 'dashboard', path: '/dashboard' }"
         >
         </sidebar-item>
-        <sidebar-item
+        <sidebar-item v-show="restrictTo(0)"
           :link="{ name: 'Utilizadores', icon: 'people', path: '/calendar' }"
         ></sidebar-item>
-        <sidebar-item
+        <sidebar-item v-if="restrictTo(0,1)"
           :link="{ name: 'Alunos', icon: 'people', path: '/PaginatedTables' }"
         ></sidebar-item>
-        <sidebar-item
-<<<<<<< HEAD
-          :link="{ name: 'Marcações', icon: 'date_range', path: '/marcacao' }"
-=======
+        <sidebar-item v-else
+          :link="{ name: 'Alunos', icon: 'people', path: '/PaginatedTables' }"
+        ></sidebar-item>
+        <sidebar-item v-show="restrictTo(0, 1, 2)"
           :link="{ name: 'Marcações', icon: 'date_range', path: '/ExtendedTables' }"
->>>>>>> e2adcfdcf68c85e8437e66b5f81d98284cf0328f
         ></sidebar-item>
       </template>
     </side-bar>
@@ -91,6 +90,8 @@ import MobileMenu from "./Extra/MobileMenu.vue";
 import FixedPlugin from "../../FixedPlugin.vue";
 import UserMenu from "./Extra/UserMenu.vue";
 import { ZoomCenterTransition } from "vue2-transitions";
+import { createNamespacedHelpers } from "vuex";
+const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
 
 export default {
   components: {
@@ -126,6 +127,12 @@ export default {
   },
   mounted() {
     reinitScrollbar();
+  },
+  computed:{
+    ...mapGetters({restricao: 'restrictTo'}),
+    restrictTo(){
+      return this.restricao;
+    }
   },
   watch: {
     sidebarMini() {
