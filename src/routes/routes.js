@@ -30,7 +30,7 @@ import Wizard from "@/pages/Dashboard/Forms/Wizard.vue";
 
 // TableList pages
 import RegularTables from "@/pages/Dashboard/Tables/RegularTables.vue";
-import ExtendedTables from "@/pages/Dashboard/Tables/ExtendedTables.vue";
+import TableMarcacao from "@/pages/Dashboard/Tables/TableMarcacao.vue";
 import PaginatedTables from "@/pages/Dashboard/Tables/PaginatedTables.vue";
 // import MarcacaoTables from "@/pages/Dashboard/Tables/MarcacaoTables.vue";
 
@@ -131,7 +131,7 @@ let tablesMenu = {
     {
       path: "extended",
       name: "Extended Tables",
-      components: { default: ExtendedTables }
+      components: { default: TableMarcacao }
     },
     {
       path: "paginated",
@@ -275,9 +275,9 @@ const routes = [
         components: { default: PaginatedTables }
       },
       {
-        path: "ExtendedTables",
-        name: "ExtendedTables",
-        components: { default: ExtendedTables }
+        path: "TableMarcacao",
+        name: "TableMarcacao",
+        components: { default: TableMarcacao }
       }
     ]
   }

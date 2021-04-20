@@ -26,7 +26,7 @@
           :link="{ name: 'Alunos', icon: 'people', path: '/PaginatedTables' }"
         ></sidebar-item>
         <sidebar-item v-show="restrictTo(0, 1, 2)"
-          :link="{ name: 'Marcações', icon: 'date_range', path: '/ExtendedTables' }"
+          :link="{ name: 'Marcações', icon: 'date_range', path: '/TableMarcacao' }"
         ></sidebar-item>
       </template>
     </side-bar>
