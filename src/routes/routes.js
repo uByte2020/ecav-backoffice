@@ -30,8 +30,9 @@ import Wizard from "@/pages/Dashboard/Forms/Wizard.vue";
 
 // TableList pages
 import RegularTables from "@/pages/Dashboard/Tables/RegularTables.vue";
-import ExtendedTables from "@/pages/Dashboard/Tables/ExtendedTables.vue";
+import TableMarcacao from "@/pages/Dashboard/Tables/TableMarcacao.vue";
 import PaginatedTables from "@/pages/Dashboard/Tables/PaginatedTables.vue";
+// import MarcacaoTables from "@/pages/Dashboard/Tables/MarcacaoTables.vue";
 
 // Maps pages
 import GoogleMaps from "@/pages/Dashboard/Maps/GoogleMaps.vue";
@@ -130,13 +131,13 @@ let tablesMenu = {
     {
       path: "extended",
       name: "Extended Tables",
-      components: { default: ExtendedTables }
+      components: { default: TableMarcacao }
     },
     {
       path: "paginated",
       name: "Pagianted Tables",
       components: { default: PaginatedTables }
-    }
+    },
   ]
 };
 
@@ -260,15 +261,23 @@ const routes = [
         name: "Widgets",
         components: { default: Widgets }
       },
+      // {
+      //   path: "marcacao",
+      //   name: "Marcações",
+      //   components: { default: MarcacaoTables },
+      //   path: "PaginatedTables",
+      //   name: "PaginatedTables",
+      //   components: { default: PaginatedTables }
+      // },
       {
         path: "PaginatedTables",
         name: "PaginatedTables",
         components: { default: PaginatedTables }
       },
       {
-        path: "ExtendedTables",
-        name: "ExtendedTables",
-        components: { default: ExtendedTables }
+        path: "TableMarcacao",
+        name: "TableMarcacao",
+        components: { default: TableMarcacao }
       }
     ]
   }
