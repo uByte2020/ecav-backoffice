@@ -199,9 +199,6 @@ export default {
     showModal() {
       this.isModalVisible = true;
     },
-    closeModal() {
-      this.isModalVisible = false;
-    },
     setIsModalVisible(option){
       this.isModalVisible = option;
     },
