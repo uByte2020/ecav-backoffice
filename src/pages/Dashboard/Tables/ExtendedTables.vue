@@ -41,7 +41,10 @@
                   v-model="searchQuery"
                 >
                 </md-input> -->
-                <button class="btn" @click="showModal">Criar Marcação</button>
+                <button class="btn"
+                 @click="showModal"
+                 v-show="restrictTo(2)"
+                 >Criar Marcação</button>
               </md-field>
             </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
