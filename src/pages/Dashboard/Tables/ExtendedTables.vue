@@ -121,7 +121,7 @@
 <script>
 import { Pagination } from "@/components";
 import marcacao from "./marcacao";
-import marcacaoUser from "./marcacaoUser";
+import marcacaoUser from "./marcacaoformador";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
 import Modal from '../Components/Modal'
