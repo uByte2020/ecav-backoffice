@@ -36,7 +36,7 @@
               </md-field>
             </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell md-label="Formador" md-sort-by="name">
+              <md-table-cell :md-label="identity" md-sort-by="name">
                 {{item.name}}</md-table-cell>
               <md-table-cell md-label="Formação" md-sort-by="aula">
                 {{item.formacao}}</md-table-cell>
@@ -67,7 +67,7 @@
             </md-table-row>
           </md-table>
           <div class="footer-table md-table">
-            <table>
+            <!-- <table>
               <tfoot>
                 <tr>
                   <th
@@ -82,8 +82,8 @@
                     </div>
                   </th>
                 </tr>
-              </tfoot>
-            </table>
+              </tfoot> -->
+            <!-- </table> -->
           </div>
         </md-card-content>
         <md-card-actions md-alignment="space-between">
@@ -128,6 +128,12 @@ export default {
     ...mapGetters({restricao: 'restrictTo'}),
     restrictTo(){
       return this.restricao;
+    },
+    identity(){
+      if(this.restrictTo(0,1))
+        return "Aluno"
+      else
+        return "Formador"
     },
     /***
      * Returns a page from the searched data or the whole data. Search is performed in the watch section below

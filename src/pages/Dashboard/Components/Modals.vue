@@ -82,9 +82,7 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from "vuex";
 import marcacaoformador from "../Tables/marcacaoformador";
-const { mapGetters } = createNamespacedHelpers("clienteModule");
 export default {
   name: "Modals",
   props: {
@@ -128,12 +126,6 @@ export default {
     },
   },
   computed: {
-    getClient() {
-      return this.cliente;
-    },
-    ...mapGetters({
-      clienteStore: "getCliente",
-    }),
   },
   watch: {
     showDialogProp(value) {
@@ -144,7 +136,6 @@ export default {
     },
   },
   mounted() {
-    this.setClientData(this.clienteStore);
   },
 };
 </script>
