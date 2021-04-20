@@ -18,21 +18,7 @@
           >
             <md-table-toolbar>
               <md-field>
-                <label for="pages">Per page</label>
-                <md-select v-model="pagination.perPage" name="pages">
-                  <md-option
-                    v-for="item in pagination.perPageOptions"
-                    :key="item"
-                    :label="item"
-                    :value="item"
-                  >
-                    {{ item }}
-                  </md-option>
-                </md-select>
-              </md-field>
-
-              <md-field>
-                <!-- <md-input
+                <md-input
                   type="search"
                   class="mb-3"
                   clearable
@@ -40,11 +26,13 @@
                   placeholder="Search records"
                   v-model="searchQuery"
                 >
-                </md-input> -->
-                <button class="btn"
+                </md-input>
+              </md-field>
+              <md-field>
+                <md-button class="md-success"
                  @click="showModal"
                  v-show="restrictTo(2)"
-                 >Criar Marcação</button>
+                 >Criar Marcação</md-button>
               </md-field>
             </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
@@ -114,8 +102,8 @@
         </md-card-actions>
       </md-card>
         <Modal
-          v-show="isModalVisible==true"
-          @close="closeModal"
+          :showDialogProp="isModalVisible"
+          @hide-dialog="setIsModalVisible"
         />
     </div>
   </div>
@@ -127,7 +115,7 @@ import marcacao from "./marcacao";
 import marcacaoUser from "./marcacaoformador";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
-import Modal from '../Components/Modal'
+import Modal from '../Components/Modals'
 import { createNamespacedHelpers } from "vuex";
 const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
 
@@ -186,7 +174,7 @@ export default {
       currentSort: "name",
       currentSortOrder: "asc",
       pagination: {
-        perPage: 5,
+        perPage: 25,
         currentPage: 1,
         perPageOptions: [5, 10, 25, 50],
         total: 0
@@ -198,7 +186,7 @@ export default {
       searchedData: [],
       tabeleFormador:marcacaoUser,
       fuseSearch: null,
-      isModalVisible: false,
+      isModalVisible: true,
     };
   },
   methods: { 
@@ -207,6 +195,9 @@ export default {
     },
     closeModal() {
       this.isModalVisible = false;
+    },
+    setIsModalVisible(option){
+      this.isModalVisible = option;
     },
     customSort(value) {
       return value.sort((a, b) => {
