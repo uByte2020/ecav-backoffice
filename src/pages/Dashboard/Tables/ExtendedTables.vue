@@ -110,21 +110,21 @@
           </pagination>
         </md-card-actions>
       </md-card>
+        <Modal
+          v-show="isModalVisible==true"
+          @close="closeModal"
+        />
     </div>
-    <template>
-          <Modal
-            v-show="isModalVisible"
-            @close="closeModal"
-          /></template>
   </div>
 </template>
 
 <script>
-import { Pagination, Modal } from "@/components";
+import { Pagination } from "@/components";
 import marcacao from "./marcacao";
 import marcacaoUser from "./marcacaoUser";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
+import Modal from '../Components/Modal'
 import { createNamespacedHelpers } from "vuex";
 const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
 
@@ -296,6 +296,8 @@ export default {
   border: none;
   border-radius: 10px;
   height: 30px;
+  color: #fff;
+  cursor: pointer;
 }
 .btn:hover{
   background-color: #307539;

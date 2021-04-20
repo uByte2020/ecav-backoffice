@@ -1,286 +1,141 @@
-<template>
-  <div>
-    <md-dialog :md-active.sync="showDialog">
-      <md-dialog-title>Detalhes do Cliente</md-dialog-title>
-      <md-dialog-content>
-        <form>
-          <md-card>
-            <md-card-content>
-              <div class="md-layout">
-                <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-field>
-                    <label>Nome</label>
-                    <md-input
-                      v-model="clienteData.cliente.nome"
-                      type="text"
-                      disabled
-                    ></md-input>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-field>
-                    <label>Nacionalidade</label>
-                    <md-input
-                      v-model="clienteData.cliente.nacionalidade"
-                      type="email"
-                      disabled
-                    ></md-input>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-field>
-                    <label>Naturalidade</label>
-                    <md-input
-                      v-model="clienteData.cliente.naturalidade"
-                      type="text"
-                      disabled
-                    ></md-input>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-field>
-                    <label>Género</label>
-                    <md-input
-                      v-model="clienteData.cliente.genero"
-                      type="text"
-                      disabled
-                    ></md-input>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-field>
-                    <label>Data de Nascimento</label>
-                    <md-input
-                      v-model="clienteData.cliente.dataNascimento"
-                      type="text"
-                      disabled
-                    ></md-input>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-field>
-                    <label>Tipo de Cliente</label>
-                    <md-input
-                      v-model="clienteData.cliente.tipoCliente"
-                      type="text"
-                      disabled
-                    ></md-input>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-field>
-                    <label>Tipo de Empresa</label>
-                    <md-input
-                      v-model="clienteData.cliente.tipoEmpresa"
-                      type="text"
-                      disabled
-                    ></md-input>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-25">
-                  <md-field>
-                    <label>Residente Cambial</label>
-                    <md-input
-                      :value="
-                        clienteData.cliente.residenteCambial ? 'Sim' : 'Não'
-                      "
-                      type="text"
-                      disabled
-                    ></md-input>
-                  </md-field>
-                </div>
-
-                <div
-                  v-show="
-                    clienteData.listaEmails &&
-                      Array.isArray(clienteData.listaEmails)
-                  "
-                  v-for="(email, index) in clienteData.listaEmails"
-                  :key="'email-' + index"
-                  class="md-layout-item md-small-size-100 md-size-33"
-                >
-                  <md-field>
-                    <label>Email</label>
-                    <md-input
-                      v-model="email.email"
-                      type="text"
-                      disabled
-                    ></md-input>
-                  </md-field>
-                </div>
-
-                <div
-                  v-show="
-                    clienteData.listaTelefones &&
-                      Array.isArray(clienteData.listaTelefones)
-                  "
-                  v-for="(telefone, index) in clienteData.listaTelefones"
-                  :key="'telefone-' + index"
-                  class="md-layout-item md-small-size-100 md-size-25"
-                >
-                  <md-field>
-                    <label>Telefone</label>
-                    <md-input
-                      v-model="telefone.telefone"
-                      type="text"
-                      disabled
-                    ></md-input>
-                  </md-field>
-                </div>
-
-                <div
-                  v-show="
-                    clienteData.listaIdentificacoes &&
-                      Array.isArray(clienteData.listaIdentificacoes)
-                  "
-                  v-for="(doc, index) in clienteData.listaIdentificacoes"
-                  :key="'ident-' + index"
-                  class="md-layout-item md-small-size-100 md-size-50"
-                >
-                  <div class="md-layout">
-                    <div class="md-layout-item md-size-50">
-                      <md-field>
-                        <label>Tipo de Documento</label>
-                        <md-input
-                          v-model="doc.tipoDocumento"
-                          type="text"
-                          disabled
-                        ></md-input>
-                      </md-field>
-                    </div>
-                    <div class="md-layout-item md-size-50">
-                      <md-field>
-                        <label>Numero de Documento</label>
-                        <md-input
-                          v-model="doc.numeroDocumento"
-                          type="text"
-                          disabled
-                        ></md-input>
-                      </md-field>
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  v-show="
-                    clienteData.listaEnderecos &&
-                      Array.isArray(clienteData.listaEnderecos)
-                  "
-                  v-for="(divgeo, index) in clienteData.listaEnderecos"
-                  :key="'endereco-' + index"
-                  class="md-layout-item md-small-size-100 md-size-50"
-                >
-                  <div class="md-layout">
-                    <div class="md-layout-item md-size-50">
-                      <md-field>
-                        <label>Codigo Divisão Geografica</label>
-                        <md-input
-                          v-model="divgeo.codigoDivisaoGeografica"
-                          type="text"
-                          disabled
-                        ></md-input>
-                      </md-field>
-                    </div>
-                    <div class="md-layout-item md-size-50">
-                      <md-field>
-                        <label>Endereço</label>
-                        <md-input
-                          v-model="divgeo.endereco"
-                          type="text"
-                          disabled
-                        ></md-input>
-                      </md-field>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </md-card-content>
-          </md-card>
-        </form>
-      </md-dialog-content>
-      <md-dialog-actions>
-        <md-button class="md-primary" @click="$emit('hide-dialog', false)"
-          >Close</md-button
-        >
-      </md-dialog-actions>
-    </md-dialog>
-  </div>
-</template>
-
 <script>
-import { createNamespacedHelpers } from "vuex";
-const { mapGetters } = createNamespacedHelpers("clienteModule");
-export default {
-  name: "Modal",
-  props: {
-    showDialogProp: {
-      type: Boolean,
-      default: true,
-    },
-    headerColor: {
-      type: String,
-      default: "",
-    },
-  },
-  data() {
-    return {
-      showDialog: this.showDialogProp,
-      clienteData: {
-        cliente: {
-          naturalidade: null,
-          tipoCliente: null,
-          tipoEmpresa: null,
-          genero: null,
-          profissao: null,
-          numeroCliente: null,
-          nome: null,
-          nacionalidade: null,
-          dataNascimento: null,
-          residenteCambial: null,
-        },
-        listaTelefones: [],
-        listaEmails: [],
-        listaEnderecos: [],
-        listaIdentificacoes: [],
+  export default {
+    name: 'Modal',
+    methods: {
+      close() {
+        this.$emit('close');
       },
-    };
-  },
-  methods: {
-    getClass: function(headerColor) {
-      return "md-card-header-" + headerColor + "";
     },
-    setClientData(clienteData) {
-      Object.keys(clienteData).forEach((key) => {
-        if (key in clienteData) {
-          this.clienteData[key] = clienteData[key];
-        }
-      });
-    },
-  },
-  computed: {
-    getClient() {
-      return this.cliente;
-    },
-    ...mapGetters({
-      clienteStore: "getCliente",
-    }),
-  },
-  watch: {
-    showDialogProp(value) {
-      this.showDialog = value;
-    },
-    clienteStore(value) {
-      this.setClientData(value);
-    },
-  },
-  mounted() {
-    this.setClientData(this.clienteStore);
-  },
-};
+  };
 </script>
 
-<style lang="scss" scoped>
-.md-dialog .md-dialog-container {
-  max-width: 768px;
-}
+<template>
+  <transition name="modal-fade">
+    <div class="modal-backdrop">
+      <div class="modal"
+        role="dialog"
+        aria-labelledby="modalTitle"
+        aria-describedby="modalDescription"
+      >
+        <header
+          class="modal-header"
+          id="modalTitle"
+        >
+          <slot name="header">
+            This is the default tile!
+          </slot>
+          <button
+            type="button"
+            class="btn-close"
+            @click="close"
+            aria-label="Close modal"
+          >
+            x
+          </button>
+        </header>
+
+        <section
+          class="modal-body"
+          id="modalDescription"
+        >
+          <slot name="body">
+            This is the default body!
+          </slot>
+        </section>
+
+        <footer class="modal-footer">
+          <slot name="footer">
+            This is the default footer!
+          </slot>
+          <button
+            type="button"
+            class="btn-green"
+            @click="close"
+            aria-label="Close modal"
+          >
+            Close me!
+          </button>
+        </footer>
+      </div>
+    </div>
+  </transition>
+</template>
+
+<style>
+  .modal-backdrop {
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1 !important;
+  }
+
+  .modal {
+    background: #FFFFFF;
+    box-shadow: 2px 2px 20px 1px;
+    display: flex;
+    position: absolute;
+    z-index: 1;
+    flex-direction: column;
+    width: 700px;
+  }
+
+  .modal-header,
+  .modal-footer {
+    padding: 15px;
+  }
+
+  .modal-header {
+    position: relative;
+    border-bottom: 1px solid #eeeeee;
+    color: #4AAE9B;
+    justify-content: space-between;
+  }
+
+  .modal-footer {
+    border-top: 1px solid #eeeeee;
+    flex-direction: column;
+  }
+
+  .modal-body {
+    position: relative;
+    padding: 20px 10px;
+  }
+
+  .btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    font-size: 20px;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #4AAE9B;
+    background: transparent;
+  }
+
+  .btn-green {
+    width: 100%;
+    color: white;
+    background: #1266F1;
+    border: 1px solid #1266F1;
+    border-radius: 2px;
+    height: 30px;
+  }
+
+  .modal-fade-enter,
+  .modal-fade-leave-to {
+    opacity: 0;
+  }
+
+  .modal-fade-enter-active,
+  .modal-fade-leave-active {
+    transition: opacity .5s ease;
+  }
 </style>
