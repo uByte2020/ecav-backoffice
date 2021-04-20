@@ -44,16 +44,17 @@
         </section>
 
         <footer class="modal-footer">
-          <slot name="footer">
-            This is the default footer!
-          </slot>
+          <button
+            class="btn-left">
+            Criar Marcação
+          </button>
           <button
             type="button"
-            class="btn-green"
+            class="btn-right"
             @click="close"
             aria-label="Close modal"
           >
-            Close me!
+            Cancelar
           </button>
         </footer>
       </div>
@@ -99,7 +100,8 @@
 
   .modal-footer {
     border-top: 1px solid #eeeeee;
-    flex-direction: column;
+    flex-direction: row;
+    display: flex !important;
   }
 
   .modal-body {
@@ -112,21 +114,33 @@
     top: 0;
     right: 0;
     border: none;
-    font-size: 20px;
+    font-size: 28px;
     padding: 10px;
     cursor: pointer;
-    font-weight: bold;
-    color: #4AAE9B;
+    color: #000;
     background: transparent;
   }
 
-  .btn-green {
-    width: 100%;
+  .btn-left {
+    width: 50%;
     color: white;
     background: #1266F1;
     border: 1px solid #1266F1;
     border-radius: 2px;
     height: 30px;
+    margin-right: 1%;
+    float: left !important;
+    cursor: pointer;
+  }
+  .btn-right {
+    width: 50%;
+    color: white;
+    background: #1266F1;
+    border: 1px solid #1266F1;
+    border-radius: 2px;
+    height: 30px;
+    float: right !important;
+    cursor: pointer;
   }
 
   .modal-fade-enter,
