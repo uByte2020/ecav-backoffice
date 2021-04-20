@@ -71,7 +71,7 @@ export default {
   },
   data() {
     return {
-      user: new User('Daniel Osvaldo', 'danieosvaldoal@outlook.com', 'jja'),
+      user: new User('', '', ''),
       submitted: false,
       successful: false,
       message: '',
