@@ -29,15 +29,18 @@
         >
           <form action="">
             <div class="form-group">
-              <input type="text" 
+              <input v-model="formador.name"
+              type="text" 
                 name="Formador" 
                 id="Formador" 
                 placeholder="Formador" 
                 onfocus="this.placeholder = ''" 
-                onblur="this.placeholder = 'Formador'" class="form-controll">
+                onblur="this.placeholder = 'Formador'" 
+                class="form-controll">
             </div>
             <div class="form-group">
-              <input type="text" 
+              <input v-model="formador.formacao"
+                type="text" 
                 name="Formação" 
                 id="Formação" 
                 placeholder="Formação" 
@@ -45,25 +48,27 @@
                 onblur="this.placeholder = 'Formação'" class="form-controll">
             </div>
             <div class="form-group">
-              <input type="text" placeholder="Categoria" 
+              <input v-model="formador.categoria"
+              type="text" placeholder="Categoria" 
                 onfocus="this.placeholder = ''" 
                 onblur="this.placeholder = 'Categoria'" class="form-controll">
             </div>
             <div class="form-group">
-              <input type="text" placeholder="Lição" 
+              <input v-model="formador.aula"
+                type="text" placeholder="Lição" 
                 onfocus="this.placeholder = ''" 
                 onblur="this.placeholder = 'Lição'" class="form-controll">
             </div>
             <div class="form-time">
-              <input type="date" class="data">
-              <input type="time">
+              <input v-model="formador.data" type="date" class="data">
+              <input v-model="formador.hora" type="time">
             </div>
           </form>
         </section>
 
         <footer class="modal-footer">
           <button
-            class="btn-left">
+            class="btn-left" @click="getMarcar">
             Criar Marcação
           </button>
           <button
@@ -92,6 +97,19 @@ import marcacaoformador from "../Tables/marcacaoformador";
       close() {
         this.$emit('close');
       },
+      getMarcar(){
+        this.formador.push({name:this.formador.name, 
+                            formacao: this.formador.formacao,
+                            aula: this.formador.aula,
+                            data: this.formador.data,
+                            hora:this.formador.hora,
+                            icon1: "person",
+                            icon2: "edit",
+                            icon3: "close",
+                            categoria:this.formador.categoria,
+                            })
+        console.log(this.formador)
+      }
     },
   };
 </script>

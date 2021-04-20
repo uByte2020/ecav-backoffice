@@ -292,18 +292,19 @@ export default {
   margin-right: 20px;
 }
 .btn{
-  background-color: #4FA953;
-  border: none;
-  border-radius: 10px;
-  height: 30px;
-  color: #fff;
-  cursor: pointer;
+    width: 100%;
+    color: white;
+    background: green;
+    border: 1px solid green;
+    border-radius: 2px;
+    cursor: pointer;
+    height: 30px;
 }
 .btn:hover{
   background-color: #307539;
   color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: 2px;
   height: 30px;
 }
 </style>
