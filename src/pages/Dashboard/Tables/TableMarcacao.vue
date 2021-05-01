@@ -101,7 +101,7 @@
           </pagination>
         </md-card-actions>
       </md-card>
-        <Modal
+        <marcacao-model
           :showDialogProp="isModalVisible"
           @hide-dialog="setIsModalVisible"
         />
@@ -115,17 +115,19 @@ import marcacao from "./marcacao";
 import marcacaoUser from "./marcacaoformador";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
-import Modal from '../Components/Modals'
-import { createNamespacedHelpers } from "vuex";
-const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
+import MarcacaoModel from '../Components/MarcacaoModel'
+// import { createNamespacedHelpers } from "vuex";
+// const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
+
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
     Pagination,
-    Modal
+    MarcacaoModel
   },
   computed: {
-    ...mapGetters({restricao: 'restrictTo'}),
+    ...mapGetters({restricao: "userModule/restrictTo",}),
     restrictTo(){
       return this.restricao;
     },
@@ -192,7 +194,7 @@ export default {
       searchedData: [],
       tabeleFormador:marcacaoUser,
       fuseSearch: null,
-      isModalVisible: true,
+      isModalVisible: false,
     };
   },
   methods: { 

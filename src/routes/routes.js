@@ -229,7 +229,7 @@ const routes = [
   {
     path: "/",
     redirect: "/dashboard",
-    name: "Home"
+    name: "Home",
   },
   componentsMenu,
   formsMenu,
@@ -244,22 +244,22 @@ const routes = [
       {
         path: "dashboard",
         name: "Dashboard",
-        components: { default: Dashboard }
+        components: { default: Dashboard },
       },
       {
         path: "calendar",
         name: "Calendar",
-        components: { default: Calendar }
+        components: { default: Calendar },
       },
       {
         path: "charts",
         name: "Charts",
-        components: { default: Charts }
+        components: { default: Charts },
       },
       {
         path: "widgets",
         name: "Widgets",
-        components: { default: Widgets }
+        components: { default: Widgets },
       },
       // {
       //   path: "marcacao",
@@ -272,15 +272,15 @@ const routes = [
       {
         path: "PaginatedTables",
         name: "PaginatedTables",
-        components: { default: PaginatedTables }
+        components: { default: PaginatedTables },
       },
       {
-        path: "TableMarcacao",
-        name: "TableMarcacao",
-        components: { default: TableMarcacao }
-      }
-    ]
-  }
+        path: "marcacoes",
+        name: "Marcações",
+        components: { default: TableMarcacao },
+      },
+    ],
+  },
 ];
 
 export default routes;

@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="wrapper"
-    :class="[
-      { 'nav-open': $sidebar.showSidebar }
-    ]"
-  >
+  <div class="wrapper" :class="[{ 'nav-open': $sidebar.showSidebar }]">
     <notifications></notifications>
     <side-bar
       :active-color="sidebarBackground"
@@ -14,19 +9,25 @@
       <user-menu></user-menu>
       <mobile-menu></mobile-menu>
       <template slot="links">
-        
         <sidebar-item
           :link="{ name: 'Dashboard', icon: 'dashboard', path: '/dashboard' }"
         >
         </sidebar-item>
-        <sidebar-item v-show="restrictTo(0)"
+        <sidebar-item
+          v-show="restrictTo(0)"
           :link="{ name: 'Utilizadores', icon: 'people', path: '/calendar' }"
         ></sidebar-item>
-        <sidebar-item v-show="restrictTo(0,1)"
+        <sidebar-item
+          v-show="restrictTo(0, 1)"
           :link="{ name: 'Alunos', icon: 'people', path: '/PaginatedTables' }"
         ></sidebar-item>
-        <sidebar-item v-show="restrictTo(0, 1, 2)"
-          :link="{ name: 'Marcações', icon: 'date_range', path: '/TableMarcacao' }"
+        <sidebar-item
+          v-show="restrictTo(0, 1, 2)"
+          :link="{
+            name: 'Marcações',
+            icon: 'date_range',
+            path: '/marcacoes',
+          }"
         ></sidebar-item>
       </template>
     </side-bar>
@@ -87,8 +88,10 @@ import MobileMenu from "./Extra/MobileMenu.vue";
 import FixedPlugin from "../../FixedPlugin.vue";
 import UserMenu from "./Extra/UserMenu.vue";
 import { ZoomCenterTransition } from "vue2-transitions";
-import { createNamespacedHelpers } from "vuex";
-const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
+// import { createNamespacedHelpers } from "vuex";
+// const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
+
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
@@ -96,7 +99,7 @@ export default {
     ContentFooter,
     MobileMenu,
     UserMenu,
-    ZoomCenterTransition
+    ZoomCenterTransition,
   },
   data() {
     return {
@@ -104,7 +107,7 @@ export default {
       sidebarBackground: "green",
       sidebarBackgroundImage: "./img/sidebar-2.jpg",
       sidebarMini: true,
-      sidebarImg: true
+      sidebarImg: true,
     };
   },
   methods: {
@@ -117,25 +120,33 @@ export default {
       if (this.$sidebar) {
         this.$sidebar.toggleMinimize();
       }
-    }
+    },
+    ...mapActions({
+      getAllFormacoes: "formacaoModule/getAll",
+      getAllLicoes: "licaoModule/getAll"
+    })
   },
   updated() {
     reinitScrollbar();
   },
   mounted() {
     reinitScrollbar();
+    this.getAllFormacoes();
+    this.getAllLicoes();
   },
-  computed:{
-    ...mapGetters({restricao: 'restrictTo'}),
-    restrictTo(){
+  computed: {
+    ...mapGetters({
+      restricao: "userModule/restrictTo",
+    }),
+    restrictTo() {
       return this.restricao;
-    }
+    },
   },
   watch: {
     sidebarMini() {
       this.minimizeSidebar();
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss">
