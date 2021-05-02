@@ -4,10 +4,14 @@ const marcacaoModule = {
   namespaced: true,
   state: {
     marcacoes: [],
+    alunos: [],
   },
   mutations: {
     setMarcacoes(state, marcacoes) {
       state.marcacoes = marcacoes;
+    },
+    setAlunos(state, alunos) {
+      state.alunos = alunos;
     },
   },
   actions: {
@@ -67,11 +71,12 @@ const marcacaoModule = {
         );
       });
     },
-    criarMarcacao({ commit, rootGetters }, marcacao) {
-      const jwt = rootGetters["userModule/getToken"];
+    getAlunoByFormador({ commit }, formadorId) {
       return new Promise((resolve, reject) => {
-        axios.post(requestURL.MARCACOES, marcacao,{headers: {"Authorization": jwt}}).then(
+        axios.get(`${requestURL.MARCACOES}/${formadorId}/alunos`).then(
           (response) => {
+            if (response.data.data)
+              commit("setAlunos", response.data.data.docs);
             resolve(response.data);
           },
           (error) => {
@@ -80,10 +85,30 @@ const marcacaoModule = {
         );
       });
     },
+    criarMarcacao({ commit, rootGetters }, marcacao) {
+      const jwt = rootGetters["userModule/getToken"];
+      return new Promise((resolve, reject) => {
+        axios
+          .post(requestURL.MARCACOES, marcacao, {
+            headers: { Authorization: jwt },
+          })
+          .then(
+            (response) => {
+              resolve(response.data);
+            },
+            (error) => {
+              reject(error);
+            }
+          );
+      });
+    },
   },
   getters: {
     getAll: (state) => {
       return state.marcacoes;
+    },
+    getAlunoByFormador: (state) => {
+      return state.alunos;
     },
   },
 };

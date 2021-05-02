@@ -19,7 +19,7 @@
         ></sidebar-item>
         <sidebar-item
           v-show="restrictTo(0, 1)"
-          :link="{ name: 'Alunos', icon: 'people', path: '/PaginatedTables' }"
+          :link="{ name: 'Alunos', icon: 'people', path: '/alunos' }"
         ></sidebar-item>
         <sidebar-item
           v-show="restrictTo(0, 1, 2)"
@@ -124,7 +124,8 @@ export default {
     ...mapActions({
       getAllFormacoes: "formacaoModule/getAll",
       getAllLicoes: "licaoModule/getAll",
-      getMyMarcacoes:"marcacaoModule/getMyMarcacoes"
+      getMyMarcacoes:"marcacaoModule/getMyMarcacoes",
+      getAlunoByFormador:"marcacaoModule/getAlunoByFormador"
     })
   },
   updated() {
@@ -135,10 +136,12 @@ export default {
     this.getAllFormacoes();
     this.getAllLicoes();
     if(this.restrictTo(1,2)) this.getMyMarcacoes();
+    if(this.restrictTo(1)) this.getAlunoByFormador(this.getUser._id);
   },
   computed: {
     ...mapGetters({
       restricao: "userModule/restrictTo",
+      getUser: "userModule/getUser",
     }),
     restrictTo() {
       return this.restricao;

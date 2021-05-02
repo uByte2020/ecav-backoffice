@@ -196,7 +196,7 @@ vue-material-dashboard-pro/
 │   │   │   │   └── UserProfile.vue
 │   │   │   ├── Tables
 │   │   │   │   ├── ExtendedTables.vue
-│   │   │   │   ├── PaginatedTables.vue
+│   │   │   │   ├── AlunosTables.vue
 │   │   │   │   ├── RegularTables.vue
 │   │   │   │   └── users.js
 │   │   │   └── Widgets.vue

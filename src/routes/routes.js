@@ -31,7 +31,7 @@ import Wizard from "@/pages/Dashboard/Forms/Wizard.vue";
 // TableList pages
 import RegularTables from "@/pages/Dashboard/Tables/RegularTables.vue";
 import TableMarcacao from "@/pages/Dashboard/Tables/TableMarcacao.vue";
-import PaginatedTables from "@/pages/Dashboard/Tables/PaginatedTables.vue";
+import AlunosTables from "@/pages/Dashboard/Tables/AlunosTables.vue";
 // import MarcacaoTables from "@/pages/Dashboard/Tables/MarcacaoTables.vue";
 
 // Maps pages
@@ -126,19 +126,19 @@ let tablesMenu = {
     {
       path: "regular",
       name: "Regular Tables",
-      components: { default: RegularTables }
+      components: { default: RegularTables },
     },
     {
       path: "extended",
       name: "Extended Tables",
-      components: { default: TableMarcacao }
+      components: { default: TableMarcacao },
     },
     {
       path: "paginated",
       name: "Pagianted Tables",
-      components: { default: PaginatedTables }
+      components: { default: AlunosTables },
     },
-  ]
+  ],
 };
 
 let mapsMenu = {
@@ -265,14 +265,14 @@ const routes = [
       //   path: "marcacao",
       //   name: "Marcações",
       //   components: { default: MarcacaoTables },
-      //   path: "PaginatedTables",
-      //   name: "PaginatedTables",
-      //   components: { default: PaginatedTables }
+      //   path: "AlunosTables",
+      //   name: "AlunosTables",
+      //   components: { default: AlunosTables }
       // },
       {
-        path: "PaginatedTables",
-        name: "PaginatedTables",
-        components: { default: PaginatedTables },
+        path: "alunos",
+        name: "Alunos",
+        components: { default: AlunosTables },
       },
       {
         path: "marcacoes",

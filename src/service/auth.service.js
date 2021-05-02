@@ -16,14 +16,15 @@ class AuthService {
       .then((response) => {
         if (response.data && response.data.data.user) {
           const filtedUser = filterObj(
-              response.data.data.user,
-              'name',
-              'email',
-              'role',
-              'telemovel',
-              'endereco',
-              'photo'
-            );
+            response.data.data.user,
+            "_id",
+            "name",
+            "email",
+            "role",
+            "telemovel",
+            "endereco",
+            "photo"
+          );
             localStorage.setItem("user", JSON.stringify(filtedUser));
             localStorage.setItem("token", JSON.stringify(response.data.token));
             axios.defaults.headers.common['Authorization'] = response.data.token;

@@ -50,21 +50,9 @@
               <md-table-cell md-label="Email" md-sort-by="email">{{
                 item.email
               }}</md-table-cell>
-              <md-table-cell md-label="Idade"> {{ item.age }}</md-table-cell>
-              <!-- <md-table-cell md-label="Salary">{{ item.salary }}</md-table-cell> -->
+              <md-table-cell md-label="Telemovel"> {{ item.telemovel }}</md-table-cell>
+              <md-table-cell md-label="Endereço">{{ item.endereco[0] }}</md-table-cell> 
               <md-table-cell md-label="Actions">
-                <md-button
-                  class="md-just-icon md-info md-simple"
-                  @click.native="handleLike(item)"
-                >
-                  <md-icon>favorite</md-icon>
-                </md-button>
-                <md-button
-                  class="md-just-icon md-warning md-simple"
-                  @click.native="handleEdit(item)"
-                >
-                  <md-icon>dvr</md-icon>
-                </md-button>
                 <md-button
                   class="md-just-icon md-danger md-simple"
                   @click.native="handleDelete(item)"
@@ -115,39 +103,34 @@
 
 <script>
 import { Pagination } from "@/components";
-import users from "./users";
-import formador from "./formador";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
-import { createNamespacedHelpers } from "vuex";
-const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
+// import { createNamespacedHelpers } from "vuex";
+// const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
+
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
-    Pagination
+    Pagination,
   },
   computed: {
-    ...mapGetters({restricao: 'restrictTo'}),
-    restrictTo(){
+    ...mapGetters({
+      restricao: "userModule/restrictTo",
+      getAlunoByFormador: "marcacaoModule/getAlunoByFormador",
+    }),
+    restrictTo() {
       return this.restricao;
     },
     /***
      * Returns a page from the searched data or the whole data. Search is performed in the watch section below
      */
     queriedData() {
-      if(this.restrictTo(0,1)){
-        let result = this.tableData;
-        if (this.searchedData.length > 0) {
-          result = this.searchedData;
-        }
-        return result.slice(this.from, this.to);
-      }else{
-        let result = this.tabeleFormador;
-        if (this.searchedData.length > 0) {
-          result = this.searchedData;
-        }
-        return result.slice(this.from, this.to);
+      let result = this.tableData;
+      if (this.searchedData.length > 0) {
+        result = this.searchedData;
       }
+      return result.slice(this.from, this.to);
     },
     to() {
       let highBound = this.from + this.pagination.perPage;
@@ -160,15 +143,10 @@ export default {
       return this.pagination.perPage * (this.pagination.currentPage - 1);
     },
     total() {
-      if(this.restrictTo(0,1))
-        return this.searchedData.length > 0
-          ? this.searchedData.length
-          : this.tableData.length;
-      else
-        return this.searchedData.length > 0
-          ? this.searchedData.length
-          : this.tabeleFormador.length;
-    }
+      return this.searchedData.length > 0
+        ? this.searchedData.length
+        : this.tableData.length;
+    },
   },
   data() {
     return {
@@ -178,15 +156,14 @@ export default {
         perPage: 5,
         currentPage: 1,
         perPageOptions: [5, 10, 25, 50],
-        total: 0
+        total: 0,
       },
-      footerTable: ["Name", "Email", "Idade",  "Actions"],
+      footerTable: ["Name", "Email", "Idade", "Actions"],
       searchQuery: "",
       propsToSearch: ["name", "email", "age"],
-      tableData: users,
-      tabeleFormador: formador,
+      tableData: [],
       searchedData: [],
-      fuseSearch: null
+      fuseSearch: null,
     };
   },
   methods: {
@@ -204,14 +181,14 @@ export default {
         title: `You liked ${item.name}`,
         buttonsStyling: false,
         type: "success",
-        confirmButtonClass: "md-button md-success"
+        confirmButtonClass: "md-button md-success",
       });
     },
     handleEdit(item) {
       Swal.fire({
         title: `You want to edit ${item.name}`,
         buttonsStyling: false,
-        confirmButtonClass: "md-button md-info"
+        confirmButtonClass: "md-button md-info",
       });
     },
     handleDelete(item) {
@@ -223,8 +200,8 @@ export default {
         confirmButtonClass: "md-button md-success btn-fill",
         cancelButtonClass: "md-button md-danger btn-fill",
         confirmButtonText: "Yes, delete it!",
-        buttonsStyling: false
-      }).then(result => {
+        buttonsStyling: false,
+      }).then((result) => {
         if (result.value) {
           this.deleteRow(item);
           Swal.fire({
@@ -232,26 +209,27 @@ export default {
             text: `You deleted ${item.name}`,
             type: "success",
             confirmButtonClass: "md-button md-success btn-fill",
-            buttonsStyling: false
+            buttonsStyling: false,
           });
         }
       });
     },
     deleteRow(item) {
       let indexToDelete = this.tableData.findIndex(
-        tableRow => tableRow.id === item.id
+        (tableRow) => tableRow.id === item.id
       );
       if (indexToDelete >= 0) {
         this.tableData.splice(indexToDelete, 1);
       }
-    }
+    },
   },
   mounted() {
     // Fuse search initialization.
     this.fuseSearch = new Fuse(this.tableData, {
       keys: ["name", "email"],
-      threshold: 0.3
+      threshold: 0.3,
     });
+    this.tableData = this.getAlunoByFormador
   },
   watch: {
     /**
@@ -265,8 +243,8 @@ export default {
         result = this.fuseSearch.search(this.searchQuery);
       }
       this.searchedData = result;
-    }
-  }
+    },
+  },
 };
 </script>
 
