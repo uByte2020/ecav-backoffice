@@ -32,13 +32,12 @@ const userModule = {
   actions: {
     login({ commit }, user) {
       return AuthService.login(user).then(
-        user => {
-          console.log(user)
-          commit('loginSuccess', user);
+        (user) => {
+          commit("loginSuccess", user);
           return Promise.resolve(user);
         },
-        error => {
-          commit('loginFailure');
+        (error) => {
+          commit("loginFailure");
           return Promise.reject(error);
         }
       );
@@ -50,7 +49,15 @@ const userModule = {
     },
     logout({commit}){
       commit('logout');
-      AuthService.logout();
+      return AuthService.logout().then(
+        (response) => {
+          return Promise.resolve(response);
+        },
+        (error) => {
+          commit("loginFailure");
+          return Promise.reject(error);
+        }
+      );
     },
     register({ commit }, user) {
       return AuthService.register(user).then(
@@ -70,7 +77,7 @@ const userModule = {
       return state.status.loggedIn;
     },
     getToken: (state) => {
-      return state.user ? state.token:'';
+      return state.user ? `Bearer ${state.token}` : "";
     },
     getUser: (state) => {
       return state.user ? state.user : null;

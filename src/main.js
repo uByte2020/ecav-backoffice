@@ -9,6 +9,8 @@ import DashboardPlugin from "./material-dashboard";
 // Plugins
 import App from "./App.vue";
 import Chartist from "chartist";
+import VueLoading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 // router setup
 import routes from "./routes/routes";
@@ -16,13 +18,14 @@ import routes from "./routes/routes";
 //store setup
 import storeSetup from "./store";
 
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 
 // plugin setup
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueAxios, axios);
 Vue.use(DashboardPlugin);
+Vue.use(VueLoading);
 
 window.axios = axios;
 // configure router

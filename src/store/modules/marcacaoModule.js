@@ -1,6 +1,6 @@
 import requestURL from "./../../utils/apiRequestURL";
 
-const licaoModule = {
+const marcacaoModule = {
   namespaced: true,
   state: {
     marcacoes: [],
@@ -14,6 +14,20 @@ const licaoModule = {
     getAll({ commit }) {
       return new Promise((resolve, reject) => {
         axios.get(requestURL.MARCACOES).then(
+          (response) => {
+            if (response.data.data)
+              commit("setMarcacoes", response.data.data.docs);
+            resolve(response.data);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+      });
+    },
+    getMyMarcacoes({ commit }) {
+      return new Promise((resolve, reject) => {
+        axios.get(requestURL.MYMARCACOES).then(
           (response) => {
             if (response.data.data)
               commit("setMarcacoes", response.data.data.docs);
@@ -53,9 +67,10 @@ const licaoModule = {
         );
       });
     },
-    criarMarcacao({ commit }, marcacao) {
+    criarMarcacao({ commit, rootGetters }, marcacao) {
+      const jwt = rootGetters["userModule/getToken"];
       return new Promise((resolve, reject) => {
-        axios.post(requestURL.MARCACOES, marcacao).then(
+        axios.post(requestURL.MARCACOES, marcacao,{headers: {"Authorization": jwt}}).then(
           (response) => {
             resolve(response.data);
           },
@@ -73,4 +88,4 @@ const licaoModule = {
   },
 };
 
-export default licaoModule;
+export default marcacaoModule;

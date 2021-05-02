@@ -33,8 +33,20 @@ class AuthService {
   }
 
   logout() {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
+    return new Promise((resolve, reject) => {
+      axios
+        .get(requestURL.LOGOUT)
+        .then((response) => {
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          resolve(response);
+        })
+        .catch((error) => {
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          reject(error);
+        });
+    });
   }
 
   register(user) {

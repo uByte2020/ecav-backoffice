@@ -1,66 +1,15 @@
 <template>
   <div class="md-layout">
     <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
-      <stats-card header-color="blue">
-        <template slot="header">
-          <div class="card-icon">
-            <i class="fab fa-twitter"></i>
-          </div>
-          <p class="category">Folowers</p>
-          <h3 class="title">
-            +<animated-number :value="245"></animated-number>
-          </h3>
-        </template>
-
-        <template slot="footer">
-          <div class="stats">
-            <md-icon>update</md-icon>
-            Just Updated
-          </div>
-        </template>
-      </stats-card>
-    </div>
-    <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
-      <stats-card header-color="rose">
-        <template slot="header">
-          <div class="card-icon">
-            <md-icon>equalizer</md-icon>
-          </div>
-          <p class="category">Website Visits</p>
-          <h3 class="title">
-            <animated-number :value="75"></animated-number>.<animated-number
-              :value="521"
-            ></animated-number>
-          </h3>
-        </template>
-
-        <template slot="footer">
-          <div class="stats">
-            <md-icon>local_offer</md-icon>
-            Tracked from Google Analytics
-          </div>
-        </template>
-      </stats-card>
-    </div>
-    <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
       <stats-card header-color="green">
         <template slot="header">
           <div class="card-icon">
-            <md-icon>store</md-icon>
-          </div>
-          <p class="category">Revenue</p>
-          <h3 class="title">
-            $ <animated-number :value="34"></animated-number>,<animated-number
-              :value="245"
-            ></animated-number>
-          </h3>
-        </template>
-
-        <template slot="footer">
-          <div class="stats">
             <md-icon>date_range</md-icon>
-            Last <animated-number :value="24"></animated-number> Hours
           </div>
+          <p class="category">Marcações Confirmadas</p>
+          <h3 class="title">
+            <animated-number :value="getTotalMarcacaoesConfirmadas"></animated-number>
+          </h3>
         </template>
       </stats-card>
     </div>
@@ -68,19 +17,39 @@
       <stats-card header-color="warning">
         <template slot="header">
           <div class="card-icon">
-            <md-icon>weekend</md-icon>
+            <md-icon>date_range</md-icon>
           </div>
-          <p class="category">Bookings</p>
+          <p class="category">Marcações Pendentes</p>
           <h3 class="title">
-            <animated-number :value="184"></animated-number>
+            <animated-number :value="getTotalMarcacaoesPendentes"></animated-number>
           </h3>
         </template>
-
-        <template slot="footer">
-          <div class="stats">
-            <md-icon class="text-danger">warning</md-icon>
-            <a href="#pablo">Get More Space...</a>
+      </stats-card>
+    </div>
+    <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
+      <stats-card header-color="blue">
+        <template slot="header">
+          <div class="card-icon">
+            <md-icon>date_range</md-icon>
           </div>
+          <p class="category">Marcações Realizadas</p>
+          <h3 class="title">
+            <animated-number :value="getTotalMarcacaoesRealizadas"></animated-number>
+          </h3>
+        </template>
+      </stats-card>
+    </div>
+
+    <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
+      <stats-card header-color="rose">
+        <template slot="header">
+          <div class="card-icon">
+            <md-icon>date_range</md-icon>
+          </div>
+          <p class="category">Marcações Canceladas</p>
+          <h3 class="title">
+            <animated-number :value="getTotalMarcacaoesCanceladas"></animated-number>
+          </h3>
         </template>
       </stats-card>
     </div>
@@ -89,13 +58,14 @@
 
 <script>
 import AsyncWorldMap from "@/components/WorldMap/AsyncWorldMap.vue";
+import { mapGetters, mapActions } from "vuex";
 import {
   StatsCard,
   ChartCard,
   ProductCard,
   AnimatedNumber,
   GlobalSalesCard,
-  GlobalSalesTable
+  GlobalSalesTable,
 } from "@/components";
 
 export default {
@@ -105,6 +75,41 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    ...mapGetters({
+      marcacoes: "marcacaoModule/getAll",
+    }),
+    getTotalMarcacaoesPendentes() {
+      try {
+        return this.marcacoes.filter((el) => el.estado.estadoCode == 3).length;
+      } catch (err) {
+        return 0;
+      }
+    },
+    getTotalMarcacaoesConfirmadas() {
+      try {
+        return this.marcacoes.filter((el) => el.estado.estadoCode == 1).length;
+      } catch (err) {
+        return 0;
+      }
+    },
+    getTotalMarcacaoesRealizadas() {
+      try {
+        return this.marcacoes.filter((el) => el.estado.estadoCode == 2).length;
+      } catch (err) {
+        return 0;
+      }
+    },
+    getTotalMarcacaoesCanceladas() {
+      try {
+        return this.marcacoes.filter((el) => el.estado.estadoCode == 4).length;
+      } catch (err) {
+        return 0;
+      }
+    },
+  },
+  mounted(){
   }
 };
 </script>

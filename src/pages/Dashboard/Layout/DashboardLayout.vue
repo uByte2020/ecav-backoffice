@@ -123,7 +123,8 @@ export default {
     },
     ...mapActions({
       getAllFormacoes: "formacaoModule/getAll",
-      getAllLicoes: "licaoModule/getAll"
+      getAllLicoes: "licaoModule/getAll",
+      getMyMarcacoes:"marcacaoModule/getMyMarcacoes"
     })
   },
   updated() {
@@ -133,6 +134,7 @@ export default {
     reinitScrollbar();
     this.getAllFormacoes();
     this.getAllLicoes();
+    if(this.restrictTo(1,2)) this.getMyMarcacoes();
   },
   computed: {
     ...mapGetters({

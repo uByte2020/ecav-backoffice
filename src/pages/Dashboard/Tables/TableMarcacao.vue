@@ -1,12 +1,12 @@
 <template>
   <div class="md-layout">
-    <div class="md-layout-item" >
+    <div class="md-layout-item">
       <md-card>
         <md-card-header class="md-card-header-icon md-card-header-green">
           <div class="card-icon">
             <md-icon>assignment</md-icon>
           </div>
-          <h4 class="title">Marcação</h4>
+          <h4 class="title">Marcações</h4>
         </md-card-header>
         <md-card-content>
           <md-table
@@ -29,62 +29,54 @@
                 </md-input>
               </md-field>
               <md-field>
-                <md-button class="md-success"
-                 @click="showModal"
-                 v-show="restrictTo(2)"
-                 >Criar Marcação</md-button>
+                <md-button
+                  class="md-success"
+                  @click="showModal"
+                  v-show="restrictTo(2)"
+                  >Criar Marcação</md-button
+                >
               </md-field>
             </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell :md-label="identity" md-sort-by="name">
-                {{item.name}}</md-table-cell>
+                {{
+                  getMarcacaoUserName(
+                    restrictTo(2) ? item.formador : item.aluno
+                  )
+                }}</md-table-cell
+              >
               <md-table-cell md-label="Formação" md-sort-by="aula">
-                {{item.formacao}}</md-table-cell>
-              <md-table-cell md-label="Categoria"> {{item.categoria}}</md-table-cell>
-              <md-table-cell md-label="Lição">{{item.aula}}</md-table-cell>
-              <md-table-cell md-label="Data">{{item.data}}</md-table-cell>
-              <md-table-cell md-label="Hora">{{item.hora}}</md-table-cell>
+                {{ getFormacaoByLicao(item.licao) }}</md-table-cell
+              >
+              <md-table-cell md-label="Categoria">
+                {{ getCategoriaByLicao(item.licao) }}</md-table-cell
+              >
+              <md-table-cell md-label="Lição">{{
+                getLicaoName(item.licao)
+              }}</md-table-cell>
+              <md-table-cell md-label="Data">{{
+                getDate(item.data)
+              }}</md-table-cell>
+              <md-table-cell md-label="Hora">{{
+                getTime(item.data)
+              }}</md-table-cell>
+              <md-table-cell md-label="Estado">{{
+                item.estado.estado
+              }}</md-table-cell>
               <md-table-cell md-label="Actions">
-                <md-button
-                  class="md-just-icon md-info md-simple"
-                  @click.native="handleLike(item)"
-                >
-                  <md-icon>{{item.icon1}}</md-icon>
+                <md-button v-show="restrictTo(0,1)" class="md-just-icon md-info md-simple">
+                  <md-icon>thumb_up</md-icon>
                 </md-button>
-                <md-button
-                  class="md-just-icon md-warning md-simple"
-                  @click.native="handleEdit(item)"
-                >
-                  <md-icon>{{item.icon2}}</md-icon>
+                <md-button class="md-just-icon md-warning md-simple">
+                  <md-icon>edit</md-icon>
                 </md-button>
-                <md-button
-                  class="md-just-icon md-danger md-simple"
-                  @click.native="handleDelete(item)"
-                >
-                  <md-icon>{{item.icon3}}</md-icon>
+                <md-button class="md-just-icon md-danger md-simple">
+                  <md-icon>close</md-icon>
                 </md-button>
               </md-table-cell>
             </md-table-row>
           </md-table>
-          <div class="footer-table md-table">
-            <!-- <table>
-              <tfoot>
-                <tr>
-                  <th
-                    v-for="item in footerTable"
-                    :key="item.name"
-                    class="md-table-head"
-                  >
-                    <div class="md-table-head-container md-ripple md-disabled">
-                      <div class="md-table-head-label">
-                        {{ item }}
-                      </div>
-                    </div>
-                  </th>
-                </tr>
-              </tfoot> -->
-            <!-- </table> -->
-          </div>
+          <div class="footer-table md-table"></div>
         </md-card-content>
         <md-card-actions md-alignment="space-between">
           <div class="">
@@ -101,59 +93,45 @@
           </pagination>
         </md-card-actions>
       </md-card>
-        <marcacao-model
-          :showDialogProp="isModalVisible"
-          @hide-dialog="setIsModalVisible"
-        />
+      <marcacao-model
+        :showDialogProp="isModalVisible"
+        @hide-dialog="setIsModalVisible"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { Pagination } from "@/components";
-import marcacao from "./marcacao";
-import marcacaoUser from "./marcacaoformador";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
-import MarcacaoModel from '../Components/MarcacaoModel'
-// import { createNamespacedHelpers } from "vuex";
-// const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
+import MarcacaoModel from "../Components/MarcacaoModel";
 
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
     Pagination,
-    MarcacaoModel
+    MarcacaoModel,
   },
   computed: {
-    ...mapGetters({restricao: "userModule/restrictTo",}),
-    restrictTo(){
+    ...mapGetters({
+      restricao: "userModule/restrictTo",
+      marcacoes: "marcacaoModule/getAll",
+    }),
+    restrictTo() {
       return this.restricao;
     },
-    identity(){
-      if(this.restrictTo(0,1))
-        return "Aluno"
-      else
-        return "Formador"
+    identity() {
+      if (this.restrictTo(0, 1)) return "Aluno";
+      else return "Formador";
     },
-    /***
-     * Returns a page from the searched data or the whole data. Search is performed in the watch section below
-     */
     queriedData() {
-      if(this.restrictTo(0,1)){
-        let result = this.tableData;
-        if (this.searchedData.length > 0) {
-          result = this.searchedData;
-        }
-        return result.slice(this.from, this.to);
-      }else{
-        let result = this.tabeleFormador;
-        if (this.searchedData.length > 0) {
-          result = this.searchedData;
-        }
-        return result.slice(this.from, this.to);
+      let result = this.tableData;
+      if (this.searchedData.length > 0) {
+        result = this.searchedData;
       }
+      return result.slice(this.from, this.to);
     },
     to() {
       let highBound = this.from + this.pagination.perPage;
@@ -166,15 +144,10 @@ export default {
       return this.pagination.perPage * (this.pagination.currentPage - 1);
     },
     total() {
-      if(this.restrictTo(0,1))
-        return this.searchedData.length > 0
-          ? this.searchedData.length
-          : this.tableData.length;
-      else
-        return this.searchedData.length > 0
-          ? this.searchedData.length
-          : this.tabeleFormador.length;
-    }
+      return this.searchedData.length > 0
+        ? this.searchedData.length
+        : this.tableData.length;
+    },
   },
   data() {
     return {
@@ -185,23 +158,32 @@ export default {
         perPage: 25,
         currentPage: 1,
         perPageOptions: [5, 10, 25, 50],
-        total: 0
+        total: 0,
       },
-      footerTable: ["Aluno","Formação","Categoria","Lição", "Data","Formação","Hora","Actions"],
+      footerTable: [
+        "Aluno",
+        "Formação",
+        "Categoria",
+        "Lição",
+        "Data",
+        "Formação",
+        "Hora",
+        "Estado",
+        "Actions",
+      ],
       searchQuery: "",
       propsToSearch: ["name", "formação", "data"],
-      tableData: marcacao,
+      tableData: [],
       searchedData: [],
-      tabeleFormador:marcacaoUser,
       fuseSearch: null,
       isModalVisible: false,
     };
   },
-  methods: { 
+  methods: {
     showModal() {
       this.isModalVisible = true;
     },
-    setIsModalVisible(option){
+    setIsModalVisible(option) {
       this.isModalVisible = option;
     },
     customSort(value) {
@@ -213,74 +195,51 @@ export default {
         return b[sortBy].localeCompare(a[sortBy]);
       });
     },
-    handleLike(item) {
-      Swal.fire({
-        title: `You liked ${item.name}`,
-        buttonsStyling: false,
-        type: "success",
-        confirmButtonClass: "md-button md-success"
-      });
+    getMarcacaoUserName(user) {
+      if (user) return user.name;
+      return "";
     },
-    handleEdit(item) {
-      Swal.fire({
-        title: `You want to edit ${item.name}`,
-        buttonsStyling: false,
-        confirmButtonClass: "md-button md-info"
-      });
+    getFormacaoByLicao(licao) {
+      if (licao && licao.formacao) return licao.formacao.nome;
+      return "";
     },
-    handleDelete(item) {
-      Swal.fire({
-        title: "Are you sure?",
-        text: `You won't be able to revert this!`,
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonClass: "md-button md-success btn-fill",
-        cancelButtonClass: "md-button md-danger btn-fill",
-        confirmButtonText: "Yes, delete it!",
-        buttonsStyling: false
-      }).then(result => {
-        if (result.value) {
-          this.deleteRow(item);
-          Swal.fire({
-            title: "Deleted!",
-            text: `You deleted ${item.name}`,
-            type: "success",
-            confirmButtonClass: "md-button md-success btn-fill",
-            buttonsStyling: false
-          });
-        }
-      });
+    getCategoriaByLicao(licao) {
+      if (licao && licao.categoria) return licao.categoria.categoria;
+      return "";
     },
-    deleteRow(item) {
-      let indexToDelete = this.tableData.findIndex(
-        tableRow => tableRow.id === item.id
-      );
-      if (indexToDelete >= 0) {
-        this.tableData.splice(indexToDelete, 1);
-      }
-    }
+    getDate(date) {
+      if (!date) return "";
+      return date.split("T")[0];
+    },
+    getTime(date) {
+      if (!date) return "";
+      const time = date.split("T")[1];
+      return time.split(".")[0];
+    },
+    getLicaoName(licao) {
+      return licao ? licao.nome : "";
+    },
   },
   mounted() {
     // Fuse search initialization.
     this.fuseSearch = new Fuse(this.tableData, {
       keys: ["name", "email"],
-      threshold: 0.3
+      threshold: 0.3,
     });
+    this.tableData = this.marcacoes;
   },
   watch: {
-    /**
-     * Searches through the table data by a given query.
-     * NOTE: If you have a lot of data, it's recommended to do the search on the Server Side and only display the results here.
-     * @param value of the query
-     */
     searchQuery(value) {
       let result = this.tableData;
       if (value !== "") {
         result = this.fuseSearch.search(this.searchQuery);
       }
       this.searchedData = result;
-    }
-  }
+    },
+    marcacoes(values) {
+      this.tableData = values;
+    },
+  },
 };
 </script>
 
@@ -290,16 +249,16 @@ export default {
   margin-left: 20px;
   margin-right: 20px;
 }
-.btn{
-    width: 100%;
-    color: white;
-    background: green;
-    border: 1px solid green;
-    border-radius: 2px;
-    cursor: pointer;
-    height: 30px;
+.btn {
+  width: 100%;
+  color: white;
+  background: green;
+  border: 1px solid green;
+  border-radius: 2px;
+  cursor: pointer;
+  height: 30px;
 }
-.btn:hover{
+.btn:hover {
   background-color: #307539;
   color: #fff;
   border: none;

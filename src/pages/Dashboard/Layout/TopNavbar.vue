@@ -48,8 +48,12 @@ export default {
       logoutStore: "logout",
     }),
     logout(){
-      this.logoutStore();
-      this.$router.push('/login');
+      this.logoutStore().then(response=>{
+        this.$router.push('/login');
+      }).catch(err=>{
+        this.$router.push('/login');
+      })
+      
     },
     toggleSidebar() {
       this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
