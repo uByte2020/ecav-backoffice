@@ -55,13 +55,12 @@ export default {
             router.push('/');
           },
           error => {
-            console.log(error)
             this.loading = false;
             this.message =
               (error.response && error.response.data) ||
               error.message ||
               error.toString();
-              this.notifyVue(this.message.status===403 ? 'Credenciais Inválidas':this.message.message, 'danger');
+              this.notifyVue(this.message.status===403 ? 'Credenciais Inválidas':this.message, 'danger');
           }
         );
       }

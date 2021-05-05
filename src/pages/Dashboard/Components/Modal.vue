@@ -108,7 +108,7 @@ import marcacaoformador from "../Tables/marcacaoformador";
                             icon3: "close",
                             categoria:this.formador.categoria,
                             })
-        console.log(this.formador)
+        // console.log(this.formador)
       }
     },
   };

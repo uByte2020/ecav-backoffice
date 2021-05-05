@@ -163,10 +163,13 @@ export default {
           this.$emit("hide-dialog", false);
           this.getMyMarcacoes();
         })
-        .catch((err) => {
-          console.log(err)
+        .catch((error) => {
+          const message =
+              (error.response && error.response.data) ||
+              error.message ||
+              error.toString();
           loader.hide();
-          this.notifyVue("Erro", "warning");
+          this.notifyVue(message, "danger");
         });
     },
     getClass: function(headerColor) {

@@ -125,7 +125,7 @@ export default {
       getAllFormacoes: "formacaoModule/getAll",
       getAllLicoes: "licaoModule/getAll",
       getMyMarcacoes:"marcacaoModule/getMyMarcacoes",
-      getAlunoByFormador:"marcacaoModule/getAlunoByFormador"
+      // getAlunoByFormador:"marcacaoModule/getAlunoByFormador"
     })
   },
   updated() {
@@ -136,7 +136,7 @@ export default {
     this.getAllFormacoes();
     this.getAllLicoes();
     if(this.restrictTo(1,2)) this.getMyMarcacoes();
-    if(this.restrictTo(1)) this.getAlunoByFormador(this.getUser._id);
+    // if(this.restrictTo(1)) this.getAlunoByFormador(this.getUser._id);
   },
   computed: {
     ...mapGetters({

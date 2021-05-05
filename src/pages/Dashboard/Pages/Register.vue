@@ -86,7 +86,7 @@ export default {
       this.message = '';
       this.submitted = true;
       this.user.role = 2;
-      console.log(this.user)
+      // console.log(this.user)
       
       this.register(this.user).then(
         data => {
