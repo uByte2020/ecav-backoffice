@@ -17,10 +17,10 @@
           v-show="restrictTo(0)"
           :link="{ name: 'Utilizadores', icon: 'people', path: '/calendar' }"
         ></sidebar-item>
-        <sidebar-item
+        <!-- <sidebar-item
           v-show="restrictTo(0, 1)"
           :link="{ name: 'Alunos', icon: 'people', path: '/alunos' }"
-        ></sidebar-item>
+        ></sidebar-item> -->
         <sidebar-item
           v-show="restrictTo(0, 1, 2)"
           :link="{

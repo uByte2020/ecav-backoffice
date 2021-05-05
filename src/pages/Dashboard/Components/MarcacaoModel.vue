@@ -209,10 +209,11 @@ export default {
       return `${new Date().getFullYear()}-${month}-${day}`;
     },
     availibleTimes() {
-      if(!this.marcacao.data) return [];
-      if(!this.marcacao.formador) return [];
-      const formador = this.getFormadores.find(el=>el._id===this.marcacao.formador);
-      const unAvailibleTime = formador.indisponibilidade.find(el=>el.startsWith(this.marcacao.data));
+      // if(!this.marcacao.data) return [];
+      // if(!this.marcacao.formador) return [];
+      // const formador = this.getFormadores.find(el=>el._id===this.marcacao.formador);
+      // const unAvailibleTime = formador.indisponibilidade.find(el=>el.startsWith(this.marcacao.data));
+      
       const times = [
         "06:00",
         "06:30",
@@ -239,7 +240,7 @@ export default {
         "17:00",
         "17:30",
       ];
-      if(unAvailibleTime) return times.filter(el=>unAvailibleTime.search(el)<0)
+      // if(unAvailibleTime) return times.filter(el=>unAvailibleTime.search(el)<0)
       return times;
     },
     getCategories() {
