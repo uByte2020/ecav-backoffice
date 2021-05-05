@@ -198,7 +198,7 @@ export default {
     ...mapGetters({
       getAllFormacoes: "formacaoModule/getAll",
       getAllLicoes: "licaoModule/getAll",
-      currentUser: "userModule/getUser"
+      currentUser: "userModule/getUser",
     }),
     minDate() {
       const currentDate = new Date();
