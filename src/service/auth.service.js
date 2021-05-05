@@ -23,7 +23,8 @@ class AuthService {
             "role",
             "telemovel",
             "endereco",
-            "photo"
+            "photo",
+            "indisponibilidade"
           );
             localStorage.setItem("user", JSON.stringify(filtedUser));
             localStorage.setItem("token", JSON.stringify(response.data.token));

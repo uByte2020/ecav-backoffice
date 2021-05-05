@@ -164,6 +164,7 @@ export default {
           this.getMyMarcacoes();
         })
         .catch((err) => {
+          console.log(err)
           loader.hide();
           this.notifyVue("Erro", "warning");
         });
@@ -197,6 +198,7 @@ export default {
     ...mapGetters({
       getAllFormacoes: "formacaoModule/getAll",
       getAllLicoes: "licaoModule/getAll",
+      currentUser: "userModule/getUser"
     }),
     minDate() {
       const currentDate = new Date();
@@ -207,7 +209,11 @@ export default {
       return `${new Date().getFullYear()}-${month}-${day}`;
     },
     availibleTimes() {
-      return [
+      if(!this.marcacao.data) return [];
+      if(!this.marcacao.formador) return [];
+      const formador = this.getFormadores.find(el=>el._id===this.marcacao.formador);
+      const unAvailibleTime = formador.indisponibilidade.find(el=>el.startsWith(this.marcacao.data));
+      const times = [
         "06:00",
         "06:30",
         "07:00",
@@ -233,6 +239,8 @@ export default {
         "17:00",
         "17:30",
       ];
+      if(unAvailibleTime) return times.filter(el=>unAvailibleTime.search(el)<0)
+      return times;
     },
     getCategories() {
       if (this.marcacao.formacao)
@@ -253,10 +261,32 @@ export default {
         );
       return [];
     },
+    getFormador(){
+      return this.marcacao.formador;
+    },
+    getCategoria(){
+      return this.marcacao.categoria;
+    },
+    getFormacao(){
+      return this.marcacao.formacao;
+    },
+    getData(){
+      return this.marcacao.data;
+    }
   },
   watch: {
     showDialogProp(value) {
       this.showDialog = value;
+      if(!this.showDialog){
+        this.marcacao = {
+          formador: null,
+          categoria: null,
+          licao: null,
+          formacao: null,
+          data: null,
+          hora: null,
+        };
+      }
     },
     clienteStore(value) {
       this.setClientData(value);
@@ -267,11 +297,20 @@ export default {
     getAllLicoes(values) {
       this.licoes = values;
     },
-    // 'marcacao.formador':(value)=>{
-    //   this.marcacao.categoria = null;
-    //   this.marcacao.licao = null;
-    //   this.marcacao.formacao = null;
-    // }
+    getFormador(value){
+      this.marcacao.data = null;
+      this.marcacao.hora = null;
+    },
+    getCategoria(value){
+      this.marcacao.licao=null;
+    },
+    getFormacao(value){
+      this.marcacao.data= null;
+      this.marcacao.hora = null;
+    },
+    getData(value){
+      this.marcacao.hora = null;
+    }
   },
   mounted() {
     this.formacoes = this.getAllFormacoes;

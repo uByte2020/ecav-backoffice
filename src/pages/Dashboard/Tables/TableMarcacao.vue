@@ -38,13 +38,10 @@
               </md-field>
             </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell :md-label="identity" md-sort-by="name">
+              <md-table-cell v-if="restrictTo(2)" :md-label="identity" md-sort-by="name">
                 {{
-                  getMarcacaoUserName(
-                    restrictTo(2) ? item.formador : item.aluno
-                  )
-                }}</md-table-cell
-              >
+                  getMarcacaoUserName(item.formador)
+                }}</md-table-cell>
               <md-table-cell md-label="Formação" md-sort-by="aula">
                 {{ getFormacaoByLicao(item.licao) }}</md-table-cell
               >
@@ -63,6 +60,9 @@
               <md-table-cell md-label="Estado">{{
                 item.estado.estado
               }}</md-table-cell>
+              <md-table-cell v-if="restrictTo(0,1)" md-label="Alunos" md-sort-by="name">
+                <a class="da-link" @click="showModalAlunosMarcacao(item.alunos)">Ver Alunos</a>  
+              </md-table-cell>
               <md-table-cell md-label="Actions">
                 <md-button v-show="restrictTo(0,1)" class="md-just-icon md-info md-simple">
                   <md-icon>thumb_up</md-icon>
@@ -97,6 +97,10 @@
         :showDialogProp="isModalVisible"
         @hide-dialog="setIsModalVisible"
       />
+      <alunos-marcacao-model 
+        :showDialogProp="modalAlunosMarcacao"
+        @hide-dialog="setModalAlunosMarcacao"
+        :alunos="getAlunosByMarcacao"/>
     </div>
   </div>
 </template>
@@ -106,6 +110,7 @@ import { Pagination } from "@/components";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
 import MarcacaoModel from "../Components/MarcacaoModel";
+import AlunosMarcacaoModel from "../Components/AlunosMarcacaoModel";
 
 import { mapGetters, mapActions } from "vuex";
 
@@ -113,6 +118,7 @@ export default {
   components: {
     Pagination,
     MarcacaoModel,
+    AlunosMarcacaoModel
   },
   computed: {
     ...mapGetters({
@@ -148,6 +154,9 @@ export default {
         ? this.searchedData.length
         : this.tableData.length;
     },
+    getAlunosByMarcacao(){
+      return this.alunosFromMarcacao;
+    }
   },
   data() {
     return {
@@ -160,6 +169,7 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0,
       },
+      alunosFromMarcacao: [],
       footerTable: [
         "Aluno",
         "Formação",
@@ -177,11 +187,20 @@ export default {
       searchedData: [],
       fuseSearch: null,
       isModalVisible: false,
+      modalAlunosMarcacao: false,
     };
   },
   methods: {
+    setModalAlunosMarcacao(value){
+      this.modalAlunosMarcacao = value;
+    },
     showModal() {
       this.isModalVisible = true;
+    },
+    showModalAlunosMarcacao(alunos) {
+      if(!alunos) alunos = [];
+      this.alunosFromMarcacao = alunos;
+      this.setModalAlunosMarcacao(true);
     },
     setIsModalVisible(option) {
       this.isModalVisible = option;
@@ -264,5 +283,8 @@ export default {
   border: none;
   border-radius: 2px;
   height: 30px;
+}
+.da-link{
+  cursor: pointer;
 }
 </style>
