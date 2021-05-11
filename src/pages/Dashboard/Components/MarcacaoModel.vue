@@ -156,6 +156,7 @@ export default {
         onCancel: this.onCancel,
         background: "transparent",
       });
+      // console.log(marcacao)
       this.criarMarcacaoAction(marcacao)
         .then((response) => {
           this.notifyVue("Marcação Realizada com Sucesso", "success");

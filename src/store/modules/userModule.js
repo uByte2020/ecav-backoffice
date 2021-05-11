@@ -22,12 +22,13 @@ const userModule = {
       state.status.loggedIn = false;
       state.user = null;
     },
-    registerSuccess(state) {
-      state.status.loggedIn = false;
+    registerSuccess(state, user) {
+      state.status.loggedIn = true;
+      state.user = user;
     },
     registerFailure(state) {
       state.status.loggedIn = false;
-    }
+    },
   },
   actions: {
     login({ commit }, user) {
@@ -42,13 +43,13 @@ const userModule = {
         }
       );
     },
-    setAuthStatus({commit}){
-      const userAuth = JSON.parse(localStorage.getItem('user'));
-      if(userAuth) commit('loginSuccess', userAuth);
-      else commit('loginFailure');
+    setAuthStatus({ commit }) {
+      const userAuth = JSON.parse(localStorage.getItem("user"));
+      if (userAuth) commit("loginSuccess", userAuth);
+      else commit("loginFailure");
     },
-    logout({commit}){
-      commit('logout');
+    logout({ commit }) {
+      commit("logout");
       return AuthService.logout().then(
         (response) => {
           return Promise.resolve(response);
@@ -61,16 +62,16 @@ const userModule = {
     },
     register({ commit }, user) {
       return AuthService.register(user).then(
-        response => {
-          commit('registerSuccess');
-          return Promise.resolve(response.data);
+        (response) => {
+          commit("registerSuccess", response);
+          return Promise.resolve(response);
         },
-        error => {
-          commit('registerFailure');
+        (error) => {
+          commit("registerFailure");
           return Promise.reject(error);
         }
       );
-    }
+    },
   },
   getters: {
     loggedIn: (state) => {
@@ -83,7 +84,11 @@ const userModule = {
       return state.user ? state.user : null;
     },
     restrictTo: (state) => (...role) => {
-      return state.user && state.user.role && role.includes(state.user.role.perfilCode);
+      return (
+        state.user &&
+        state.user.role &&
+        role.includes(state.user.role.perfilCode)
+      );
     },
   },
 };

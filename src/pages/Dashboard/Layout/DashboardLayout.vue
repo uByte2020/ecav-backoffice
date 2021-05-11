@@ -29,6 +29,9 @@
             path: '/marcacoes',
           }"
         ></sidebar-item>
+        <sidebar-item
+          :link="{name: 'Calendário', icon: 'date_range', path: '/calendario' }"
+        ></sidebar-item>
       </template>
     </side-bar>
     <div class="main-panel">

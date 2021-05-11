@@ -3,9 +3,9 @@ export default class User {
       this.name = name;
       this.email = email;
       this.password = password;
-      this.passwordConfirm = 'jja';
-      this.role = 2;
-      this.telemovel = '946731899';
-      this.endereco = 'Morro Bento';
+      this.passwordConfirm = null;
+      this.role = null;
+      this.telemovel = null;
+      this.endereco = null;
     }
   }

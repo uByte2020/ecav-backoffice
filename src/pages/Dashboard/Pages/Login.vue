@@ -16,7 +16,15 @@
           <label>Password</label>
           <md-input v-model="user.password" type="password" v-on:keyup.enter="handleLogin()"></md-input>
         </md-field>
-        <md-button href class="md-success md-round mt-4" slot="footer" @click="handleLogin()"
+        <md-field id="da-sign" class="md-form-group da-sign" slot="inputs">
+          <div class="md-layout-item md-small-size-100 md-size-100">
+            <p>
+              Não tem uma conta?
+              <router-link to="/register">Registra-se já!</router-link>
+            </p>
+          </div>
+        </md-field>
+        <md-button id="da-button" href class="md-success md-round mt-4" slot="footer" @click="handleLogin()"
             >Entrar</md-button
         >
       </login-card>
@@ -88,5 +96,12 @@ export default {
 <style>
 .social-line {
   display: none;
+}
+#da-sign::after{
+  background-color: transparent!important;
+}
+#da-button{
+  padding-top: 0!important;
+  margin-top:  0!important;
 }
 </style>

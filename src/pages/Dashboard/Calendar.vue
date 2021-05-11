@@ -1,17 +1,5 @@
 <template>
   <div>
-    <div class="header text-center">
-      <h3 class="title">FullCalendar.io</h3>
-      <p class="category">
-        Handcrafted by our friends from
-        <a target="_blank" href="https://fullcalendar.io/">FullCalendar.io</a>.
-        Please checkout the
-        <a href="https://fullcalendar.io/docs" target="_blank"
-          >full documentation</a
-        >.
-      </p>
-    </div>
-
     <div class="md-layout">
       <div class="md-layout-item md-size-80 mx-auto">
         <md-card class="md-card-calendar">
@@ -20,13 +8,13 @@
               ref="calendar"
               defaultView="dayGridMonth"
               :plugins="calendarPlugins"
-              :events="events"
+              :events="getEvents"
               :selectable="true"
               @dateClick="dateClick"
               :header="header"
               :buttonIcons="buttonIcons"
               :selectHelper="true"
-              :editable="true"
+              :editable="false"
             />
           </md-card-content>
         </md-card>
@@ -40,6 +28,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import Swal from "sweetalert2";
+import { mapGetters, mapActions } from "vuex";
 
 var today = new Date();
 var y = today.getFullYear();
@@ -48,84 +37,35 @@ var d = today.getDate();
 
 export default {
   components: {
-    FullCalendar
+    FullCalendar,
+  },
+  props: {
   },
   data() {
     return {
       calendarPlugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
       header: {
         center: "dayGridMonth,timeGridWeek,timeGridDay",
-        right: "prev,next,today"
+        right: "prev,next,today",
       },
       buttonIcons: {
         close: "fa-times",
         prev: "left-single-arrow",
         next: "right-single-arrow",
         prevYear: "fa-angle-double-left",
-        nextYear: "fa-angle-double-right"
+        nextYear: "fa-angle-double-right",
       },
-      events: [
-        {
-          title: "All Day Event",
-          start: new Date(y, m, 1),
-          className: "event-default"
-        },
-        {
-          id: 999,
-          title: "Repeating Event",
-          start: new Date(y, m, d - 4, 6, 0),
-          allDay: false,
-          className: "event-rose"
-        },
-        {
-          id: 999,
-          title: "Repeating Event",
-          start: new Date(y, m, d + 3, 6, 0),
-          allDay: false,
-          className: "event-rose"
-        },
-        {
-          title: "Meeting",
-          start: new Date(y, m, d - 1, 10, 30),
-          allDay: false,
-          className: "event-green"
-        },
-        {
-          title: "Lunch",
-          start: new Date(y, m, d + 7, 12, 0),
-          end: new Date(y, m, d + 7, 14, 0),
-          allDay: false,
-          className: "event-red"
-        },
-        {
-          title: "Md-pro Launch",
-          start: new Date(y, m, d - 2, 12, 0),
-          allDay: true,
-          className: "event-azure"
-        },
-        {
-          title: "Birthday Party",
-          start: new Date(y, m, d + 1, 19, 0),
-          end: new Date(y, m, d + 1, 22, 30),
-          allDay: false,
-          className: "event-azure"
-        },
-        {
-          title: "Click for Creative Tim",
-          start: new Date(y, m, 21),
-          end: new Date(y, m, 22),
-          url: "http://www.creative-tim.com/",
-          className: "event-orange"
-        },
-        {
-          title: "Click for Google",
-          start: new Date(y, m, 21),
-          end: new Date(y, m, 22),
-          url: "http://www.creative-tim.com/",
-          className: "event-orange"
-        }
-      ]
+      events: [],
     };
+  },
+  computed:{
+    ...mapGetters({
+      restricao: "userModule/restrictTo",
+      marcacoes: "marcacaoModule/getAll",
+    }),
+    getEvents(){
+      return this.events;
+    }
   },
   methods: {
     dateClick: function(info) {
@@ -138,7 +78,7 @@ export default {
         showCancelButton: true,
         confirmButtonClass: "md-button md-success",
         cancelButtonClass: "md-button md-danger",
-        buttonsStyling: false
+        buttonsStyling: false,
       }).then(() => {
         var eventTitle = document.getElementById("md-input").value;
         if (eventTitle) {
@@ -146,12 +86,55 @@ export default {
           calendarApi.addEvent({
             title: eventTitle,
             start: info.dateStr,
-            allDay: true
+            allDay: true,
           });
         }
       });
+    },
+    setEvents(marcacoes){
+      this.events = marcacoes.map(el=>{
+        const event = {
+          title: this.getTitle(el.licao),
+          start: new Date(el.data),
+          allDay: false,
+          className: this.className(el.estado),
+        };
+        return event;
+      });
+    },
+    className(estado) {
+      if(!estado) return "event-default";
+      switch (estado.estadoCode) {
+        case 1:
+          return "event-green";
+        case 2:
+          return "event-azure";
+        case 3:
+          return "event-orange";
+        case 4:
+          return "event-rose";
+        default:
+          return "event-default";
+      }
+    },
+    getTitle(licao){
+      let title = '';
+      if(!licao) return title;
+      // title = licao.nome;
+      if(licao.formacao) title=licao.formacao.nome;
+      if(licao.categoria) title+=`-${licao.categoria.categoria}`;
+      return title;
+    }
+  },
+  mounted(){
+    this.setEvents(this.marcacoes);
+  },
+  watch:{
+    marcacoes(value){
+      this.setEvents(value);
     }
   }
+
 };
 </script>
 <style lang="scss" scoped>

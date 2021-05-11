@@ -247,8 +247,8 @@ const routes = [
         components: { default: Dashboard },
       },
       {
-        path: "calendar",
-        name: "Calendar",
+        path: "calendario",
+        name: "Calendario das Marcações",
         components: { default: Calendar },
       },
       {
