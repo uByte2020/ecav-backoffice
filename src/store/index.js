@@ -2,6 +2,7 @@ import userModule from "./modules/userModule";
 import formacaoModule from "./modules/formacaoModule";
 import licaoModule from "./modules/licaoModule";
 import marcacaoModule from "./modules/marcacaoModule";
+import perfilModule from "./modules/perfilModule";
 
 const store = {
   modules: {
@@ -9,6 +10,7 @@ const store = {
     formacaoModule,
     licaoModule,
     marcacaoModule,
+    perfilModule,
   },
   state: {
     count: 0,

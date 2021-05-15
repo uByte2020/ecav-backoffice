@@ -1,10 +1,12 @@
 import AuthService from "./../../service/auth.service";
+import UserService from "./../../service/user.service";
 
 const user = JSON.parse(localStorage.getItem('user'));
 const token = JSON.parse(localStorage.getItem('token'));
-const initialState = user && token
-  ? { status: { loggedIn: true }, user, token }
-  : { status: { loggedIn: false }, user: null, token: null };
+const initialState =
+  user && token
+    ? { status: { loggedIn: true }, user, token, users: [] }
+    : { status: { loggedIn: false }, user: null, token: null, users: [] };
 
 const userModule = {
   namespaced: true,
@@ -28,6 +30,9 @@ const userModule = {
     },
     registerFailure(state) {
       state.status.loggedIn = false;
+    },
+    setUsers(state, users) {
+      state.users = users;
     },
   },
   actions: {
@@ -72,6 +77,18 @@ const userModule = {
         }
       );
     },
+    getAll({ commit }) {
+      return UserService.getAll().then(
+          (response) => {
+            if (response)
+              commit("setUsers", response);
+            return Promise.resolve(response);
+          },
+          (error) => {
+            return Promise.reject(error);
+          }
+        );
+    },
   },
   getters: {
     loggedIn: (state) => {
@@ -89,6 +106,9 @@ const userModule = {
         state.user.role &&
         role.includes(state.user.role.perfilCode)
       );
+    },
+    getAll: (state) => {
+      return state.users;
     },
   },
 };

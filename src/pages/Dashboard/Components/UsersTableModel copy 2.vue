@@ -130,7 +130,7 @@ import Fuse from "fuse.js";
 import Swal from "sweetalert2";
 import { mapGetters, mapActions } from "vuex";
 export default {
-  name: "alunos-marcacao-model",
+  name: "users-table-model",
   props: {
     showDialogProp: {
       type: Boolean,
@@ -140,7 +140,7 @@ export default {
       type: String,
       default: "",
     },
-    alunos: {
+    users: {
       type: Array,
       default: function () {
         return []
@@ -262,7 +262,7 @@ export default {
       keys: ["name", "email"],
       threshold: 0.3,
     });
-    this.tableData = this.alunos
+    this.tableData = this.users
   },
   watch: {
     searchQuery(value) {
@@ -285,8 +285,8 @@ export default {
         };
       }
     },
-    alunos(values){
-      this.tableData = this.alunos
+    users(values){
+      this.tableData = this.users
     }
   },
 };

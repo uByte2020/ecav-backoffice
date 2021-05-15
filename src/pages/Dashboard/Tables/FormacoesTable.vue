@@ -6,7 +6,7 @@
           <div class="card-icon">
             <md-icon>assignment</md-icon>
           </div>
-          <h4 class="title">Marcações</h4>
+          <h4 class="title">Formações</h4>
         </md-card-header>
         <md-card-content>
           <md-table
@@ -38,35 +38,26 @@
               </md-field>
             </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell v-if="restrictTo(2)" :md-label="identity" md-sort-by="name">
+              <md-table-cell md-label="Formação" md-sort-by="name">
                 {{
-                  getMarcacaoUserName(item.formador)
+                  item.nome
                 }}</md-table-cell>
-              <md-table-cell md-label="Formação" md-sort-by="aula">
-                {{ getFormacaoByLicao(item.licao) }}</md-table-cell
+              <md-table-cell md-label="Quantide de Alunos" md-sort-by="aula">
+                {{ item.quantidadeAlunoMax }}</md-table-cell
               >
-              <md-table-cell md-label="Categoria">
-                {{ getCategoriaByLicao(item.licao) }}</md-table-cell
-              >
-              <md-table-cell md-label="Lição">{{
-                getLicaoName(item.licao)
-              }}</md-table-cell>
-              <md-table-cell md-label="Data">{{
-                getDate(item.data)
-              }}</md-table-cell>
-              <md-table-cell md-label="Hora">{{
-                getTime(item.data)
-              }}</md-table-cell>
-              <md-table-cell md-label="Estado">{{
-                item.estado.estado
-              }}</md-table-cell>
-              <md-table-cell v-if="restrictTo(0,1)" md-label="Alunos" md-sort-by="name">
-                <a class="da-link" @click="showModalAlunosMarcacao(item.alunos)">Ver Alunos</a>  
+              <md-table-cell md-label="Formadores">
+                <a class="da-link" @click="showModalFormadoresFormacao(item.formadores)">Ver Formadores</a>  
+              </md-table-cell>
+              <md-table-cell md-label="Categorias">
+                <a class="da-link" @click="showTableModal(item.categorias, modalTypes.CATEGORY)">Ver Categorias</a>  
+              </md-table-cell>
+              <md-table-cell md-label="Licões">
+                <a class="da-link" @click="showTableModal(item.licoes, modalTypes.LICAO)">Ver Lições</a>  
+              </md-table-cell>
+              <md-table-cell md-label="Horarios">
+                <a class="da-link" @click="showTableModal(item.horarios, modalTypes.HORARIO)">Ver Horários</a>  
               </md-table-cell>
               <md-table-cell md-label="Actions">
-                <md-button v-show="restrictTo(0,1)" class="md-just-icon md-info md-simple">
-                  <md-icon>thumb_up</md-icon>
-                </md-button>
                 <md-button class="md-just-icon md-warning md-simple">
                   <md-icon>edit</md-icon>
                 </md-button>
@@ -93,37 +84,47 @@
           </pagination>
         </md-card-actions>
       </md-card>
-      <marcacao-model
-        :showDialogProp="isModalVisible"
-        @hide-dialog="setIsModalVisible"
-      />
       <users-table-model 
-        :showDialogProp="modalAlunosMarcacao"
-        @hide-dialog="setModalAlunosMarcacao"
-        :users="getAlunosByMarcacao"/>
+        :showDialogProp="modalFormadoresFormacao"
+        @hide-dialog="setModalFormadoresFormacao"
+        :users="getFormadoresByFormacao"/>
+      
+      <!-- 
+      <licoes-table-model 
+        :showDialogProp="modalFormadoresFormacao"
+        @hide-dialog="setModalFormadoresFormacao"
+        :users="getFormadoresByFormacao"/>-->
+
+      <table-model 
+        :showDialogProp="isModalVisible"
+        @hide-dialog="hideModal"
+        :fields="getItemsFields"
+        :items="getItems"
+        :title="getTitle"/>
     </div>
   </div>
 </template>
 
 <script>
 import { Pagination } from "@/components";
+import modalType from "@/utils/modalType";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
-import MarcacaoModel from "../Components/MarcacaoModel";
 import UsersTableModel from "../Components/UsersTableModel";
+import TableModel from "../Components/TableModel";
 
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
     Pagination,
-    MarcacaoModel,
-    UsersTableModel
+    UsersTableModel,
+    TableModel
   },
   computed: {
     ...mapGetters({
       restricao: "userModule/restrictTo",
-      marcacoes: "marcacaoModule/getAll",
+      formacoes: "formacaoModule/getAll",
     }),
     restrictTo() {
       return this.restricao;
@@ -154,9 +155,18 @@ export default {
         ? this.searchedData.length
         : this.tableData.length;
     },
-    getAlunosByMarcacao(){
-      return this.alunosFromMarcacao;
-    }
+    getFormadoresByFormacao(){
+      return this.formadoresFromFormacao;
+    },
+     getItems(){
+      return this.items;
+    },
+    getItemsFields(){
+      return this.fields;
+    },
+    getTitle(){
+      return this.title;
+    },
   },
   data() {
     return {
@@ -169,7 +179,7 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0,
       },
-      alunosFromMarcacao: [],
+      formadoresFromFormacao: [],
       footerTable: [
         "Aluno",
         "Formação",
@@ -187,20 +197,54 @@ export default {
       searchedData: [],
       fuseSearch: null,
       isModalVisible: false,
-      modalAlunosMarcacao: false,
+      modalFormadoresFormacao: false,
+      modalCategoriesFormacao: false,
+      modalLicoesFormacao: false,
+      modalHorariosFormacao: false,
+      modalTypes: modalType,
+      items: [{'1':'-'}],
+      fields: ['1'],
+      title: 'Formadores'
     };
   },
   methods: {
-    setModalAlunosMarcacao(value){
-      this.modalAlunosMarcacao = value;
+    setModalFormadoresFormacao(value){
+      this.modalFormadoresFormacao = value;
+    },
+    setModalStatus(value, field){
+      this[field] = value;
+    },
+    hideModal(){
+      this.isModalVisible = false;
     },
     showModal() {
       this.isModalVisible = true;
     },
-    showModalAlunosMarcacao(alunos) {
-      if(!alunos) alunos = [];
-      this.alunosFromMarcacao = alunos;
-      this.setModalAlunosMarcacao(true);
+    showModalFormadoresFormacao(formadores) {
+      if(!formadores) formadores = [];
+      this.formadoresFromFormacao = formadores;
+      this.setModalFormadoresFormacao(true);
+    },
+    showTableModal(items, type) {
+      switch(type){
+        case this.modalTypes.CATEGORY:
+          this.setItems(items);
+          this.setItemsFields([{field:'categoria', name:'Categoria'}]);
+          this.setTitle("Categorias");
+          break;
+        case this.modalTypes.HORARIO:
+          this.setItems(items.map(el=>{return {horario:el}}));
+          this.setItemsFields([{field:'horario', name:'Horario'}]);
+          this.setTitle("Categorias");
+          break;
+        case this.modalTypes.LICAO:{
+          this.setItems(items.map(el=>{return {nome:el.nome, categoria: el.categoria.categoria||'-'}}));
+          this.setItemsFields([{field:'nome', name:'nome'}, {field:'categoria', name:'Categoria'}]);
+          this.setTitle("Categorias");
+          break;
+        }
+      }
+      this.showModal();
     },
     setIsModalVisible(option) {
       this.isModalVisible = option;
@@ -238,6 +282,15 @@ export default {
     getLicaoName(licao) {
       return licao ? licao.nome : "";
     },
+    setItems(items){
+      this.items = items;
+    },
+    setItemsFields(fields){
+      this.fields = fields;
+    },
+    setTitle(title){
+      this.title = title;
+    },
   },
   mounted() {
     // Fuse search initialization.
@@ -245,7 +298,7 @@ export default {
       keys: ["name", "email"],
       threshold: 0.3,
     });
-    this.tableData = this.marcacoes;
+    this.tableData = this.formacoes;
   },
   watch: {
     searchQuery(value) {
@@ -255,7 +308,7 @@ export default {
       }
       this.searchedData = result;
     },
-    marcacoes(values) {
+    formacoes(values) {
       this.tableData = values;
     },
   },

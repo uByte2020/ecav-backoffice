@@ -14,14 +14,6 @@
         >
         </sidebar-item>
         <sidebar-item
-          v-show="restrictTo(0)"
-          :link="{ name: 'Utilizadores', icon: 'people', path: '/calendar' }"
-        ></sidebar-item>
-        <!-- <sidebar-item
-          v-show="restrictTo(0, 1)"
-          :link="{ name: 'Alunos', icon: 'people', path: '/alunos' }"
-        ></sidebar-item> -->
-        <sidebar-item
           v-show="restrictTo(0, 1, 2)"
           :link="{
             name: 'Marcações',
@@ -30,7 +22,19 @@
           }"
         ></sidebar-item>
         <sidebar-item
-          :link="{name: 'Calendário', icon: 'date_range', path: '/calendario' }"
+          :link="{
+            name: 'Calendário',
+            icon: 'date_range',
+            path: '/calendario',
+          }"
+        ></sidebar-item>
+        <sidebar-item
+          v-show="restrictTo(0)"
+          :link="{ name: 'Utilizadores', icon: 'people', path: '/users' }"
+        ></sidebar-item>
+        <sidebar-item
+          v-show="restrictTo(0)"
+          :link="{ name: 'Formações', icon: 'assignment', path: '/formacoes' }"
         ></sidebar-item>
       </template>
     </side-bar>
@@ -125,11 +129,13 @@ export default {
       }
     },
     ...mapActions({
+      getUsers: "userModule/getAll",
       getAllFormacoes: "formacaoModule/getAll",
       getAllLicoes: "licaoModule/getAll",
-      getMyMarcacoes:"marcacaoModule/getMyMarcacoes",
-      // getAlunoByFormador:"marcacaoModule/getAlunoByFormador"
-    })
+      getMyMarcacoes: "marcacaoModule/getMyMarcacoes",
+      getAllMarcacoes: "marcacaoModule/getAll",
+      getPerfis: "perfilModule/getAll"
+    }),
   },
   updated() {
     reinitScrollbar();
@@ -138,8 +144,12 @@ export default {
     reinitScrollbar();
     this.getAllFormacoes();
     this.getAllLicoes();
-    if(this.restrictTo(1,2)) this.getMyMarcacoes();
-    // if(this.restrictTo(1)) this.getAlunoByFormador(this.getUser._id);
+    if (this.restrictTo(1, 2)) this.getMyMarcacoes();
+    else if (this.restrictTo(0)) {
+      this.getAllMarcacoes();
+      this.getUsers();
+      this.getPerfis();
+    }
   },
   computed: {
     ...mapGetters({

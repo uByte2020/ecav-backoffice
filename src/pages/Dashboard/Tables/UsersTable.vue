@@ -6,7 +6,7 @@
           <div class="card-icon">
             <md-icon>assignment</md-icon>
           </div>
-          <h4 class="title">Marcações</h4>
+          <h4 class="title">Utilizadores</h4>
         </md-card-header>
         <md-card-content>
           <md-table
@@ -18,6 +18,24 @@
           >
             <md-table-toolbar>
               <md-field>
+                <label for="pages">Perfis</label>
+                <md-select
+                  v-model="perfil"
+                  name="pages"
+                  @md-selected="onSelectPerfil"
+                >
+                  <md-option
+                    v-for="item in getPerfis"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  >
+                    {{ item }}
+                  </md-option>
+                </md-select>
+              </md-field>
+
+              <md-field>
                 <md-input
                   type="search"
                   class="mb-3"
@@ -28,55 +46,52 @@
                 >
                 </md-input>
               </md-field>
-              <md-field>
-                <md-button
-                  class="md-success"
-                  @click="showModal"
-                  v-show="restrictTo(2)"
-                  >Criar Marcação</md-button
-                >
-              </md-field>
             </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell v-if="restrictTo(2)" :md-label="identity" md-sort-by="name">
-                {{
-                  getMarcacaoUserName(item.formador)
-                }}</md-table-cell>
-              <md-table-cell md-label="Formação" md-sort-by="aula">
-                {{ getFormacaoByLicao(item.licao) }}</md-table-cell
+              <md-table-cell md-label="Nome" md-sort-by="name">{{
+                item.name
+              }}</md-table-cell>
+              <md-table-cell md-label="Email" md-sort-by="email">{{
+                item.email
+              }}</md-table-cell>
+              <md-table-cell md-label="Telemovel">
+                {{ item.telemovel }}</md-table-cell
               >
-              <md-table-cell md-label="Categoria">
-                {{ getCategoriaByLicao(item.licao) }}</md-table-cell
-              >
-              <md-table-cell md-label="Lição">{{
-                getLicaoName(item.licao)
+              <md-table-cell md-label="Endereço">{{
+                item.endereco[0]
               }}</md-table-cell>
-              <md-table-cell md-label="Data">{{
-                getDate(item.data)
+              <md-table-cell md-label="Perfil">{{
+                getRole(item.role)
               }}</md-table-cell>
-              <md-table-cell md-label="Hora">{{
-                getTime(item.data)
-              }}</md-table-cell>
-              <md-table-cell md-label="Estado">{{
-                item.estado.estado
-              }}</md-table-cell>
-              <md-table-cell v-if="restrictTo(0,1)" md-label="Alunos" md-sort-by="name">
-                <a class="da-link" @click="showModalAlunosMarcacao(item.alunos)">Ver Alunos</a>  
-              </md-table-cell>
               <md-table-cell md-label="Actions">
-                <md-button v-show="restrictTo(0,1)" class="md-just-icon md-info md-simple">
-                  <md-icon>thumb_up</md-icon>
-                </md-button>
-                <md-button class="md-just-icon md-warning md-simple">
-                  <md-icon>edit</md-icon>
-                </md-button>
-                <md-button class="md-just-icon md-danger md-simple">
+                <md-button
+                  class="md-just-icon md-danger md-simple"
+                  @click.native="handleDelete(item)"
+                >
                   <md-icon>close</md-icon>
                 </md-button>
               </md-table-cell>
             </md-table-row>
           </md-table>
-          <div class="footer-table md-table"></div>
+          <div class="footer-table md-table">
+            <table>
+              <tfoot>
+                <tr>
+                  <th
+                    v-for="item in footerTable"
+                    :key="item.name"
+                    class="md-table-head"
+                  >
+                    <div class="md-table-head-container md-ripple md-disabled">
+                      <div class="md-table-head-label">
+                        {{ item }}
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
         </md-card-content>
         <md-card-actions md-alignment="space-between">
           <div class="">
@@ -93,14 +108,6 @@
           </pagination>
         </md-card-actions>
       </md-card>
-      <marcacao-model
-        :showDialogProp="isModalVisible"
-        @hide-dialog="setIsModalVisible"
-      />
-      <users-table-model 
-        :showDialogProp="modalAlunosMarcacao"
-        @hide-dialog="setModalAlunosMarcacao"
-        :users="getAlunosByMarcacao"/>
     </div>
   </div>
 </template>
@@ -109,28 +116,21 @@
 import { Pagination } from "@/components";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
-import MarcacaoModel from "../Components/MarcacaoModel";
-import UsersTableModel from "../Components/UsersTableModel";
 
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
     Pagination,
-    MarcacaoModel,
-    UsersTableModel
   },
   computed: {
     ...mapGetters({
       restricao: "userModule/restrictTo",
-      marcacoes: "marcacaoModule/getAll",
+      users: "userModule/getAll",
+      perfis: "perfilModule/getAll",
     }),
     restrictTo() {
       return this.restricao;
-    },
-    identity() {
-      if (this.restrictTo(0, 1)) return "Aluno";
-      else return "Instrutor";
     },
     queriedData() {
       let result = this.tableData;
@@ -154,57 +154,31 @@ export default {
         ? this.searchedData.length
         : this.tableData.length;
     },
-    getAlunosByMarcacao(){
-      return this.alunosFromMarcacao;
-    }
+    getPerfis() {
+      const perfis = !this.perfis ? [] : this.perfis.map((el) => el.perfil);
+      return ["Todos", ...perfis];
+    },
   },
   data() {
     return {
-      aluno: true,
-      currentSort: "name",
-      currentSortOrder: "asc",
       pagination: {
         perPage: 25,
         currentPage: 1,
         perPageOptions: [5, 10, 25, 50],
         total: 0,
       },
-      alunosFromMarcacao: [],
-      footerTable: [
-        "Aluno",
-        "Formação",
-        "Categoria",
-        "Lição",
-        "Data",
-        "Formação",
-        "Hora",
-        "Estado",
-        "Actions",
-      ],
+      perfil: "",
+      currentSort: "name",
+      currentSortOrder: "asc",
+      footerTable: ["Name", "Email", "Telemovel", "Actions"],
       searchQuery: "",
-      propsToSearch: ["name", "formação", "data"],
+      propsToSearch: ["name", "email", "Telemovel"],
       tableData: [],
       searchedData: [],
       fuseSearch: null,
-      isModalVisible: false,
-      modalAlunosMarcacao: false,
     };
   },
   methods: {
-    setModalAlunosMarcacao(value){
-      this.modalAlunosMarcacao = value;
-    },
-    showModal() {
-      this.isModalVisible = true;
-    },
-    showModalAlunosMarcacao(alunos) {
-      if(!alunos) alunos = [];
-      this.alunosFromMarcacao = alunos;
-      this.setModalAlunosMarcacao(true);
-    },
-    setIsModalVisible(option) {
-      this.isModalVisible = option;
-    },
     customSort(value) {
       return value.sort((a, b) => {
         const sortBy = this.currentSort;
@@ -214,29 +188,17 @@ export default {
         return b[sortBy].localeCompare(a[sortBy]);
       });
     },
-    getMarcacaoUserName(user) {
-      if (user) return user.name;
-      return "";
+    handleLike(item) {},
+    handleEdit(item) {},
+    handleDelete(item) {},
+    deleteRow(item) {},
+    getRole(role) {
+      if (!role) return "";
+      return role.perfil;
     },
-    getFormacaoByLicao(licao) {
-      if (licao && licao.formacao) return licao.formacao.nome;
-      return "";
-    },
-    getCategoriaByLicao(licao) {
-      if (licao && licao.categoria) return licao.categoria.categoria;
-      return "";
-    },
-    getDate(date) {
-      if (!date) return "";
-      return date.split("T")[0];
-    },
-    getTime(date) {
-      if (!date) return "";
-      const time = date.split("T")[1];
-      return time.split(".")[0];
-    },
-    getLicaoName(licao) {
-      return licao ? licao.nome : "";
+    onSelectPerfil(perfil) {
+      if (perfil == "Todos") this.tableData = this.users;
+      else this.tableData = this.users.filter(el=>el.role.perfil==perfil)
     },
   },
   mounted() {
@@ -245,7 +207,7 @@ export default {
       keys: ["name", "email"],
       threshold: 0.3,
     });
-    this.tableData = this.marcacoes;
+    this.tableData = this.users;
   },
   watch: {
     searchQuery(value) {
@@ -255,8 +217,8 @@ export default {
       }
       this.searchedData = result;
     },
-    marcacoes(values) {
-      this.tableData = values;
+    users(values) {
+      this.tableData = this.values;
     },
   },
 };
@@ -284,7 +246,7 @@ export default {
   border-radius: 2px;
   height: 30px;
 }
-.da-link{
+.da-link {
   cursor: pointer;
 }
 </style>

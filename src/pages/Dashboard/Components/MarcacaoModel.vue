@@ -60,11 +60,11 @@
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
-                    <label for="formador">Formador</label>
+                    <label for="Instrutor">Instrutor</label>
                     <md-select
                       v-model="marcacao.formador"
-                      name="formador"
-                      id="formador"
+                      name="Instrutor"
+                      id="Instrutor"
                     >
                       <md-option
                         v-for="(formador, formadorIdx) in getFormadores"

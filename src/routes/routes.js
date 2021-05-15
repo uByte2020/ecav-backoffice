@@ -12,6 +12,7 @@ import RtlSupport from "@/pages/Dashboard/Pages/RtlSupport.vue";
 import Login from "@/pages/Dashboard/Pages/Login.vue";
 import Register from "@/pages/Dashboard/Pages/Register.vue";
 import Lock from "@/pages/Dashboard/Pages/Lock.vue";
+import FormacaoDetalhe from "@/pages/Dashboard/Pages/FormacaoDetalhe.vue";
 
 // Components pages
 import Buttons from "@/pages/Dashboard/Components/Buttons.vue";
@@ -31,7 +32,8 @@ import Wizard from "@/pages/Dashboard/Forms/Wizard.vue";
 // TableList pages
 import RegularTables from "@/pages/Dashboard/Tables/RegularTables.vue";
 import TableMarcacao from "@/pages/Dashboard/Tables/TableMarcacao.vue";
-import AlunosTables from "@/pages/Dashboard/Tables/AlunosTables.vue";
+import UsersTable from "@/pages/Dashboard/Tables/UsersTable.vue";
+import FormacoesTable from "@/pages/Dashboard/Tables/FormacoesTable.vue";
 // import MarcacaoTables from "@/pages/Dashboard/Tables/MarcacaoTables.vue";
 
 // Maps pages
@@ -133,11 +135,11 @@ let tablesMenu = {
       name: "Extended Tables",
       components: { default: TableMarcacao },
     },
-    {
-      path: "paginated",
-      name: "Pagianted Tables",
-      components: { default: AlunosTables },
-    },
+    // {
+    //   path: "paginated",
+    //   name: "Pagianted Tables",
+    //   components: { default: AlunosTables },
+    // },
   ],
 };
 
@@ -261,23 +263,25 @@ const routes = [
         name: "Widgets",
         components: { default: Widgets },
       },
-      // {
-      //   path: "marcacao",
-      //   name: "Marcações",
-      //   components: { default: MarcacaoTables },
-      //   path: "AlunosTables",
-      //   name: "AlunosTables",
-      //   components: { default: AlunosTables }
-      // },
-      {
-        path: "alunos",
-        name: "Alunos",
-        components: { default: AlunosTables },
-      },
       {
         path: "marcacoes",
         name: "Marcações",
         components: { default: TableMarcacao },
+      },
+      {
+        path: "users",
+        name: "Utilizadores",
+        components: { default: UsersTable },
+      },
+      {
+        path: "formacoes",
+        name: "Formações",
+        components: { default: FormacoesTable },
+      },
+      {
+        path: "formacoes/:id",
+        name: "Formação Detalhe",
+        components: { default: FormacaoDetalhe },
       },
     ],
   },
