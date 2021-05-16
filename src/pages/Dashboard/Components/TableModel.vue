@@ -6,7 +6,7 @@
       :md-close-on-esc="false"
       :md-fullscreen="true"
     >
-      <md-dialog-title>{{title}}</md-dialog-title>
+      <md-dialog-title>{{ title }}</md-dialog-title>
       <md-dialog-content>
         <div class="md-layout">
           <div class="md-layout-item">
@@ -19,8 +19,8 @@
                   :md-sort-fn="customSort"
                   class="paginated-table table-striped table-hover"
                 >
-                  <!-- <md-table-toolbar>
-                    <md-field>
+                  <md-table-toolbar>
+                    <!-- <md-field>
                       <label for="pages">Per page</label>
                       <md-select v-model="pagination.perPage" name="pages">
                         <md-option
@@ -32,7 +32,7 @@
                           {{ item }}
                         </md-option>
                       </md-select>
-                    </md-field>
+                    </md-field> -->
 
                     <md-field>
                       <md-input
@@ -40,18 +40,21 @@
                         class="mb-3"
                         clearable
                         style="width: 200px"
-                        placeholder="Search records"
+                        :placeholder="`Pesquisar ${title}`"
                         v-model="searchQuery"
                       >
                       </md-input>
                     </md-field>
-                  </md-table-toolbar> -->
+                  </md-table-toolbar>
                   <md-table-row slot="md-table-row" slot-scope="{ item }">
-                    <md-table-cell v-for="(field,index) in fields" :key="index" :md-label="field.name" md-sort-by="name">{{
-                      item[field.field]
-                    }}</md-table-cell>
-                    <md-table-cell md-label="-">
-                    </md-table-cell>
+                    <md-table-cell
+                      v-for="(field, index) in fields"
+                      :key="index"
+                      :md-label="field.name"
+                      md-sort-by="name"
+                      >{{ item[field.field] }}</md-table-cell
+                    >
+                    <md-table-cell md-label="-"> </md-table-cell>
                   </md-table-row>
                 </md-table>
               </md-card-content>
@@ -100,22 +103,22 @@ export default {
     },
     title: {
       type: String,
-      default: "Categorias"
+      default: "Categorias",
     },
-    fields:{
+    fields: {
       type: Array,
-      default: function () {
-        return ['1']
+      default: function() {
+        return ["1"];
       },
     },
-    items:{
+    items: {
       type: Array,
-      default: function () {
-        return [{'1':'-'}]
+      default: function() {
+        return [{ "1": "-" }];
       },
-    }
+    },
   },
- components: {
+  components: {
     Pagination,
   },
   data() {
@@ -135,6 +138,7 @@ export default {
       tableData: [],
       searchedData: [],
       fuseSearch: null,
+      newItem:null
     };
   },
   methods: {
@@ -146,6 +150,9 @@ export default {
         }
         return b[sortBy].localeCompare(a[sortBy]);
       });
+    },
+    addItem(){
+
     },
     handleLike(item) {
       Swal.fire({
@@ -223,9 +230,9 @@ export default {
         ? this.searchedData.length
         : this.tableData.length;
     },
-    getFooterTable(){
+    getFooterTable() {
       return [...this.footerTable, "-"];
-    }
+    },
   },
   mounted() {
     // Fuse search initialization.
@@ -246,7 +253,7 @@ export default {
     },
     showDialogProp(value) {
       this.showDialog = value;
-      if(!this.showDialog){
+      if (!this.showDialog) {
         this.marcacao = {
           formador: null,
           categoria: null,
@@ -257,12 +264,12 @@ export default {
         };
       }
     },
-    items(values){
-      this.tableData = this.items
+    items(values) {
+      this.tableData = this.items;
     },
-    fields(values){
+    fields(values) {
       this.footerTable = values;
-    }
+    },
   },
 };
 </script>
@@ -270,5 +277,9 @@ export default {
 <style lang="scss" scoped>
 .md-dialog .md-dialog-container {
   max-width: 768px;
+}
+#btn-add{
+  width: 2%!important;
+  height: 74%!important;
 }
 </style>

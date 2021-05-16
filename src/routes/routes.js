@@ -279,9 +279,10 @@ const routes = [
         components: { default: FormacoesTable },
       },
       {
-        path: "formacoes/:id",
+        path: "formacoes-detalhe/:formacaoId",
         name: "Formação Detalhe",
-        components: { default: FormacaoDetalhe },
+        component: FormacaoDetalhe ,
+        props: true
       },
     ],
   },

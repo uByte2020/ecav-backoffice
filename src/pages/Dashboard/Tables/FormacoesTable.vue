@@ -45,7 +45,7 @@
               <md-table-cell md-label="Quantide de Alunos" md-sort-by="aula">
                 {{ item.quantidadeAlunoMax }}</md-table-cell
               >
-              <md-table-cell md-label="Formadores">
+              <md-table-cell md-label="Instrutores">
                 <a class="da-link" @click="showModalFormadoresFormacao(item.formadores)">Ver Formadores</a>  
               </md-table-cell>
               <md-table-cell md-label="Categorias">
@@ -58,7 +58,7 @@
                 <a class="da-link" @click="showTableModal(item.horarios, modalTypes.HORARIO)">Ver Horários</a>  
               </md-table-cell>
               <md-table-cell md-label="Actions">
-                <md-button class="md-just-icon md-warning md-simple">
+                <md-button class="md-just-icon md-warning md-simple" @click="callFormacaoDetalhe(item)">
                   <md-icon>edit</md-icon>
                 </md-button>
                 <md-button class="md-just-icon md-danger md-simple">
@@ -120,53 +120,6 @@ export default {
     Pagination,
     UsersTableModel,
     TableModel
-  },
-  computed: {
-    ...mapGetters({
-      restricao: "userModule/restrictTo",
-      formacoes: "formacaoModule/getAll",
-    }),
-    restrictTo() {
-      return this.restricao;
-    },
-    identity() {
-      if (this.restrictTo(0, 1)) return "Aluno";
-      else return "Instrutor";
-    },
-    queriedData() {
-      let result = this.tableData;
-      if (this.searchedData.length > 0) {
-        result = this.searchedData;
-      }
-      return result.slice(this.from, this.to);
-    },
-    to() {
-      let highBound = this.from + this.pagination.perPage;
-      if (this.total < highBound) {
-        highBound = this.total;
-      }
-      return highBound;
-    },
-    from() {
-      return this.pagination.perPage * (this.pagination.currentPage - 1);
-    },
-    total() {
-      return this.searchedData.length > 0
-        ? this.searchedData.length
-        : this.tableData.length;
-    },
-    getFormadoresByFormacao(){
-      return this.formadoresFromFormacao;
-    },
-     getItems(){
-      return this.items;
-    },
-    getItemsFields(){
-      return this.fields;
-    },
-    getTitle(){
-      return this.title;
-    },
   },
   data() {
     return {
@@ -235,12 +188,12 @@ export default {
         case this.modalTypes.HORARIO:
           this.setItems(items.map(el=>{return {horario:el}}));
           this.setItemsFields([{field:'horario', name:'Horario'}]);
-          this.setTitle("Categorias");
+          this.setTitle("Horários");
           break;
         case this.modalTypes.LICAO:{
           this.setItems(items.map(el=>{return {nome:el.nome, categoria: el.categoria.categoria||'-'}}));
           this.setItemsFields([{field:'nome', name:'nome'}, {field:'categoria', name:'Categoria'}]);
-          this.setTitle("Categorias");
+          this.setTitle("Lições");
           break;
         }
       }
@@ -290,6 +243,56 @@ export default {
     },
     setTitle(title){
       this.title = title;
+    },
+    callFormacaoDetalhe(formacao){
+      this.$router.push({ path: `formacoes-detalhe/${formacao._id}`, params: { formacaoId:formacao._id } })
+    }
+  },
+  computed: {
+    ...mapGetters({
+      restricao: "userModule/restrictTo",
+      formacoes: "formacaoModule/getAll",
+    }),
+    restrictTo() {
+      return this.restricao;
+    },
+    identity() {
+      if (this.restrictTo(0, 1)) return "Aluno";
+      else return "Instrutor";
+    },
+    queriedData() {
+      let result = this.tableData;
+      if (this.searchedData.length > 0) {
+        result = this.searchedData;
+      }
+      return result.slice(this.from, this.to);
+    },
+    to() {
+      let highBound = this.from + this.pagination.perPage;
+      if (this.total < highBound) {
+        highBound = this.total;
+      }
+      return highBound;
+    },
+    from() {
+      return this.pagination.perPage * (this.pagination.currentPage - 1);
+    },
+    total() {
+      return this.searchedData.length > 0
+        ? this.searchedData.length
+        : this.tableData.length;
+    },
+    getFormadoresByFormacao(){
+      return this.formadoresFromFormacao;
+    },
+     getItems(){
+      return this.items;
+    },
+    getItemsFields(){
+      return this.fields;
+    },
+    getTitle(){
+      return this.title;
     },
   },
   mounted() {

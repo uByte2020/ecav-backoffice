@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="md-layout">
-      <div class="md-layout-item md-medium-size-100 md-size-66">
+      <div class="md-layout-item md-medium-size-100 md-size-100">
         <form>
           <md-card>
             <md-card-header
@@ -9,78 +9,64 @@
               :class="getClass(headerColor)"
             >
               <div class="card-icon">
-                <md-icon>perm_identity</md-icon>
+                <md-icon>assignment</md-icon>
               </div>
-              <h4 class="title">
-                Edit Profile - <small>Complete your profile</small>
-              </h4>
+              <h4 class="title"></h4>
             </md-card-header>
 
             <md-card-content>
               <div class="md-layout">
                 <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
-                    <label>Company (disabled)</label>
-                    <md-input v-model="disabled" disabled></md-input>
+                    <label>Formação</label>
+                    <md-input v-model="formacao.nome" disabled></md-input>
                   </md-field>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
-                    <label>User Name</label>
-                    <md-input v-model="username" type="text"></md-input>
+                    <label>Quantidade Max de Alunos</label>
+                    <md-input v-model="formacao.quantidadeAlunoMax" type="email"></md-input>
                   </md-field>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
-                    <label>Email Address</label>
-                    <md-input v-model="emailadress" type="email"></md-input>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-50">
-                  <md-field>
-                    <label>First Name</label>
-                    <md-input v-model="firstname" type="text"></md-input>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-50">
-                  <md-field>
-                    <label>Last Name</label>
-                    <md-input v-model="lastname" type="text"></md-input>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-100">
-                  <md-field>
-                    <label>Adress</label>
-                    <md-input v-model="address" type="text"></md-input>
+                    <label>Horários</label>
+                    <md-input v-model="formacao.horarios.length" type="text"></md-input>
                   </md-field>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
-                    <label>City</label>
-                    <md-input v-model="city" type="text"></md-input>
+                    <label>Instrutores</label>
+                    <md-input :value="formacao.formadores.length" type="text"></md-input>
                   </md-field>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
-                    <label>Country</label>
-                    <md-input v-model="country" type="text"></md-input>
+                    <label>Categorias</label>
+                    <md-input v-model="formacao.categorias.length" type="text"></md-input>
                   </md-field>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
-                    <label>Postal Code</label>
-                    <md-input v-model="code" type="number"></md-input>
+                    <label>Lições</label>
+                    <md-input v-model="formacao.licoes.length" type="text"></md-input>
+                  </md-field>
+                </div>
+                <div class="md-layout-item md-small-size-100 md-size-33">
+                  <md-field>
+                    <label>Estado</label>
+                    <md-input v-model="formacao.estado" type="text"></md-input>
                   </md-field>
                 </div>
                 <div class="md-layout-item md-size-100">
                   <md-field maxlength="5">
-                    <label>About Me</label>
-                    <md-textarea v-model="aboutme"></md-textarea>
+                    <label>Descrição</label>
+                    <md-textarea v-model="formacao.descricao"></md-textarea>
                   </md-field>
                 </div>
                 <div class="md-layout-item md-size-100 text-right">
                   <md-button class="md-raised md-success mt-4"
-                    >Update Profile</md-button
+                    >Actualizar</md-button
                   >
                 </div>
               </div>
@@ -88,39 +74,65 @@
           </md-card>
         </form>
       </div>
-      <div class="md-layout-item md-medium-size-100 md-size-33">
-        <user-card button-color="success"> </user-card>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { EditProfileForm, UserCard } from "@/pages";
+// import { EditProfileForm, UserCard } from "@/pages";
+import { mapGetters, mapActions } from "vuex";
 export default {
-  components: {
-    UserCard,
-  },
+  props: ["formacaoId"],
+  components: {},
   data() {
     return {
       headerColor: "green",
-      username: null,
-      disabled: null,
-      emailadress: null,
-      lastname: null,
-      firstname: null,
-      address: null,
-      city: null,
-      country: null,
-      code: null,
-      aboutme:
-        "Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.",
+      formacao: {
+        nome: null,
+        descricao: null,
+        quantidadeAlunoMax: null,
+        formadores: [],
+        categorias: [],
+        horarios: [],
+        licoes: [],
+        estado: null,
+      },
     };
+  },
+  computed: {
+    ...mapGetters({
+      restricao: "userModule/restrictTo",
+      formacoes: "formacaoModule/getAll",
+    }),
+    // getFormacao(){
+
+    // }
   },
   methods: {
     getClass: function(headerColor) {
       return "md-card-header-" + headerColor + "";
     },
+    setFormacaoById(formacaoId) {
+      const formacaoTemp = this.formacoes.find((el) => el._id == formacaoId);
+      if (formacaoTemp) {
+        this.formacao.nome = formacaoTemp.nome;
+        this.formacao.descricao = formacaoTemp.descricao;
+        this.formacao.quantidadeAlunoMax = formacaoTemp.quantidadeAlunoMax;
+        this.formacao.formadores = formacaoTemp.formadores || [];
+        this.formacao.categorias = formacaoTemp.categorias || [];
+        this.formacao.horarios = formacaoTemp.horarios || [];
+        this.formacao.licoes = formacaoTemp.licoes || [];
+        this.formacao.estado = formacaoTemp.estado.estado;
+      }
+    },
+  },
+  watch: {
+    formacaoId(value) {
+      if (value) this.setFormacaoById(value);
+    },
+  },
+  mounted() {
+    if (this.formacaoId) this.setFormacaoById(this.formacaoId);
   },
 };
 </script>
