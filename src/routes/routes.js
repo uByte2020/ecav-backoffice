@@ -34,6 +34,7 @@ import RegularTables from "@/pages/Dashboard/Tables/RegularTables.vue";
 import TableMarcacao from "@/pages/Dashboard/Tables/TableMarcacao.vue";
 import UsersTable from "@/pages/Dashboard/Tables/UsersTable.vue";
 import FormacoesTable from "@/pages/Dashboard/Tables/FormacoesTable.vue";
+import LicoesTable from "@/pages/Dashboard/Tables/LicoesTable.vue";
 // import MarcacaoTables from "@/pages/Dashboard/Tables/MarcacaoTables.vue";
 
 // Maps pages
@@ -274,6 +275,11 @@ const routes = [
         components: { default: UsersTable },
       },
       {
+        path: "licoes",
+        name: "Lições",
+        components: { default: LicoesTable },
+      },
+      {
         path: "formacoes",
         name: "Formações",
         components: { default: FormacoesTable },
@@ -281,8 +287,8 @@ const routes = [
       {
         path: "formacoes-detalhe/:formacaoId",
         name: "Formação Detalhe",
-        component: FormacaoDetalhe ,
-        props: true
+        component: FormacaoDetalhe,
+        props: true,
       },
     ],
   },

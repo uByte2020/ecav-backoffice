@@ -36,6 +36,10 @@
           v-show="restrictTo(0)"
           :link="{ name: 'Formações', icon: 'assignment', path: '/formacoes' }"
         ></sidebar-item>
+        <sidebar-item
+          v-show="restrictTo(0)"
+          :link="{ name: 'Lições', icon: 'assignment', path: '/licoes' }"
+        ></sidebar-item>
       </template>
     </side-bar>
     <div class="main-panel">

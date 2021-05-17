@@ -25,6 +25,23 @@ const licaoModule = {
         );
       });
     },
+    criarLicao({ commit, rootGetters }, licao) {
+      const jwt = rootGetters["userModule/getToken"];
+      return new Promise((resolve, reject) => {
+        axios
+          .post(requestURL.LICOES, licao, {
+            headers: { Authorization: jwt },
+          })
+          .then(
+            (response) => {
+              resolve(response.data);
+            },
+            (error) => {
+              reject(error);
+            }
+          );
+      });
+    },
   },
   getters: {
     getAll: (state) => {
