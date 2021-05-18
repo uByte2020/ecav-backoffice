@@ -1,6 +1,6 @@
 import AuthService from "./../../service/auth.service";
 import UserService from "./../../service/user.service";
-
+ 
 const user = JSON.parse(localStorage.getItem('user'));
 const token = JSON.parse(localStorage.getItem('token'));
 const initialState =
@@ -12,9 +12,10 @@ const userModule = {
   namespaced: true,
   state: initialState,
   mutations: {
-    loginSuccess(state, user) {
+    loginSuccess(state, response) {
       state.status.loggedIn = true;
-      state.user = user;
+      state.user = response.user;
+      state.token = response.token;
     },
     loginFailure(state) {
       state.status.loggedIn = false;
@@ -38,9 +39,9 @@ const userModule = {
   actions: {
     login({ commit }, user) {
       return AuthService.login(user).then(
-        (user) => {
-          commit("loginSuccess", user);
-          return Promise.resolve(user);
+        (response) => {
+          commit("loginSuccess", response);
+          return Promise.resolve(response.user);
         },
         (error) => {
           commit("loginFailure");
@@ -79,15 +80,14 @@ const userModule = {
     },
     getAll({ commit }) {
       return UserService.getAll().then(
-          (response) => {
-            if (response)
-              commit("setUsers", response);
-            return Promise.resolve(response);
-          },
-          (error) => {
-            return Promise.reject(error);
-          }
-        );
+        (response) => {
+          if (response) commit("setUsers", response);
+          return Promise.resolve(response);
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
+      );
     },
   },
   getters: {

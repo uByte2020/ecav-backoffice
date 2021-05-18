@@ -28,8 +28,10 @@ class AuthService {
           );
             localStorage.setItem("user", JSON.stringify(filtedUser));
             localStorage.setItem("token", JSON.stringify(response.data.token));
-            axios.defaults.headers.common['Authorization'] = response.data.token;
-          return filtedUser;
+            axios.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${response.data.token}`;
+            return { user: filtedUser, token: response.data.token };
         }
       });
   }
