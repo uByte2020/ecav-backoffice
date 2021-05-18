@@ -312,6 +312,8 @@ export default {
     getFormacao(value){
       this.marcacao.data= null;
       this.marcacao.hora = null;
+      this.marcacao.categoria = null;
+      this.marcacao.formador = null;
     },
     getData(value){
       this.marcacao.hora = null;
