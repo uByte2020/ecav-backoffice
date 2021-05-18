@@ -74,42 +74,58 @@ export default {
     AnimatedNumber,
   },
   data() {
-    return {};
+    return {
+      totalMarcacaoesPendentes: 0,
+      totalMarcacaoesConfirmadas: 0,
+      totalMarcacaoesRealizadas: 0,
+      totalMarcacaoesCanceladas: 0
+    };
   },
   computed: {
     ...mapGetters({
       marcacoes: "marcacaoModule/getAll",
     }),
     getTotalMarcacaoesPendentes() {
-      try {
-        return this.marcacoes.filter((el) => el.estado.estadoCode == 3).length;
-      } catch (err) {
-        return 0;
-      }
+        return this.totalMarcacaoesPendentes;
     },
     getTotalMarcacaoesConfirmadas() {
-      try {
-        return this.marcacoes.filter((el) => el.estado.estadoCode == 1).length;
-      } catch (err) {
-        return 0;
-      }
+        return this.totalMarcacaoesConfirmadas;
     },
     getTotalMarcacaoesRealizadas() {
-      try {
-        return this.marcacoes.filter((el) => el.estado.estadoCode == 2).length;
-      } catch (err) {
-        return 0;
-      }
+      return this.totalMarcacaoesRealizadas;
     },
     getTotalMarcacaoesCanceladas() {
-      try {
-        return this.marcacoes.filter((el) => el.estado.estadoCode == 4).length;
-      } catch (err) {
-        return 0;
-      }
+      return this.totalMarcacaoesCanceladas;
     },
   },
+  methods:{
+    setTotalMarcacaoesPendentes(marcacoes) {
+      this.totalMarcacaoesPendentes = marcacoes.filter((el) => el.estado.estadoCode == 3).length || 0;
+      console.log(this.totalMarcacaoesPendentes)
+    },
+    setTotalMarcacaoesConfirmadas(marcacoes) {
+      this.totalMarcacaoesConfirmadas = marcacoes.filter((el) => el.estado.estadoCode == 1).length || 0;
+    },
+    setTotalMarcacaoesRealizadas(marcacoes) {
+      this.totalMarcacaoesRealizadas = marcacoes.filter((el) => el.estado.estadoCode == 2).length || 0;
+    },
+    setTotalMarcacaoesCanceladas(marcacoes) {
+      this.totalMarcacaoesCanceladas = marcacoes.filter((el) => el.estado.estadoCode == 4).length || 0;
+    },
+  },
+  watch:{
+    marcacoes(values){
+      this.setTotalMarcacaoesPendentes(values);
+      this.setTotalMarcacaoesConfirmadas(values);
+      this.setTotalMarcacaoesRealizadas(values);
+      this.setTotalMarcacaoesCanceladas(values);
+    }
+  },
   mounted(){
+    this.setTotalMarcacaoesPendentes(this.marcacoes);
+    this.setTotalMarcacaoesConfirmadas(this.marcacoes);
+    this.setTotalMarcacaoesRealizadas(this.marcacoes);
+    this.setTotalMarcacaoesCanceladas(this.marcacoes);
   }
 };
 </script>

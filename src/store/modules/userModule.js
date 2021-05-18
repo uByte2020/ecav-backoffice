@@ -35,6 +35,9 @@ const userModule = {
     setUsers(state, users) {
       state.users = users;
     },
+    setUser(state, user) {
+      state.user = user;
+    },
   },
   actions: {
     login({ commit }, user) {
@@ -74,6 +77,17 @@ const userModule = {
         },
         (error) => {
           commit("registerFailure");
+          return Promise.reject(error);
+        }
+      );
+    },
+    updateMe({ commit }, user)  {
+      return AuthService.updateMe(user).then(
+        (response) => {
+          commit("setUser", response);
+          return Promise.resolve(response);
+        },
+        (error) => {
           return Promise.reject(error);
         }
       );

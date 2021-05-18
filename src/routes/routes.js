@@ -250,6 +250,11 @@ const routes = [
         components: { default: Dashboard },
       },
       {
+        path: "user",
+        name: "Perfil",
+        components: { default: User },
+      },
+      {
         path: "calendario",
         name: "Calendario das Marcações",
         components: { default: Calendar },

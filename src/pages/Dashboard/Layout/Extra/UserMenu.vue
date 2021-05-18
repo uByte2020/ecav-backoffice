@@ -44,6 +44,7 @@ export default {
   methods: {
     clicked: function(e) {
       e.preventDefault();
+      this.$router.push({path: '/user' })
     },
     toggleMenu: function() {
       this.isClosed = !this.isClosed;

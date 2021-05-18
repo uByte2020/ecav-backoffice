@@ -3,6 +3,7 @@ import BaseURL from "./apiBaseURL";
 export default {
   LOGIN: `${BaseURL.API_URL}/users/login`,
   LOGOUT: `${BaseURL.API_URL}/users/logout`,
+  UPDATE_ME: `${BaseURL.API_URL}/users/updateMe`,
   USERS: `${BaseURL.API_URL}/users`,
   PERFIS: `${BaseURL.API_URL}/perfils`,
   SIGN_UP: `${BaseURL.API_URL}/users/signup`,

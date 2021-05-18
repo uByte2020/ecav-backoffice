@@ -5,26 +5,22 @@
     </div>
 
     <md-card-content>
-      <h6 class="category text-gray">CEO / Co-Founder</h6>
-      <h4 class="card-title">Alec Thompson</h4>
-      <p class="card-description">
-        Don't be scared of the truth because we need to restart the human
-        foundation in truth And I love you like Kanye loves Kanye I love Rick
-        Owens’ bed design but the back is...
-      </p>
-      <md-button class="md-round" :class="getColorButton(buttonColor)"
-        >Follow</md-button
+      <h4 class="card-title">{{getUser.name}}</h4>
+      <md-button class="md-round" disabled :class="getColorButton(buttonColor)"
+        >Alterar Foto</md-button
       >
     </md-card-content>
   </md-card>
 </template>
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
 export default {
   name: "user-card",
   props: {
     cardUserImage: {
       type: String,
-      default: "./img/faces/marc.jpg"
+      default: "./img/default.png"
     },
     buttonColor: {
       type: String,
@@ -38,7 +34,10 @@ export default {
     getColorButton: function(buttonColor) {
       return "md-" + buttonColor + "";
     }
-  }
+  },
+  computed: {
+    ...mapGetters({ getUser: "getUser" }),
+  },
 };
 </script>
 <style></style>

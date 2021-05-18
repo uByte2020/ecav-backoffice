@@ -46,7 +46,10 @@ export default {
   watch: {
     number(newValue, oldValue) {
       this.initAnimation(newValue, oldValue);
-    }
+    },
+    value(newValue, oldValue) {
+      this.initAnimation(newValue, oldValue);
+    },
   }
 };
 </script>
