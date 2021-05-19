@@ -25,6 +25,9 @@ const perfilModule = {
         );
       });
     },
+    reset({ commit }) {
+      commit("setPerfis", []);
+    },
   },
   getters: {
     getAll: (state) => {

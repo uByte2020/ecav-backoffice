@@ -24,6 +24,7 @@ const userModule = {
     logout(state) {
       state.status.loggedIn = false;
       state.user = null;
+      state.token = null;
     },
     registerSuccess(state, user) {
       state.status.loggedIn = true;
@@ -57,8 +58,13 @@ const userModule = {
       if (userAuth) commit("loginSuccess", userAuth);
       else commit("loginFailure");
     },
-    logout({ commit }) {
+    logout({ commit, rootActions }) {
       commit("logout");
+      commit("setUsers", []);
+      dispatch('formacaoModule/reset', {root:true});
+      dispatch('licaoModule/reset', {root:true});
+      dispatch('marcacaoModule/reset', {root:true});
+      dispatch('perfilModule/reset', {root:true});
       return AuthService.logout().then(
         (response) => {
           return Promise.resolve(response);
@@ -81,7 +87,7 @@ const userModule = {
         }
       );
     },
-    updateMe({ commit }, user)  {
+    updateMe({ commit }, user) {
       return AuthService.updateMe(user).then(
         (response) => {
           commit("setUser", response);
@@ -102,6 +108,10 @@ const userModule = {
           return Promise.reject(error);
         }
       );
+    },
+    reset({ commit }) {
+      commit("logout");
+      commit("setUsers", []);
     },
   },
   getters: {

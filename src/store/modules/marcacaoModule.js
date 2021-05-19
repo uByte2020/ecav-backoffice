@@ -102,6 +102,10 @@ const marcacaoModule = {
           );
       });
     },
+    reset({ commit }) {
+      commit("setMarcacoes", []);
+      commit("setAlunos", []);
+    },
   },
   getters: {
     getAll: (state) => {

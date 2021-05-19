@@ -25,6 +25,9 @@ const formacaoModule = {
         );
       });
     },
+    reset({ commit }) {
+      commit("setFormacoes", []);
+    },
   },
   getters: {
     getAll: (state) => {

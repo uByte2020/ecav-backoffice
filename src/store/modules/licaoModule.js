@@ -42,6 +42,9 @@ const licaoModule = {
           );
       });
     },
+    reset({ commit }) {
+      commit("setLicoes", []);
+    },
   },
   getters: {
     getAll: (state) => {
