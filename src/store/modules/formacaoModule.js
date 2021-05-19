@@ -25,6 +25,24 @@ const formacaoModule = {
         );
       });
     },
+    update({ commit, rootGetters }, { formacao, formacaoId }) {
+      const jwt = rootGetters["userModule/getToken"];
+      console.log(formacao, formacaoId);
+      return new Promise((resolve, reject) => {
+        axios
+          .patch(`${requestURL.FORMACOES}/${formacaoId}`, formacao, {
+            headers: { Authorization: jwt },
+          })
+          .then(
+            (response) => {
+              resolve(response.data);
+            },
+            (error) => {
+              reject(error);
+            }
+          );
+      });
+    },
     reset({ commit }) {
       commit("setFormacoes", []);
     },

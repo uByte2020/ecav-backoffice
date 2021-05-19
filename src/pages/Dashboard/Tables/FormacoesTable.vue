@@ -108,6 +108,7 @@
 <script>
 import { Pagination } from "@/components";
 import modalType from "@/utils/modalType";
+import diaSemana from "@/utils/diaSemana";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
 import UsersTableModel from "../Components/UsersTableModel";
@@ -157,7 +158,8 @@ export default {
       modalTypes: modalType,
       items: [{'1':'-'}],
       fields: ['1'],
-      title: 'Formadores'
+      title: 'Formadores',
+      diasDaSemana:diaSemana.diasSemana,
     };
   },
   methods: {
@@ -186,8 +188,11 @@ export default {
           this.setTitle("Categorias");
           break;
         case this.modalTypes.HORARIO:
-          this.setItems(items.map(el=>{return {horario:el}}));
-          this.setItemsFields([{field:'horario', name:'Horario'}]);
+          this.setItems(items.map(el=>{
+            el.nomeDia = (this.diasDaSemana.find(d=>d.dia==el.diaSemana).nome)||el.diaSemana;
+            return el;
+          }));
+          this.setItemsFields([{field:'nomeDia', name:'Dia da Semana'}, {field:'hora', name:'Hora'},{field:'duracao', name:'Duracao'}]);
           this.setTitle("Horários");
           break;
         case this.modalTypes.LICAO:{
