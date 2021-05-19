@@ -76,13 +76,14 @@
                   </md-field>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-field>
+                  <md-datepicker v-model="marcacao.data" md-immediately />
+                  <!-- <md-field>
                     <md-input
                       v-model="marcacao.data"
                       type="date"
                       :min="minDate"
                     ></md-input>
-                  </md-field>
+                  </md-field> -->
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
@@ -118,6 +119,7 @@
 <script>
 import marcacaoformador from "../Tables/marcacaoformador";
 import { mapGetters, mapActions } from "vuex";
+import format from "date-fns/format";
 export default {
   name: "marcacao-model",
   props: {
@@ -145,12 +147,14 @@ export default {
       minTime: "10:00",
       formacoes: [],
       licoes: [],
+      format: format,
     };
   },
   methods: {
     criarMarcacao() {
       const marcacao = { ...this.marcacao };
-      marcacao.data = `${marcacao.data}T${marcacao.hora}:00.00Z`;
+      console.log(this.getData)
+      marcacao.data = `${this.getData}T${marcacao.hora}:00.00Z`;
       let loader = this.$loading.show({
         container: this.$refs.marcacaoModel,
         onCancel: this.onCancel,
@@ -166,9 +170,9 @@ export default {
         })
         .catch((error) => {
           const message =
-              (error.response && error.response.data) ||
-              error.message ||
-              error.toString();
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
           loader.hide();
           this.notifyVue(message, "danger");
         });
@@ -192,6 +196,11 @@ export default {
         verticalAlign: "top",
         type: type,
       });
+    },
+    getDateOfWeek(w, y) {
+      var d = 1 + (w - 1) * 7; // 1st of January + 7 days for each week
+
+      return new Date(y, 0, d);
     },
     ...mapActions({
       criarMarcacaoAction: "marcacaoModule/criarMarcacao",
@@ -217,7 +226,7 @@ export default {
       // if(!this.marcacao.formador) return [];
       // const formador = this.getFormadores.find(el=>el._id===this.marcacao.formador);
       // const unAvailibleTime = formador.indisponibilidade.find(el=>el.startsWith(this.marcacao.data));
-      
+
       const times = [
         "06:00",
         "06:30",
@@ -266,23 +275,25 @@ export default {
         );
       return [];
     },
-    getFormador(){
+    getFormador() {
       return this.marcacao.formador;
     },
-    getCategoria(){
+    getCategoria() {
       return this.marcacao.categoria;
     },
-    getFormacao(){
+    getFormacao() {
       return this.marcacao.formacao;
     },
-    getData(){
-      return this.marcacao.data;
-    }
+    getData() {
+      return this.marcacao.data
+        ? this.format(this.marcacao.data, "yyyy-MM-dd")
+        : null; //this.marcacao.data;
+    },
   },
   watch: {
     showDialogProp(value) {
       this.showDialog = value;
-      if(!this.showDialog){
+      if (!this.showDialog) {
         this.marcacao = {
           formador: null,
           categoria: null,
@@ -302,26 +313,27 @@ export default {
     getAllLicoes(values) {
       this.licoes = values;
     },
-    getFormador(value){
+    getFormador(value) {
       this.marcacao.data = null;
       this.marcacao.hora = null;
     },
-    getCategoria(value){
-      this.marcacao.licao=null;
+    getCategoria(value) {
+      this.marcacao.licao = null;
     },
-    getFormacao(value){
-      this.marcacao.data= null;
+    getFormacao(value) {
+      this.marcacao.data = null;
       this.marcacao.hora = null;
       this.marcacao.categoria = null;
       this.marcacao.formador = null;
     },
-    getData(value){
+    getData(value) {
       this.marcacao.hora = null;
-    }
+    },
   },
   mounted() {
     this.formacoes = this.getAllFormacoes;
     this.licoes = this.getAllLicoes;
+    // console.log(this.getDateOfWeek(3,2021))
   },
 };
 </script>

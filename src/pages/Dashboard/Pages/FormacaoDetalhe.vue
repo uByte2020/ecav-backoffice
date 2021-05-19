@@ -33,23 +33,26 @@
                     <label>Horários</label>
                     <md-input v-model="formacao.horarios.length" type="text"></md-input>
                   </md-field>
+                  <md-button class="md-raised md-success mt-4"
+                    >Add</md-button
+                  >
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
                     <label>Instrutores</label>
-                    <md-input :value="formacao.formadores.length" type="text"></md-input>
+                    <md-input :value="formacao.formadores.length" disabled type="text"></md-input>
                   </md-field>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
                     <label>Categorias</label>
-                    <md-input v-model="formacao.categorias.length" type="text"></md-input>
+                    <md-input v-model="formacao.categorias.length" disabled type="text"></md-input>
                   </md-field>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
                     <label>Lições</label>
-                    <md-input v-model="formacao.licoes.length" type="text"></md-input>
+                    <md-input v-model="formacao.licoes.length" disabled type="text"></md-input>
                   </md-field>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
