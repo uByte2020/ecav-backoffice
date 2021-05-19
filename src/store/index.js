@@ -5,6 +5,7 @@ import marcacaoModule from "./modules/marcacaoModule";
 import perfilModule from "./modules/perfilModule";
 
 const store = {
+  namespaced: true,
   modules: {
     userModule,
     formacaoModule,

@@ -58,13 +58,13 @@ const userModule = {
       if (userAuth) commit("loginSuccess", userAuth);
       else commit("loginFailure");
     },
-    logout({ commit, rootActions }) {
+    logout({ commit, dispatch }) {
       commit("logout");
       commit("setUsers", []);
-      dispatch('formacaoModule/reset', {root:true});
-      dispatch('licaoModule/reset', {root:true});
-      dispatch('marcacaoModule/reset', {root:true});
-      dispatch('perfilModule/reset', {root:true});
+      dispatch("formacaoModule/reset", null ,{ root: true });
+      dispatch("licaoModule/reset", null ,{ root: true });
+      dispatch("marcacaoModule/reset", null ,{ root: true });
+      dispatch("perfilModule/reset", null ,{ root: true });
       return AuthService.logout().then(
         (response) => {
           return Promise.resolve(response);

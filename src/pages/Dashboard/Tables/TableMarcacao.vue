@@ -219,7 +219,7 @@ export default {
       return "";
     },
     getFormacaoByLicao(licao) {
-      if (licao && licao.formacao) return licao.formacao.nome;
+      if (licao && licao.formacao_detalhe) return licao.formacao_detalhe.nome;
       return "";
     },
     getCategoriaByLicao(licao) {
