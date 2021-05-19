@@ -82,7 +82,7 @@ export default {
       return "md-card-header-" + headerColor + "";
     },
     setNames(nome) {
-      console.log(nome);
+      // console.log(nome);
       if (nome !== null) {
         const names = nome.split(" ");
         this.user.firstName = names[0];
