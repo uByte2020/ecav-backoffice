@@ -76,7 +76,11 @@
                   </md-field>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-datepicker v-model="marcacao.data" md-immediately />
+                  <md-datepicker
+                    v-model="marcacao.data"
+                    md-immediately
+                    :md-disabled-dates="disabled_dates"
+                  />
                   <!-- <md-field>
                     <md-input
                       v-model="marcacao.data"
@@ -120,6 +124,7 @@
 import marcacaoformador from "../Tables/marcacaoformador";
 import { mapGetters, mapActions } from "vuex";
 import format from "date-fns/format";
+import moment from "moment";
 export default {
   name: "marcacao-model",
   props: {
@@ -153,7 +158,7 @@ export default {
   methods: {
     criarMarcacao() {
       const marcacao = { ...this.marcacao };
-      console.log(this.getData)
+      console.log(this.getData);
       marcacao.data = `${this.getData}T${marcacao.hora}:00.00Z`;
       let loader = this.$loading.show({
         container: this.$refs.marcacaoModel,
@@ -197,10 +202,10 @@ export default {
         type: type,
       });
     },
-    getDateOfWeek(w, y) {
-      var d = 1 + (w - 1) * 7; // 1st of January + 7 days for each week
-
-      return new Date(y, 0, d);
+    disabled_dates(date) {
+      return !this.getAvailableDates.includes(
+        moment(date).format("YYYY-MM-DD")
+      );
     },
     ...mapActions({
       criarMarcacaoAction: "marcacaoModule/criarMarcacao",
@@ -287,7 +292,39 @@ export default {
     getData() {
       return this.marcacao.data
         ? this.format(this.marcacao.data, "yyyy-MM-dd")
-        : null; //this.marcacao.data;
+        : null;
+    },
+    getHorarios() {
+      if (this.marcacao.formacao)
+        return this.formacoes.find((el) => el._id === this.marcacao.formacao)
+          .horarios;
+      return [];
+    },
+    getDateFromTo() {
+      const dates = [];
+      const startDate = moment();
+      const endDate = moment()
+        .add(1, "w")
+        .endOf("week");
+      let dayCursor = startDate;
+      while (dayCursor <= endDate) {
+        dates.push(dayCursor.toDate());
+        dayCursor = dayCursor.clone().add(1, "d");
+      }
+      return dates;
+    },
+    getAvailableDates() {
+      const dates = this.getDateFromTo;
+      const diasSemana = this.getHorarios.map((h) => h.diaSemana);
+      const datesResultAux = dates.filter((date) => {
+        const diaSemana = moment(date).day() + 1;
+        return diasSemana.includes(diaSemana);
+      });
+      const datesResult =
+        datesResultAux.length > 0
+          ? datesResultAux.map((el) => moment(el).format("YYYY-MM-DD"))
+          : datesResultAux;
+      return datesResult;
     },
   },
   watch: {
@@ -329,11 +366,11 @@ export default {
     getData(value) {
       this.marcacao.hora = null;
     },
+    getAvailableDates(value) {},
   },
   mounted() {
     this.formacoes = this.getAllFormacoes;
     this.licoes = this.getAllLicoes;
-    // console.log(this.getDateOfWeek(3,2021))
   },
 };
 </script>
