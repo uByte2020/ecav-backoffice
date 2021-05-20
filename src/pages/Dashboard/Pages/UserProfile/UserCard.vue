@@ -5,6 +5,7 @@
     </div>
 
     <md-card-content>
+      <h6 class="category text-gray">{{getUser.role.perfil}}</h6>
       <h4 class="card-title">{{getUser.name}}</h4>
       <md-button class="md-round" disabled :class="getColorButton(buttonColor)"
         >Alterar Foto</md-button
