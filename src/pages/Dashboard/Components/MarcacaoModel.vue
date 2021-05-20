@@ -158,14 +158,12 @@ export default {
   methods: {
     criarMarcacao() {
       const marcacao = { ...this.marcacao };
-      console.log(this.getData);
       marcacao.data = `${this.getData}T${marcacao.hora}:00.00Z`;
       let loader = this.$loading.show({
         container: this.$refs.marcacaoModel,
         onCancel: this.onCancel,
         background: "transparent",
       });
-      // console.log(marcacao)
       this.criarMarcacaoAction(marcacao)
         .then((response) => {
           this.notifyVue("Marcação Realizada com Sucesso", "success");
@@ -227,38 +225,10 @@ export default {
       return `${new Date().getFullYear()}-${month}-${day}`;
     },
     availibleTimes() {
-      // if(!this.marcacao.data) return [];
-      // if(!this.marcacao.formador) return [];
-      // const formador = this.getFormadores.find(el=>el._id===this.marcacao.formador);
-      // const unAvailibleTime = formador.indisponibilidade.find(el=>el.startsWith(this.marcacao.data));
-
-      const times = [
-        "06:00",
-        "06:30",
-        "07:00",
-        "07:30",
-        "08:00",
-        "08:30",
-        "09:00",
-        "09:30",
-        "10:00",
-        "10:30",
-        "11:00",
-        "11:30",
-        "12:00",
-        "12:30",
-        "13:00",
-        "13:30",
-        "14:00",
-        "14:30",
-        "15:00",
-        "15:30",
-        "16:00",
-        "16:30",
-        "17:00",
-        "17:30",
-      ];
-      // if(unAvailibleTime) return times.filter(el=>unAvailibleTime.search(el)<0)
+      if(!this.getData) return [];
+      if(!this.getHorarios) return [];
+      const diaSemana = moment(this.getData, "YYYY-MM-DD").day()+1;
+      const times = this.getHorarios.filter(el=>el.diaSemana===diaSemana).map(el=>el.hora);
       return times;
     },
     getCategories() {
