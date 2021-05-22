@@ -46,6 +46,13 @@
                 >
                 </md-input>
               </md-field>
+
+              <!-- @click="showModal" -->
+              <md-field>
+                <md-button class="md-success" v-show="restrictTo(0)"
+                  >Add User</md-button
+                >
+              </md-field>
             </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell md-label="Nome" md-sort-by="name">{{
@@ -176,9 +183,13 @@ export default {
       tableData: [],
       searchedData: [],
       fuseSearch: null,
+      isModalVisible: false,
     };
   },
   methods: {
+    setIsModalVisible(option) {
+      this.isModalVisible = option;
+    },
     customSort(value) {
       return value.sort((a, b) => {
         const sortBy = this.currentSort;
@@ -198,7 +209,7 @@ export default {
     },
     onSelectPerfil(perfil) {
       if (perfil == "Todos") this.tableData = this.users;
-      else this.tableData = this.users.filter(el=>el.role.perfil==perfil)
+      else this.tableData = this.users.filter((el) => el.role.perfil == perfil);
     },
   },
   mounted() {
