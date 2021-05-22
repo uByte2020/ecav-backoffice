@@ -64,13 +64,13 @@
                 <a class="da-link" @click="showModalAlunosMarcacao(item.alunos)">Ver Alunos</a>  
               </md-table-cell>
               <md-table-cell md-label="Actions">
-                <md-button v-show="restrictTo(0,1)" class="md-just-icon md-info md-simple">
+                <md-button v-show="restrictTo(0,1)" @click="updateMarcacao(item._id,1)" class="md-just-icon md-info md-simple">
                   <md-icon>thumb_up</md-icon>
                 </md-button>
                 <md-button class="md-just-icon md-warning md-simple">
                   <md-icon>edit</md-icon>
                 </md-button>
-                <md-button class="md-just-icon md-danger md-simple">
+                <md-button @click="updateMarcacao(item._id,4)" class="md-just-icon md-danger md-simple">
                   <md-icon>close</md-icon>
                 </md-button>
               </md-table-cell>
@@ -124,6 +124,7 @@ export default {
     ...mapGetters({
       restricao: "userModule/restrictTo",
       marcacoes: "marcacaoModule/getAll",
+      token:"userModule/getToken",
     }),
     restrictTo() {
       return this.restricao;
@@ -191,6 +192,27 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      updateMarcacaoState:"marcacaoModule/updateMarcacaoState",
+      getMyMarcacoes: "marcacaoModule/getMyMarcacoes",
+      getAllMarcacoes:"marcacaoModule/getAll"
+    }),
+    async updateMarcacao(id,state){
+
+      this.updateMarcacaoState({id,state})
+        .then((response) => {
+          this.notifyVue(`Marcação ${state==1 ? "Confirmada" : state==4 ? "Cancelada" : "Pendente"}`, state==1 ? "success" : state==4 ? "danger" : "warning");
+          this.$emit("hide-dialog", false);
+          this.restrictTo(0) ? this.getAllMarcacoes() :this.getMyMarcacoes();
+        })
+        .catch((error) => {
+          const message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+          this.notifyVue(message, "danger");
+        });
+    },
     setModalAlunosMarcacao(value){
       this.modalAlunosMarcacao = value;
     },
@@ -204,6 +226,16 @@ export default {
     },
     setIsModalVisible(option) {
       this.isModalVisible = option;
+    },
+    notifyVue(message, type) {
+      this.$notify({
+        timeout: 2500,
+        message,
+        icon: "add_alert",
+        horizontalAlign: "right",
+        verticalAlign: "top",
+        type: type,
+      });
     },
     customSort(value) {
       return value.sort((a, b) => {
