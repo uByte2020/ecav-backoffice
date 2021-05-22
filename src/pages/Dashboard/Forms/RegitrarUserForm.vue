@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="registerForm">
     <ValidationObserver v-slot="{ handleSubmit }">
       <form @submit.prevent="handleSubmit(submit)">
         <ValidationProvider
@@ -98,6 +98,7 @@
           <md-field
             class="md-form-group"
             :class="[{ 'md-error': failed }, { 'md-valid': passed }]"
+            v-show="!loggedIn"
           >
             <md-icon>lock</md-icon>
             <label>Password</label>
@@ -120,6 +121,7 @@
           <md-field
             class="md-form-group"
             :class="[{ 'md-error': failed }, { 'md-valid': passed }]"
+            v-show="!loggedIn"
           >
             <md-icon>lock</md-icon>
             <label>Confirmar Password</label>
@@ -139,7 +141,8 @@
           rules="required"
           v-slot="{ passed, failed }"
         >
-          <md-field v-show="loggedIn && restrictTo(0,1)"
+          <md-field
+            v-show="loggedIn && restrictTo(0, 1)"
             class="md-form-group"
             :class="[{ 'md-error': failed }, { 'md-valid': passed }]"
           >
@@ -162,6 +165,13 @@
           <md-button href class="md-success mt-4" slot="footer" type="submit"
             >Registrar</md-button
           >
+          <md-button
+            v-show="loggedIn"
+            slot="footer"
+            class="md-warning  mt-4"
+            @click="$emit('close', true)"
+            >Cancelar</md-button
+          >
         </div>
       </form>
     </ValidationObserver>
@@ -169,8 +179,6 @@
 </template>
 <script>
 import User from "@/model/user";
-// import { createNamespacedHelpers } from "vuex";
-// const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
 import { mapGetters, mapActions } from "vuex";
 import { SlideYDownTransition } from "vue2-transitions";
 import { extend } from "vee-validate";
@@ -185,6 +193,12 @@ export default {
   components: {
     SlideYDownTransition,
   },
+  props: {
+    loggedInProp: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       user: new User("", "", ""),
@@ -192,26 +206,39 @@ export default {
       successful: false,
       message: "",
       boolean: false,
+      loggedIn: false
     };
   },
   methods: {
     ...mapActions({
       register: "userModule/register",
+      createUser: "userModule/createUser",
     }),
     submit() {
       this.message = "";
       this.submitted = true;
 
-      this.register(this.user).then(
+      let loader = this.$loading.show({
+        container: this.$refs.registerForm,
+        onCancel: this.onCancel,
+        background: "transparent",
+      });
+
+      const request = this.loggedIn ? this.createUser(this.user):this.register(this.user);
+      
+      request.then(
         (data) => {
           this.successful = true;
-          this.$router.push("/");
-        },
+          loader.hide();
+          this.$emit('is-add', true);
+          if(this.loggedIn) this.notifyVue('Utilizador Registrado com Sucesso', "success");
+        }).catch(
         (error) => {
           this.message =
             (error.response && error.response.data) ||
             error.message ||
             error.toString();
+            loader.hide();
           this.notifyVue(this.message, "danger");
           this.successful = false;
         }
@@ -229,14 +256,18 @@ export default {
     },
   },
   mounted() {
-    if (!this.loggedIn) this.user.role = 2;
+    this.loggedIn = this.loggedInProp;
+    if (!this.loggedIn) {
+      this.user.role = 2;
+    }else{
+      this.user.password = "ecav123";
+      this.user.passwordConfirm = "ecav123";
+    }
   },
   computed: {
     ...mapGetters({
       restricao: "userModule/restrictTo",
       perfis: "perfilModule/getAll",
-      restricao: "userModule/restrictTo",
-      loggedIn: "userModule/loggedIn",
     }),
     getPerfis() {
       return this.loggedIn
@@ -247,6 +278,11 @@ export default {
       return this.restricao;
     },
   },
+  watch:{
+    loggedInProp(value){
+      this.loggedIn = value;
+    }
+  }
 };
 </script>
 <style>

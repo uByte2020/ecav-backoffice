@@ -1,5 +1,6 @@
 <template>
   <div class="md-layout da-layout">
+    <notifications></notifications>
     <div class="md-layout-item">
       <signup-card>
         <h2 class="title text-center" slot="title">Registrar-se</h2>
@@ -7,7 +8,7 @@
           class="md-layout-item md-size-100 md-medium-size-100 md-small-size-100 mr-auto"
           slot="content-center"
         >
-          <registrar-user-form />
+          <registrar-user-form @is-add="userRegistered"/>
         </div>
       </signup-card>
     </div>
@@ -15,8 +16,6 @@
 </template>
 <script>
 import { SignupCard } from "@/components";
-// import { createNamespacedHelpers } from "vuex";
-// const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
 import { mapGetters, mapActions } from "vuex";
 import { RegitrarUserForm } from "@/pages";
 export default {
@@ -32,6 +31,11 @@ export default {
       register: "userModule/register",
       getPerfis: "perfilModule/getAll",
     }),
+    userRegistered(status){
+      if (status) {
+      this.$router.push("/");
+    }
+    },
   },
   mounted() {
     this.getPerfis();
@@ -45,7 +49,18 @@ export default {
 };
 </script>
 <style>
-.da-layout {
+@media (min-width: 600px)
+{
+  .da-layout {
   width: 50% !important;
+  }
 }
+@media (max-width: 600px)
+{
+  .da-layout {
+    width: 100% !important;
+  }
+}
+
+
 </style>

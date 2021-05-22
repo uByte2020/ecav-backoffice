@@ -113,6 +113,16 @@ const userModule = {
         }
       );
     },
+    createUser({ commit }, user) {
+      return UserService.createUser(user).then(
+        (response) => {
+          return Promise.resolve(response);
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
+      );
+    },
     reset({ commit }) {
       commit("logout");
       commit("setUsers", []);

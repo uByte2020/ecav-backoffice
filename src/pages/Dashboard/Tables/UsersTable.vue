@@ -50,7 +50,7 @@
               <!---->
               <md-field>
                 <md-button class="md-success" @click="setIsModalVisible(true)" v-show="restrictTo(0)"
-                  >Add User</md-button
+                  >Registrar Utilizador</md-button
                 >
               </md-field>
             </md-table-toolbar>
@@ -188,8 +188,7 @@ export default {
         : this.tableData.length;
     },
     getPerfis() {
-      const perfis = !this.perfis ? [] : this.perfis.map((el) => el.perfil);
-      return ["Todos", ...perfis];
+      return!this.perfis ? [] : ["Todos", ...this.perfis.map((el) => el.perfil)];
     },
   },
   methods: {
