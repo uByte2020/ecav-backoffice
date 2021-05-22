@@ -47,9 +47,9 @@
                 </md-input>
               </md-field>
 
-              <!-- @click="showModal" -->
+              <!---->
               <md-field>
-                <md-button class="md-success" v-show="restrictTo(0)"
+                <md-button class="md-success" @click="setIsModalVisible(true)" v-show="restrictTo(0)"
                   >Add User</md-button
                 >
               </md-field>
@@ -116,6 +116,10 @@
         </md-card-actions>
       </md-card>
     </div>
+    <add-user-model
+        :showDialogProp="isModalVisible"
+        @hide-dialog="setIsModalVisible"
+      />
   </div>
 </template>
 
@@ -125,12 +129,34 @@ import Fuse from "fuse.js";
 import Swal from "sweetalert2";
 
 import { mapGetters, mapActions } from "vuex";
+import AddUserModel from "../Components/AddUserModel";
 
 export default {
   components: {
     Pagination,
+    "add-user-model":AddUserModel
   },
-  computed: {
+  data() {
+    return {
+      pagination: {
+        perPage: 25,
+        currentPage: 1,
+        perPageOptions: [5, 10, 25, 50],
+        total: 0,
+      },
+      perfil: "",
+      currentSort: "name",
+      currentSortOrder: "asc",
+      footerTable: ["Name", "Email", "Telemovel", "Actions"],
+      searchQuery: "",
+      propsToSearch: ["name", "email", "Telemovel"],
+      tableData: [],
+      searchedData: [],
+      fuseSearch: null,
+      isModalVisible: false,
+    };
+  },
+    computed: {
     ...mapGetters({
       restricao: "userModule/restrictTo",
       users: "userModule/getAll",
@@ -165,26 +191,6 @@ export default {
       const perfis = !this.perfis ? [] : this.perfis.map((el) => el.perfil);
       return ["Todos", ...perfis];
     },
-  },
-  data() {
-    return {
-      pagination: {
-        perPage: 25,
-        currentPage: 1,
-        perPageOptions: [5, 10, 25, 50],
-        total: 0,
-      },
-      perfil: "",
-      currentSort: "name",
-      currentSortOrder: "asc",
-      footerTable: ["Name", "Email", "Telemovel", "Actions"],
-      searchQuery: "",
-      propsToSearch: ["name", "email", "Telemovel"],
-      tableData: [],
-      searchedData: [],
-      fuseSearch: null,
-      isModalVisible: false,
-    };
   },
   methods: {
     setIsModalVisible(option) {
@@ -229,7 +235,7 @@ export default {
       this.searchedData = result;
     },
     users(values) {
-      this.tableData = this.values;
+      this.tableData = values;
     },
   },
 };

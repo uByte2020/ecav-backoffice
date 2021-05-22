@@ -177,6 +177,7 @@ export default {
   name: "registrar-user-form",
   components: {
     SignupCard,
+    SlideYDownTransition
   },
   data() {
     return {
