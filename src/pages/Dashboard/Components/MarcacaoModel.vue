@@ -7,115 +7,175 @@
     >
       <md-dialog-title>Realizar Marcação</md-dialog-title>
       <md-dialog-content>
-        <form>
-          <md-card>
-            <md-card-content>
-              <div class="md-layout">
-                <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-field>
-                    <label for="formacao">Formação</label>
-                    <md-select
-                      v-model="marcacao.formacao"
+        <ValidationObserver v-slot="{ handleSubmit }">
+          <form @submit.prevent="handleSubmit(criarMarcacao)">
+            <md-card>
+              <md-card-content>
+                <div class="md-layout">
+                  <div class="md-layout-item md-small-size-100 md-size-33">
+                    <ValidationProvider
                       name="formacao"
-                      id="formacao"
+                      rules="required"
+                      v-slot="{ passed, failed }"
                     >
-                      <md-option
-                        v-for="(formacao, formacaoIdx) in formacoes"
-                        :value="formacao._id"
-                        :key="formacaoIdx"
-                        >{{ formacao.nome }}</md-option
+                      <md-field
+                        :class="[
+                          { 'md-error': failed },
+                          { 'md-valid': passed },
+                        ]"
                       >
-                    </md-select>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-field>
-                    <label for="categoria">Categoria</label>
-                    <md-select
-                      v-model="marcacao.categoria"
+                        <label for="formacao">Formação</label>
+                        <md-select
+                          v-model="marcacao.formacao"
+                          name="formacao"
+                          id="formacao"
+                        >
+                          <md-option
+                            v-for="(formacao, formacaoIdx) in formacoes"
+                            :value="formacao._id"
+                            :key="formacaoIdx"
+                            >{{ formacao.nome }}</md-option
+                          >
+                        </md-select>
+                      </md-field>
+                    </ValidationProvider>
+                  </div>
+
+                  <div class="md-layout-item md-small-size-100 md-size-33">
+                    <ValidationProvider
                       name="categoria"
-                      id="categoria"
+                      rules="required"
+                      v-slot="{ passed, failed }"
                     >
-                      <md-option
-                        v-for="(categoria, categoriaIdx) in getCategories"
-                        :key="categoriaIdx"
-                        :value="categoria._id"
-                        >{{ categoria.categoria }}</md-option
+                      <md-field
+                        :class="[
+                          { 'md-error': failed },
+                          { 'md-valid': passed },
+                        ]"
                       >
-                    </md-select>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-field>
-                    <label for="licao">Lição</label>
-                    <md-select v-model="marcacao.licao" name="licao" id="licao">
-                      <md-option
-                        v-for="(licao, licaoIdx) in getLicoes"
-                        :key="licaoIdx"
-                        :value="licao._id"
-                        >{{ licao.nome }}</md-option
-                      >
-                    </md-select>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-field>
-                    <label for="Instrutor">Instrutor</label>
-                    <md-select
-                      v-model="marcacao.formador"
-                      name="Instrutor"
-                      id="Instrutor"
+                        <label for="categoria">Categoria</label>
+                        <md-select
+                          v-model="marcacao.categoria"
+                          name="categoria"
+                          id="categoria"
+                        >
+                          <md-option
+                            v-for="(categoria, categoriaIdx) in getCategories"
+                            :key="categoriaIdx"
+                            :value="categoria._id"
+                            >{{ categoria.categoria }}</md-option
+                          >
+                        </md-select>
+                      </md-field>
+                    </ValidationProvider>
+                  </div>
+                  <div class="md-layout-item md-small-size-100 md-size-33">
+                    <ValidationProvider
+                      name="licao"
+                      rules="required"
+                      v-slot="{ passed, failed }"
                     >
-                      <md-option
-                        v-for="(formador, formadorIdx) in getFormadores"
-                        :key="formadorIdx"
-                        :value="formador._id"
-                        >{{ formador.name }}</md-option
+                      <md-field
+                        :class="[
+                          { 'md-error': failed },
+                          { 'md-valid': passed },
+                        ]"
                       >
-                    </md-select>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-datepicker
-                    v-model="marcacao.data"
-                    md-immediately
-                    :md-disabled-dates="disabled_dates"
-                  />
-                  <!-- <md-field>
-                    <md-input
+                        <label for="licao">Lição</label>
+                        <md-select
+                          v-model="marcacao.licao"
+                          name="licao"
+                          id="licao"
+                        >
+                          <md-option
+                            v-for="(licao, licaoIdx) in getLicoes"
+                            :key="licaoIdx"
+                            :value="licao._id"
+                            >{{ licao.nome }}</md-option
+                          >
+                        </md-select>
+                      </md-field>
+                    </ValidationProvider>
+                  </div>
+                  <div class="md-layout-item md-small-size-100 md-size-33">
+                    <ValidationProvider
+                      name="instrutor"
+                      rules="required"
+                      v-slot="{ passed, failed }"
+                    >
+                      <md-field
+                        :class="[
+                          { 'md-error': failed },
+                          { 'md-valid': passed },
+                        ]"
+                      >
+                        <label for="Instrutor">Instrutor</label>
+                        <md-select
+                          v-model="marcacao.formador"
+                          name="Instrutor"
+                          id="Instrutor"
+                        >
+                          <md-option
+                            v-for="(formador, formadorIdx) in getFormadores"
+                            :key="formadorIdx"
+                            :value="formador._id"
+                            >{{ formador.name }}</md-option
+                          >
+                        </md-select>
+                      </md-field>
+                    </ValidationProvider>
+                  </div>
+                  <div class="md-layout-item md-small-size-100 md-size-33">
+                    <md-datepicker
                       v-model="marcacao.data"
-                      type="date"
-                      :min="minDate"
-                    ></md-input>
-                  </md-field> -->
-                </div>
-                <div class="md-layout-item md-small-size-100 md-size-33">
-                  <md-field>
-                    <!-- <md-input v-model="marcacao.hora" type="time" min="12:00 AM" step="600" ></md-input> -->
-                    <label for="hora">Hora</label>
-                    <md-select v-model="marcacao.hora" name="hora" id="hora">
-                      <md-option
-                        v-for="(time, timeIdx) in availibleTimes"
-                        :key="timeIdx"
-                        :value="time"
-                        >{{ time }}</md-option
+                      md-immediately
+                      :md-disabled-dates="disabled_dates"
+                    >
+                    <label>Data</label>
+                    </md-datepicker>
+                  </div>
+                  <div class="md-layout-item md-small-size-100 md-size-33">
+                    <ValidationProvider
+                      name="hora"
+                      rules="required"
+                      v-slot="{ passed, failed }"
+                    >
+                      <md-field
+                        :class="[
+                          { 'md-error': failed },
+                          { 'md-valid': passed },
+                        ]"
                       >
-                    </md-select>
-                  </md-field>
+                        <label for="hora">Hora</label>
+                        <md-select
+                          v-model="marcacao.hora"
+                          name="hora"
+                          id="hora"
+                        >
+                          <md-option
+                            v-for="(time, timeIdx) in availibleTimes"
+                            :key="timeIdx"
+                            :value="time"
+                            >{{ time }}</md-option
+                          >
+                        </md-select>
+                      </md-field>
+                    </ValidationProvider>
+                  </div>
                 </div>
-              </div>
-            </md-card-content>
-          </md-card>
-        </form>
+              </md-card-content>
+            </md-card>
+            <div class="button-container" style="justify-content: flex-end;">
+              <md-button class="md-success" type="submit"
+                >Criar Marcação</md-button
+              >
+              <md-button class="md-warning" @click="$emit('hide-dialog', false)"
+                >Cancelar</md-button
+              >
+            </div>
+          </form>
+        </ValidationObserver>
       </md-dialog-content>
-      <md-dialog-actions>
-        <md-button class="md-success" @click="criarMarcacao"
-          >Criar Marcação</md-button
-        >
-        <md-button class="md-warning" @click="$emit('hide-dialog', false)"
-          >Cancelar</md-button
-        >
-      </md-dialog-actions>
     </md-dialog>
   </div>
 </template>
@@ -125,8 +185,15 @@ import marcacaoformador from "../Tables/marcacaoformador";
 import { mapGetters, mapActions } from "vuex";
 import format from "date-fns/format";
 import moment from "moment";
+import { extend } from "vee-validate";
+import { required, email, confirmed } from "vee-validate/dist/rules";
+
+extend("email", email);
+extend("required", required);
+extend("confirmed", confirmed);
 export default {
   name: "marcacao-model",
+  components: {},
   props: {
     showDialogProp: {
       type: Boolean,
@@ -225,10 +292,12 @@ export default {
       return `${new Date().getFullYear()}-${month}-${day}`;
     },
     availibleTimes() {
-      if(!this.getData) return [];
-      if(!this.getHorarios) return [];
-      const diaSemana = moment(this.getData, "YYYY-MM-DD").day()+1;
-      const times = this.getHorarios.filter(el=>el.diaSemana===diaSemana).map(el=>el.hora);
+      if (!this.getData) return [];
+      if (!this.getHorarios) return [];
+      const diaSemana = moment(this.getData, "YYYY-MM-DD").day() + 1;
+      const times = this.getHorarios
+        .filter((el) => el.diaSemana === diaSemana)
+        .map((el) => el.hora);
       return times;
     },
     getCategories() {
@@ -348,5 +417,13 @@ export default {
 <style lang="scss" scoped>
 .md-dialog .md-dialog-container {
   max-width: 768px;
+}
+
+#md-field-datepicker:after {
+  background-color: transparent !important;
+}
+
+#md-field-datepicker {
+  margin-top: 0 !important;
 }
 </style>
