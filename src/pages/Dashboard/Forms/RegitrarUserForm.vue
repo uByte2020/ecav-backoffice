@@ -174,6 +174,7 @@ extend("required", required);
 extend("confirmed", confirmed);
 
 export default {
+  name: "registrar-user-form",
   components: {
     SignupCard,
   },
