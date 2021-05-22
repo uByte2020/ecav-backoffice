@@ -147,7 +147,6 @@ export default {
         onCancel: this.onCancel,
         background: "transparent",
       });
-      // console.log(marcacao)
       this.updateAction({ formacao, formacaoId})
         .then((response) => {
           this.notifyVue("Formação Actualizada com Sucesso", "success");

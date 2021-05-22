@@ -101,7 +101,6 @@ export default {
   methods:{
     setTotalMarcacaoesPendentes(marcacoes) {
       this.totalMarcacaoesPendentes = marcacoes.filter((el) => el.estado.estadoCode == 3).length || 0;
-      // console.log(this.totalMarcacaoesPendentes)
     },
     setTotalMarcacaoesConfirmadas(marcacoes) {
       this.totalMarcacaoesConfirmadas = marcacoes.filter((el) => el.estado.estadoCode == 1).length || 0;
