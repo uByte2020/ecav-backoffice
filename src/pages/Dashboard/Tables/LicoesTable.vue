@@ -51,15 +51,21 @@
                 item.estado.estado
               }}</md-table-cell> -->
               <md-table-cell md-label="Actions">
-                <md-button v-show="restrictTo(0)" class="md-just-icon md-info md-simple">
-                  <md-icon>thumb_up</md-icon>
-                </md-button>
-                <md-button v-show="restrictTo(0)" class="md-just-icon md-warning md-simple">
-                  <md-icon>edit</md-icon>
-                </md-button>
-                <md-button v-show="restrictTo(0)" class="md-just-icon md-danger md-simple">
-                  <md-icon>close</md-icon>
-                </md-button>
+                <div class="da-md-table-cell-actions">
+                  <md-button
+                    v-show="restrictTo(0)"
+                    class="da-btn-action md-just-icon md-warning md-simple"
+                    @click="callFormacaoDetalhe(item)"
+                  >
+                    <md-icon>edit</md-icon>
+                  </md-button>
+                  <md-button
+                    v-show="restrictTo(0)"
+                    class="md-just-icon md-danger md-simple"
+                  >
+                    <md-icon>close</md-icon>
+                  </md-button>
+                </div>
               </md-table-cell>
             </md-table-row>
           </md-table>
@@ -269,5 +275,8 @@ export default {
 }
 .da-link{
   cursor: pointer;
+}
+.da-md-table-cell-actions button{
+  margin-right: 2px;
 }
 </style>

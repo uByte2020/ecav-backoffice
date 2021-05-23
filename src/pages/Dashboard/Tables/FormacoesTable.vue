@@ -29,7 +29,7 @@
                 </md-input>
               </md-field>
               <md-field>
-                <md-button class="md-success" v-show="restrictTo(0)"
+                <md-button disabled class="md-success" v-show="restrictTo(0)"
                   >Adicionar Formação</md-button
                 >
               </md-field>

@@ -7,7 +7,7 @@
     >
       <md-dialog-title>Add Horário</md-dialog-title>
       <md-dialog-content>
-        <!-- <form> -->
+        <form>
           <md-card>
             <md-card-content>
               <div class="md-layout">
@@ -41,7 +41,7 @@
                     ></md-input>
                   </md-field>
                 </div>
-                <div class="md-layout-item md-small-size-100 md-size-33">
+                <!-- <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
                     <label for="duracao">Duração(min)</label>
                     <md-input
@@ -56,11 +56,11 @@
                       minlength="15"
                     ></md-input>
                   </md-field>
-                </div>
+                </div> -->
               </div>
             </md-card-content>
           </md-card>
-        <!-- </form> -->
+        </form>
       </md-dialog-content>
       <md-dialog-actions>
         <md-button class="md-success" @click="addHorario">Adicionar</md-button>
@@ -112,12 +112,7 @@ export default {
       currentUser: "userModule/getUser",
     }),
     minDate() {
-      const currentDate = new Date();
-      const monthAux = currentDate.getMonth() + 1;
-      const month = monthAux <= 9 ? "0" + monthAux : monthAux;
-      const dayAux = currentDate.getDate();
-      const day = dayAux <= 9 ? "0" + dayAux : dayAux;
-      return `${new Date().getFullYear()}-${month}-${day}`;
+      return '';
     },
   },
   watch: {
