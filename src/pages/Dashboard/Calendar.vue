@@ -121,7 +121,7 @@ export default {
       let title = '';
       if(!licao) return title;
       // title = licao.nome;
-      if(licao.formacao) title=licao.formacao.nome;
+      if(licao.formacao_detalhe) title=licao.formacao_detalhe.nome;
       if(licao.categoria) title+=`-${licao.categoria.categoria}`;
       return title;
     }
