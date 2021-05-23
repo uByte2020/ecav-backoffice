@@ -54,7 +54,16 @@
                       md-sort-by="name"
                       >{{ item[field.field] }}</md-table-cell
                     >
-                    <md-table-cell md-label="-"> </md-table-cell>
+                    <md-table-cell md-label="Actions">
+                      <div class="da-md-table-cell-actions">
+                        <md-button
+                          v-show="restrictTo(0)"
+                          class="md-just-icon md-danger md-simple"
+                        >
+                          <md-icon>close</md-icon>
+                        </md-button>
+                      </div>
+                    </md-table-cell>
                   </md-table-row>
                 </md-table>
               </md-card-content>
@@ -138,7 +147,7 @@ export default {
       tableData: [],
       searchedData: [],
       fuseSearch: null,
-      newItem:null
+      newItem: null,
     };
   },
   methods: {
@@ -151,9 +160,7 @@ export default {
         return b[sortBy].localeCompare(a[sortBy]);
       });
     },
-    addItem(){
-
-    },
+    addItem() {},
     handleLike(item) {
       Swal.fire({
         title: `You liked ${item.name}`,
@@ -278,8 +285,11 @@ export default {
 .md-dialog .md-dialog-container {
   max-width: 768px;
 }
-#btn-add{
-  width: 2%!important;
-  height: 74%!important;
+#btn-add {
+  width: 2% !important;
+  height: 74% !important;
+}
+.da-md-table-cell-actions button{
+  margin-right: 20px;
 }
 </style>

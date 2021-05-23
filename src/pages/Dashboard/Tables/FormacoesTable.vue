@@ -29,40 +29,62 @@
                 </md-input>
               </md-field>
               <md-field>
-                <md-button
-                  class="md-success"
-                  v-show="restrictTo(0)"
+                <md-button class="md-success" v-show="restrictTo(0)"
                   >Adicionar Formação</md-button
                 >
               </md-field>
             </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell md-label="Formação" md-sort-by="name">
-                {{
-                  item.nome
-                }}</md-table-cell>
+                {{ item.nome }}</md-table-cell
+              >
               <md-table-cell md-label="Quantide de Alunos" md-sort-by="aula">
                 {{ item.quantidadeAlunoMax }}</md-table-cell
               >
               <md-table-cell md-label="Instrutores">
-                <a class="da-link" @click="showModalFormadoresFormacao(item.formadores)">Ver Formadores</a>  
+                <a
+                  class="da-link"
+                  @click="showModalFormadoresFormacao(item.formadores)"
+                  >Ver Formadores</a
+                >
               </md-table-cell>
               <md-table-cell md-label="Categorias">
-                <a class="da-link" @click="showTableModal(item.categorias, modalTypes.CATEGORY)">Ver Categorias</a>  
+                <a
+                  class="da-link"
+                  @click="showTableModal(item.categorias, modalTypes.CATEGORY)"
+                  >Ver Categorias</a
+                >
               </md-table-cell>
               <md-table-cell md-label="Licões">
-                <a class="da-link" @click="showTableModal(item.licoes, modalTypes.LICAO)">Ver Lições</a>  
+                <a
+                  class="da-link"
+                  @click="showTableModal(item.licoes, modalTypes.LICAO)"
+                  >Ver Lições</a
+                >
               </md-table-cell>
               <md-table-cell md-label="Horarios">
-                <a class="da-link" @click="showTableModal(item.horarios, modalTypes.HORARIO)">Ver Horários</a>  
+                <a
+                  class="da-link"
+                  @click="showTableModal(item.horarios, modalTypes.HORARIO)"
+                  >Ver Horários</a
+                >
               </md-table-cell>
               <md-table-cell md-label="Actions">
-                <md-button v-show="restrictTo(0)" class="md-just-icon md-warning md-simple" @click="callFormacaoDetalhe(item)">
-                  <md-icon>edit</md-icon>
-                </md-button>
-                <md-button v-show="restrictTo(0)" class="md-just-icon md-danger md-simple">
-                  <md-icon>close</md-icon>
-                </md-button>
+                <div class="da-md-table-cell-actions">
+                  <md-button
+                    v-show="restrictTo(0)"
+                    class="da-btn-action md-just-icon md-warning md-simple"
+                    @click="callFormacaoDetalhe(item)"
+                  >
+                    <md-icon>edit</md-icon>
+                  </md-button>
+                  <md-button
+                    v-show="restrictTo(0)"
+                    class="md-just-icon md-danger md-simple"
+                  >
+                    <md-icon>close</md-icon>
+                  </md-button>
+                </div>
               </md-table-cell>
             </md-table-row>
           </md-table>
@@ -83,23 +105,25 @@
           </pagination>
         </md-card-actions>
       </md-card>
-      <users-table-model 
+      <users-table-model
         :showDialogProp="modalFormadoresFormacao"
         @hide-dialog="setModalFormadoresFormacao"
-        :users="getFormadoresByFormacao"/>
-      
+        :users="getFormadoresByFormacao"
+      />
+
       <!-- 
       <licoes-table-model 
         :showDialogProp="modalFormadoresFormacao"
         @hide-dialog="setModalFormadoresFormacao"
         :users="getFormadoresByFormacao"/>-->
 
-      <table-model 
+      <table-model
         :showDialogProp="isModalVisible"
         @hide-dialog="hideModal"
         :fields="getItemsFields"
         :items="getItems"
-        :title="getTitle"/>
+        :title="getTitle"
+      />
     </div>
   </div>
 </template>
@@ -119,7 +143,7 @@ export default {
   components: {
     Pagination,
     UsersTableModel,
-    TableModel
+    TableModel,
   },
   data() {
     return {
@@ -155,48 +179,66 @@ export default {
       modalLicoesFormacao: false,
       modalHorariosFormacao: false,
       modalTypes: modalType,
-      items: [{'1':'-'}],
-      fields: ['1'],
-      title: 'Formadores',
-      diasDaSemana:diaSemana.diasSemana,
+      items: [{ "1": "-" }],
+      fields: ["1"],
+      title: "Formadores",
+      diasDaSemana: diaSemana.diasSemana,
     };
   },
   methods: {
-    setModalFormadoresFormacao(value){
+    setModalFormadoresFormacao(value) {
       this.modalFormadoresFormacao = value;
     },
-    setModalStatus(value, field){
+    setModalStatus(value, field) {
       this[field] = value;
     },
-    hideModal(){
+    hideModal() {
       this.isModalVisible = false;
     },
     showModal() {
       this.isModalVisible = true;
     },
     showModalFormadoresFormacao(formadores) {
-      if(!formadores) formadores = [];
+      if (!formadores) formadores = [];
       this.formadoresFromFormacao = formadores;
       this.setModalFormadoresFormacao(true);
     },
     showTableModal(items, type) {
-      switch(type){
+      switch (type) {
         case this.modalTypes.CATEGORY:
           this.setItems(items);
-          this.setItemsFields([{field:'categoria', name:'Categoria'}]);
+          this.setItemsFields([{ field: "categoria", name: "Categoria" }]);
           this.setTitle("Categorias");
           break;
         case this.modalTypes.HORARIO:
-          this.setItems(items.map(el=>{
-            el.nomeDia = (this.diasDaSemana.find(d=>d.dia==el.diaSemana).nome)||el.diaSemana;
-            return el;
-          }));
-          this.setItemsFields([{field:'nomeDia', name:'Dia da Semana'}, {field:'hora', name:'Hora'},{field:'duracao', name:'Duracao'}]);
+          this.setItems(
+            items.map((el) => {
+              el.nomeDia =
+                this.diasDaSemana.find((d) => d.dia == el.diaSemana).nome ||
+                el.diaSemana;
+              return el;
+            })
+          );
+          this.setItemsFields([
+            { field: "nomeDia", name: "Dia da Semana" },
+            { field: "hora", name: "Hora" },
+            { field: "duracao", name: "Duracao" },
+          ]);
           this.setTitle("Horários");
           break;
-        case this.modalTypes.LICAO:{
-          this.setItems(items.map(el=>{return {nome:el.nome, categoria: el.categoria.categoria||'-'}}));
-          this.setItemsFields([{field:'nome', name:'nome'}, {field:'categoria', name:'Categoria'}]);
+        case this.modalTypes.LICAO: {
+          this.setItems(
+            items.map((el) => {
+              return {
+                nome: el.nome,
+                categoria: el.categoria.categoria || "-",
+              };
+            })
+          );
+          this.setItemsFields([
+            { field: "nome", name: "nome" },
+            { field: "categoria", name: "Categoria" },
+          ]);
           this.setTitle("Lições");
           break;
         }
@@ -239,18 +281,21 @@ export default {
     getLicaoName(licao) {
       return licao ? licao.nome : "";
     },
-    setItems(items){
+    setItems(items) {
       this.items = items;
     },
-    setItemsFields(fields){
+    setItemsFields(fields) {
       this.fields = fields;
     },
-    setTitle(title){
+    setTitle(title) {
       this.title = title;
     },
-    callFormacaoDetalhe(formacao){
-      this.$router.push({ path: `formacoes-detalhe/${formacao._id}`, params: { formacaoId:formacao._id } })
-    }
+    callFormacaoDetalhe(formacao) {
+      this.$router.push({
+        path: `formacoes-detalhe/${formacao._id}`,
+        params: { formacaoId: formacao._id },
+      });
+    },
   },
   computed: {
     ...mapGetters({
@@ -286,16 +331,16 @@ export default {
         ? this.searchedData.length
         : this.tableData.length;
     },
-    getFormadoresByFormacao(){
+    getFormadoresByFormacao() {
       return this.formadoresFromFormacao;
     },
-     getItems(){
+    getItems() {
       return this.items;
     },
-    getItemsFields(){
+    getItemsFields() {
       return this.fields;
     },
-    getTitle(){
+    getTitle() {
       return this.title;
     },
   },
@@ -344,7 +389,11 @@ export default {
   border-radius: 2px;
   height: 30px;
 }
-.da-link{
+.da-link {
   cursor: pointer;
+}
+
+.da-md-table-cell-actions button{
+  margin-right: 2px;
 }
 </style>
