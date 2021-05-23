@@ -39,7 +39,7 @@
                       v-model="formacao.horarios.length"
                       type="text"
                     ></md-input>
-                    <md-button class="md-icon-button md-success" @click="setIsModalVisible(true)">
+                    <md-button class="md-icon-button md-success" @click="setIsModalAddHorarioVisible(true)">
                       <md-icon>add</md-icon>
                     </md-button>
                   </md-field>
@@ -52,6 +52,9 @@
                       disabled
                       type="text"
                     ></md-input>
+                    <md-button class="md-icon-button md-success" @click="setIsModalAddInstrutorVisible(true)">
+                      <md-icon>add</md-icon>
+                    </md-button>
                   </md-field>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-33">
@@ -100,6 +103,9 @@
     <add-horario-model 
     :showDialogProp="isModalVisible"
         @hide-dialog="addHorarioToFormacao"/>
+    <add-instrutor-model 
+    :showDialogProp="isModalAddInstrutorVisible"
+        @hide-dialog="addInstrutorToFormacao"/>
   </div>
 </template>
 
@@ -107,9 +113,10 @@
 // import { EditProfileForm, UserCard } from "@/pages";
 import { mapGetters, mapActions } from "vuex";
 import AddHorarioModel from "../Components/AddHorarioModel";
+import AddInstrutorModel from "../Components/addInstrutorModel";
 export default {
   props: ["formacaoId"],
-  components: {AddHorarioModel},
+  components: {AddHorarioModel, AddInstrutorModel},
   data() {
     return {
       headerColor: "green",
@@ -125,6 +132,7 @@ export default {
         estado: null,
       },
       isModalVisible: false,
+      isModalAddInstrutorVisible: false,
     };
   },
   computed: {
@@ -136,7 +144,11 @@ export default {
   methods: {
     addHorarioToFormacao({horario, modalStatus}){
       if(horario) this.formacao.horarios.push(horario);
-      this.setIsModalVisible(modalStatus);
+      this.setIsModalAddHorarioVisible(modalStatus);
+    },
+    addInstrutorToFormacao({instrutor, modalStatus}){
+      if(instrutor) this.formacao.formadores.push(instrutor);
+      this.setIsModalAddInstrutorVisible(modalStatus);
     },
     updateFormacao() {
       const formacao = { ...this.formacao };
@@ -175,8 +187,11 @@ export default {
     showModal() {
       this.isModalVisible = true;
     },
-    setIsModalVisible(option) {
+    setIsModalAddHorarioVisible(option) {
       this.isModalVisible = option;
+    },
+    setIsModalAddInstrutorVisible(option){
+      this.isModalAddInstrutorVisible = option;
     },
     getClass: function(headerColor) {
       return "md-card-header-" + headerColor + "";

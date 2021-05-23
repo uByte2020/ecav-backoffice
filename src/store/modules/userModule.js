@@ -148,6 +148,9 @@ const userModule = {
     getAll: (state) => {
       return state.users;
     },
+    getFormadores: (state) => {
+      return state.users.filter((u) => u.role.perfilCode == 1);
+    },
   },
 };
 
