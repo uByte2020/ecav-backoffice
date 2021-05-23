@@ -7,7 +7,7 @@
     >
       <md-dialog-title>Add Horário</md-dialog-title>
       <md-dialog-content>
-        <form>
+        <!-- <form> -->
           <md-card>
             <md-card-content>
               <div class="md-layout">
@@ -36,6 +36,8 @@
                       id="hora"
                       v-model="horario.hora"
                       type="time"
+                      min="09:00" 
+                      max="18:00"
                     ></md-input>
                   </md-field>
                 </div>
@@ -58,7 +60,7 @@
               </div>
             </md-card-content>
           </md-card>
-        </form>
+        <!-- </form> -->
       </md-dialog-content>
       <md-dialog-actions>
         <md-button class="md-success" @click="addHorario">Adicionar</md-button>

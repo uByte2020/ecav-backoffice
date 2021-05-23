@@ -39,7 +39,10 @@
                       v-model="formacao.horarios.length"
                       type="text"
                     ></md-input>
-                    <md-button class="md-icon-button md-success" @click="setIsModalAddHorarioVisible(true)">
+                    <md-button
+                      class="md-icon-button md-success"
+                      @click="setIsModalAddHorarioVisible(true)"
+                    >
                       <md-icon>add</md-icon>
                     </md-button>
                   </md-field>
@@ -52,7 +55,10 @@
                       disabled
                       type="text"
                     ></md-input>
-                    <md-button class="md-icon-button md-success" @click="setIsModalAddInstrutorVisible(true)">
+                    <md-button
+                      class="md-icon-button md-success"
+                      @click="setIsModalAddInstrutorVisible(true)"
+                    >
                       <md-icon>add</md-icon>
                     </md-button>
                   </md-field>
@@ -77,12 +83,12 @@
                     ></md-input>
                   </md-field>
                 </div>
-                <div class="md-layout-item md-small-size-100 md-size-33">
+                <!-- <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
                     <label>Estado</label>
                     <md-input v-model="formacao.estado" type="text"></md-input>
                   </md-field>
-                </div>
+                </div> -->
                 <div class="md-layout-item md-size-100">
                   <md-field maxlength="5">
                     <label>Descrição</label>
@@ -90,7 +96,9 @@
                   </md-field>
                 </div>
                 <div class="md-layout-item md-size-100 text-right">
-                  <md-button class="md-raised md-success mt-4" @click="updateFormacao()"
+                  <md-button
+                    class="md-raised md-success mt-4"
+                    @click="updateFormacao()"
                     >Actualizar</md-button
                   >
                 </div>
@@ -100,12 +108,15 @@
         </form>
       </div>
     </div>
-    <add-horario-model 
-    :showDialogProp="isModalVisible"
-        @hide-dialog="addHorarioToFormacao"/>
-    <add-instrutor-model 
-    :showDialogProp="isModalAddInstrutorVisible"
-        @hide-dialog="addInstrutorToFormacao"/>
+    <add-horario-model
+      :showDialogProp="isModalVisible"
+      @hide-dialog="addHorarioToFormacao"
+    />
+    <add-instrutor-model
+      :showDialogProp="isModalAddInstrutorVisible"
+      @hide-dialog="addInstrutorToFormacao"
+      :formadoresProp="formacao.formadores"
+    />
   </div>
 </template>
 
@@ -116,7 +127,7 @@ import AddHorarioModel from "../Components/AddHorarioModel";
 import AddInstrutorModel from "../Components/addInstrutorModel";
 export default {
   props: ["formacaoId"],
-  components: {AddHorarioModel, AddInstrutorModel},
+  components: { AddHorarioModel, AddInstrutorModel },
   data() {
     return {
       headerColor: "green",
@@ -142,28 +153,38 @@ export default {
     }),
   },
   methods: {
-    addHorarioToFormacao({horario, modalStatus}){
-      if(horario) this.formacao.horarios.push(horario);
+    addHorarioToFormacao({ horario, modalStatus }) {
+      if (horario) this.formacao.horarios.push(horario);
       this.setIsModalAddHorarioVisible(modalStatus);
     },
-    addInstrutorToFormacao({instrutor, modalStatus}){
-      if(instrutor) this.formacao.formadores.push(instrutor);
+    addInstrutorToFormacao({ fomadores, modalStatus }) {
+      if (fomadores) this.formacao.formadores.push(...fomadores);
       this.setIsModalAddInstrutorVisible(modalStatus);
     },
     updateFormacao() {
-      const formacao = { ...this.formacao };
+      const formacao = this.filterObj(
+          this.formacao,
+          "_id",
+          "nome",
+          "descricao",
+          "quantidadeAlunoMax",
+          "formadores",
+          "categorias",
+          "horarios"
+        );
       const formacaoId = this.formacao._id;
-      delete formacao._id;
+      // delete formacao._id;
       let loader = this.$loading.show({
         container: this.$refs.marcacaoModel,
         onCancel: this.onCancel,
         background: "transparent",
       });
-      this.updateAction({ formacao, formacaoId})
+      this.updateAction({ formacao, formacaoId })
         .then((response) => {
           this.notifyVue("Formação Actualizada com Sucesso", "success");
           loader.hide();
           this.getAllFormacoes();
+          this.$router.push("/formacoes");
         })
         .catch((error) => {
           const message =
@@ -190,7 +211,7 @@ export default {
     setIsModalAddHorarioVisible(option) {
       this.isModalVisible = option;
     },
-    setIsModalAddInstrutorVisible(option){
+    setIsModalAddInstrutorVisible(option) {
       this.isModalAddInstrutorVisible = option;
     },
     getClass: function(headerColor) {
@@ -203,12 +224,21 @@ export default {
         this.formacao.nome = formacaoTemp.nome;
         this.formacao.descricao = formacaoTemp.descricao;
         this.formacao.quantidadeAlunoMax = formacaoTemp.quantidadeAlunoMax;
-        this.formacao.formadores = formacaoTemp.formadores || [];
-        this.formacao.categorias = formacaoTemp.categorias || [];
+        this.formacao.formadores =
+          formacaoTemp.formadores.map((f) => f._id) || [];
+        this.formacao.categorias =
+          formacaoTemp.categorias.map((c) => c._id) || [];
         this.formacao.horarios = formacaoTemp.horarios || [];
         this.formacao.licoes = formacaoTemp.licoes || [];
-        this.formacao.estado = formacaoTemp.estado.estado;
+        // this.formacao.estado = formacaoTemp.estado.estado;
       }
+    },
+    filterObj(obj, ...allowedFields) {
+      const newObj = {};
+      Object.keys(obj).forEach((el) => {
+        if (allowedFields.includes(el)) newObj[el] = obj[el];
+      });
+      return newObj;
     },
     ...mapActions({
       updateAction: "formacaoModule/update",
@@ -218,6 +248,9 @@ export default {
   watch: {
     formacaoId(value) {
       if (value) this.setFormacaoById(value);
+    },
+    formacoes(values) {
+      if (this.formacaoId) this.setFormacaoById(this.formacaoId);
     },
   },
   mounted() {
