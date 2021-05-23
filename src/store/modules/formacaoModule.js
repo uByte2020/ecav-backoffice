@@ -11,9 +11,12 @@ const formacaoModule = {
     },
   },
   actions: {
-    getAll({ commit }) {
+    getAll({ commit }, queryParams) {
+      const url = requestURL.FORMACOES.concat(queryParams ? "?" : "").concat(
+        queryParams || ""
+      );
       return new Promise((resolve, reject) => {
-        axios.get(requestURL.FORMACOES).then(
+        axios.get(url).then(
           (response) => {
             if (response.data.data)
               commit("setFormacoes", response.data.data.docs);

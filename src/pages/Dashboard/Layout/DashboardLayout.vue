@@ -33,11 +33,11 @@
           :link="{ name: 'Utilizadores', icon: 'people', path: '/users' }"
         ></sidebar-item>
         <sidebar-item
-          v-show="restrictTo(0)"
+          v-show="restrictTo(0,1)"
           :link="{ name: 'Formações', icon: 'assignment', path: '/formacoes' }"
         ></sidebar-item>
         <sidebar-item
-          v-show="restrictTo(0)"
+          v-show="restrictTo(0,1)"
           :link="{ name: 'Lições', icon: 'assignment', path: '/licoes' }"
         ></sidebar-item>
       </template>

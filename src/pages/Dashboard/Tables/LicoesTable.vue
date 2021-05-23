@@ -33,7 +33,7 @@
                   class="md-success"
                   @click="showModal"
                   v-show="restrictTo(0)"
-                  >Add Lição</md-button
+                  >Adicionar Lição</md-button
                 >
               </md-field>
             </md-table-toolbar>

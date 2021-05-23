@@ -31,9 +31,8 @@
               <md-field>
                 <md-button
                   class="md-success"
-                  @click="showModal"
-                  v-show="restrictTo(2)"
-                  >Criar Marcação</md-button
+                  v-show="restrictTo(0)"
+                  >Adicionar Formação</md-button
                 >
               </md-field>
             </md-table-toolbar>
