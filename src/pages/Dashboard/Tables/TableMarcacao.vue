@@ -38,7 +38,7 @@
               </md-field>
             </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell v-if="restrictTo(2)" :md-label="identity" md-sort-by="name">
+              <md-table-cell v-if="restrictTo(0,2)" :md-label="identity" md-sort-by="name">
                 {{
                   getMarcacaoUserName(item.formador)
                 }}</md-table-cell>
