@@ -86,7 +86,6 @@ export default {
       getFormadoresAction: "userModule/getFormadores",
     }),
     getFormadores(){
-      console.log(this.formadoresProp)
       return this.getFormadoresAction.filter(f=>!this.formadoresProp.includes(f._id));
     }
   },

@@ -222,7 +222,7 @@ export default {
           this.setItemsFields([
             { field: "nomeDia", name: "Dia da Semana" },
             { field: "hora", name: "Hora" },
-            { field: "duracao", name: "Duracao" },
+            // { field: "duracao", name: "Duracao" },
           ]);
           this.setTitle("Horários");
           break;

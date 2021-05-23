@@ -110,6 +110,7 @@
     </div>
     <add-horario-model
       :showDialogProp="isModalVisible"
+      :horariosProp="formacao.horarios"
       @hide-dialog="addHorarioToFormacao"
     />
     <add-instrutor-model
