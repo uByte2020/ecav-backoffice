@@ -57,10 +57,10 @@
                 <a class="da-link" @click="showTableModal(item.horarios, modalTypes.HORARIO)">Ver Horários</a>  
               </md-table-cell>
               <md-table-cell md-label="Actions">
-                <md-button class="md-just-icon md-warning md-simple" @click="callFormacaoDetalhe(item)">
+                <md-button v-show="restrictTo(0)" class="md-just-icon md-warning md-simple" @click="callFormacaoDetalhe(item)">
                   <md-icon>edit</md-icon>
                 </md-button>
-                <md-button class="md-just-icon md-danger md-simple">
+                <md-button v-show="restrictTo(0)" class="md-just-icon md-danger md-simple">
                   <md-icon>close</md-icon>
                 </md-button>
               </md-table-cell>

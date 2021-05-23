@@ -47,17 +47,17 @@
               <md-table-cell md-label="Formação" md-sort-by="aula">
                 {{ getFormacaoByLicao(item.formacao) }}</md-table-cell
               >
-              <md-table-cell md-label="Estado">{{
+              <!-- <md-table-cell md-label="Estado">{{
                 item.estado.estado
-              }}</md-table-cell>
+              }}</md-table-cell> -->
               <md-table-cell md-label="Actions">
-                <md-button v-show="restrictTo(0,1)" class="md-just-icon md-info md-simple">
+                <md-button v-show="restrictTo(0)" class="md-just-icon md-info md-simple">
                   <md-icon>thumb_up</md-icon>
                 </md-button>
-                <md-button class="md-just-icon md-warning md-simple">
+                <md-button v-show="restrictTo(0)" class="md-just-icon md-warning md-simple">
                   <md-icon>edit</md-icon>
                 </md-button>
-                <md-button class="md-just-icon md-danger md-simple">
+                <md-button v-show="restrictTo(0)" class="md-just-icon md-danger md-simple">
                   <md-icon>close</md-icon>
                 </md-button>
               </md-table-cell>
