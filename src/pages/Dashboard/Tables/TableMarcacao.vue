@@ -38,10 +38,13 @@
               </md-field>
             </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell v-if="restrictTo(0,2)" :md-label="identity" md-sort-by="name">
-                {{
-                  getMarcacaoUserName(item.formador)
-                }}</md-table-cell>
+              <md-table-cell
+                v-if="restrictTo(0, 2)"
+                :md-label="identity"
+                md-sort-by="name"
+              >
+                {{ getMarcacaoUserName(item.formador) }}</md-table-cell
+              >
               <md-table-cell md-label="Formação" md-sort-by="aula">
                 {{ getFormacaoByLicao(item.licao) }}</md-table-cell
               >
@@ -60,17 +63,31 @@
               <md-table-cell md-label="Estado">{{
                 item.estado.estado
               }}</md-table-cell>
-              <md-table-cell v-if="restrictTo(0,1)" md-label="Alunos" md-sort-by="name">
-                <a class="da-link" @click="showModalAlunosMarcacao(item.alunos)">Ver Alunos</a>  
+              <md-table-cell
+                v-if="restrictTo(0, 1)"
+                md-label="Alunos"
+                md-sort-by="name"
+              >
+                <a class="da-link" @click="showModalAlunosMarcacao(item.alunos)"
+                  >Ver Alunos</a
+                >
               </md-table-cell>
               <md-table-cell md-label="Actions">
-                <md-button v-show="restrictTo(0,1)" @click="updateMarcacao(item._id,1)" class="md-just-icon md-info md-simple">
+                <md-button
+                  v-if="restrictTo(0, 1) && (item.estado.estado!='Cancelado' || item.estado.estado=='Pendente')"
+                  @click="updateMarcacao(item._id, 1)"
+                  class="md-just-icon md-primary md-info md-simple"
+                >
                   <md-icon>thumb_up</md-icon>
                 </md-button>
-                <md-button class="md-just-icon md-warning md-simple">
+                <md-button v-if="restrictTo(0)" class="md-just-icon md-warning md-simple">
                   <md-icon>edit</md-icon>
                 </md-button>
-                <md-button @click="updateMarcacao(item._id,4)" class="md-just-icon md-danger md-simple">
+                <md-button
+                  v-if="restrictTo(0, 1) && item.estado.estado!='Cancelado'"
+                  @click="updateMarcacao(item._id, 4)"
+                  class="md-just-icon md-danger md-simple"
+                >
                   <md-icon>close</md-icon>
                 </md-button>
               </md-table-cell>
@@ -97,10 +114,11 @@
         :showDialogProp="isModalVisible"
         @hide-dialog="setIsModalVisible"
       />
-      <users-table-model 
+      <users-table-model
         :showDialogProp="modalAlunosMarcacao"
         @hide-dialog="setModalAlunosMarcacao"
-        :users="getAlunosByMarcacao"/>
+        :users="getAlunosByMarcacao"
+      />
     </div>
   </div>
 </template>
@@ -118,13 +136,13 @@ export default {
   components: {
     Pagination,
     MarcacaoModel,
-    UsersTableModel
+    UsersTableModel,
   },
   computed: {
     ...mapGetters({
       restricao: "userModule/restrictTo",
       marcacoes: "marcacaoModule/getAll",
-      token:"userModule/getToken",
+      token: "userModule/getToken",
     }),
     restrictTo() {
       return this.restricao;
@@ -155,9 +173,9 @@ export default {
         ? this.searchedData.length
         : this.tableData.length;
     },
-    getAlunosByMarcacao(){
+    getAlunosByMarcacao() {
       return this.alunosFromMarcacao;
-    }
+    },
   },
   data() {
     return {
@@ -193,34 +211,82 @@ export default {
   },
   methods: {
     ...mapActions({
-      updateMarcacaoState:"marcacaoModule/updateMarcacaoState",
+      updateMarcacaoState: "marcacaoModule/updateMarcacaoState",
       getMyMarcacoes: "marcacaoModule/getMyMarcacoes",
-      getAllMarcacoes:"marcacaoModule/getAll"
+      getAllMarcacoes: "marcacaoModule/getAll",
     }),
-    async updateMarcacao(id,state){
-
-      this.updateMarcacaoState({id,state})
-        .then((response) => {
-          this.notifyVue(`Marcação ${state==1 ? "Confirmada" : state==4 ? "Cancelada" : "Pendente"}`, state==1 ? "success" : state==4 ? "danger" : "warning");
-          this.$emit("hide-dialog", false);
-          this.restrictTo(0) ? this.getAllMarcacoes() :this.getMyMarcacoes();
-        })
-        .catch((error) => {
-          const message =
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString();
-          this.notifyVue(message, "danger");
+    async updateMarcacao(id, state) {
+      if (state === 1) {
+        alert("estado 1")
+        this.updateMarcacaoState({ id, state })
+          .then((response) => {
+            this.notifyVue(
+              `Marcação ${
+                state == 1
+                  ? "Confirmada"
+                  : state == 4
+                  ? "Cancelada"
+                  : "Pendente"
+              }`,
+              state == 1 ? "success" : state == 4 ? "danger" : "warning"
+            );
+            this.$emit("hide-dialog", false);
+            this.restrictTo(0) ? this.getAllMarcacoes() : this.getMyMarcacoes();
+          })
+          .catch((error) => {
+            const message =
+              (error.response && error.response.data) ||
+              error.message ||
+              error.toString();
+            this.notifyVue(message, "danger");
+          });
+      } else if (state === 4) {
+        Swal.fire({
+          title: "Tem a certeza que deseja cancelar está marcação?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sim, cancelar",
+          cancelButtonText: "Não",
+        }).then((result) => {
+          if (result.value) {
+            this.updateMarcacaoState({ id, state })
+              .then((response) => {
+                this.notifyVue(
+                  `Marcação ${
+                    state == 1
+                      ? "Confirmada"
+                      : state == 4
+                      ? "Cancelada"
+                      : "Pendente"
+                  }`,
+                  state == 1 ? "success" : state == 4 ? "danger" : "warning"
+                );
+                this.$emit("hide-dialog", false);
+                this.restrictTo(0)
+                  ? this.getAllMarcacoes()
+                  : this.getMyMarcacoes();
+              })
+              .catch((error) => {
+                const message =
+                  (error.response && error.response.data) ||
+                  error.message ||
+                  error.toString();
+                this.notifyVue(message, "danger");
+              });
+          }
         });
+      }
     },
-    setModalAlunosMarcacao(value){
+    setModalAlunosMarcacao(value) {
       this.modalAlunosMarcacao = value;
     },
     showModal() {
       this.isModalVisible = true;
     },
     showModalAlunosMarcacao(alunos) {
-      if(!alunos) alunos = [];
+      if (!alunos) alunos = [];
       this.alunosFromMarcacao = alunos;
       this.setModalAlunosMarcacao(true);
     },
@@ -316,7 +382,7 @@ export default {
   border-radius: 2px;
   height: 30px;
 }
-.da-link{
+.da-link {
   cursor: pointer;
 }
 </style>
