@@ -11,4 +11,5 @@ export default {
   LICOES: `${BaseURL.API_URL}/licoes`,
   MARCACOES: `${BaseURL.API_URL}/marcacoes`,
   MYMARCACOES: `${BaseURL.API_URL}/marcacoes/MyMarcacoes`,
+  IS_LOGGED: `${BaseURL.API_URL}/users/isLogged`,
 };

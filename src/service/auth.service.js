@@ -3,7 +3,7 @@ import requestURL from "./../utils/apiRequestURL";
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
-  Object.keys(obj).forEach(el => {
+  Object.keys(obj).forEach((el) => {
     if (allowedFields.includes(el)) newObj[el] = obj[el];
   });
   return newObj;
@@ -26,43 +26,16 @@ class AuthService {
             "photo",
             "indisponibilidade"
           );
-            localStorage.setItem("user", JSON.stringify(filtedUser));
-            localStorage.setItem("token", JSON.stringify(response.data.token));
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${response.data.token}`;
-            return { user: filtedUser, token: response.data.token };
+          // axios.defaults.headers.common[
+          //   "Authorization"
+          // ] = `Bearer ${response.data.token}`;
+          return { user: filtedUser, token: response.data.token };
         }
       });
   }
 
-  logout() {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(requestURL.LOGOUT)
-        .then((response) => {
-          localStorage.removeItem("user");
-          localStorage.removeItem("token");
-          resolve(response);
-        })
-        .catch((error) => {
-          localStorage.removeItem("user");
-          localStorage.removeItem("token");
-          reject(error);
-        });
-    });
-  }
-
-  register(user) {
-    return axios.post(requestURL.SIGN_UP, {
-      name: user.name,
-      email: user.email,
-      password: user.password,
-      passwordConfirm: user.passwordConfirm, 
-      role: user.role, 
-      telemovel: user.telemovel, 
-      endereco: user.endereco, 
-    }).then((response) => {
+  isLogged() {
+    return axios.get(requestURL.IS_LOGGED).then((response) => {
       if (response.data && response.data.data.user) {
         const filtedUser = filterObj(
           response.data.data.user,
@@ -73,14 +46,56 @@ class AuthService {
           "telemovel",
           "endereco",
           "photo",
-          "indisponibilidade"
+          "indisponibilidade",
+          "isBloqued"
         );
-          localStorage.setItem("user", JSON.stringify(filtedUser));
-          localStorage.setItem("token", JSON.stringify(response.data.token));
-          axios.defaults.headers.common['Authorization'] = response.data.token;
-        return { user: filtedUser, token: response.data.token };;
+        // axios.defaults.headers.common[
+        //   "Authorization"
+        // ] = `Bearer ${response.data.token}`;
+        return { user: filtedUser, token: response.data.token };
       }
     });
+  }
+
+  logout() {
+    return axios
+      .get(requestURL.LOGOUT)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error;
+      });
+  }
+
+  register(user) {
+    return axios
+      .post(requestURL.SIGN_UP, {
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        passwordConfirm: user.passwordConfirm,
+        role: user.role,
+        telemovel: user.telemovel,
+        endereco: user.endereco,
+      })
+      .then((response) => {
+        if (response.data && response.data.data.user) {
+          const filtedUser = filterObj(
+            response.data.data.user,
+            "_id",
+            "name",
+            "email",
+            "role",
+            "telemovel",
+            "endereco",
+            "photo",
+            "indisponibilidade"
+          );
+          // axios.defaults.headers.common["Authorization"] = response.data.token;
+          return { user: filtedUser, token: response.data.token };
+        }
+      });
   }
 
   updateMe(user) {
@@ -97,7 +112,6 @@ class AuthService {
           "photo",
           "indisponibilidade"
         );
-        localStorage.setItem("user", JSON.stringify(filtedUser));
         return filtedUser;
       }
     });
