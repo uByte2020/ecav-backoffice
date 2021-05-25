@@ -204,7 +204,7 @@ export default {
         if (result.value) {
           this.ApagarFormacao({ formacaoId: id, formacao: item })
             .then((response) => {
-              alert("foi eliminado");
+              this.notifyVue("A marcação foi eliminada","success");
               this.getAllFormacoes();
               this.$emit("hide-dialog", false);
             })
@@ -215,6 +215,16 @@ export default {
                 error.toString();
             });
         }
+      });
+    },
+    notifyVue(message, type) {
+      this.$notify({
+        timeout: 2500,
+        message,
+        icon: "add_alert",
+        horizontalAlign: "right",
+        verticalAlign: "top",
+        type: type,
       });
     },
     setModalFormadoresFormacao(value) {
