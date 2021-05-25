@@ -49,7 +49,10 @@
 
               <!---->
               <md-field>
-                <md-button class="md-success" @click="setIsModalVisible(true)" v-show="restrictTo(0)"
+                <md-button
+                  class="md-success"
+                  @click="setIsModalVisible(true)"
+                  v-show="restrictTo(0)"
                   >Registrar Utilizador</md-button
                 >
               </md-field>
@@ -70,12 +73,23 @@
               <md-table-cell md-label="Perfil">{{
                 getRole(item.role)
               }}</md-table-cell>
+              <md-table-cell md-label="Estado">{{
+                getAccountState(item.isBloqued)
+              }}</md-table-cell>
               <md-table-cell md-label="Actions">
                 <md-button
+                  v-if="!item.isBloqued"
                   class="md-just-icon md-danger md-simple"
-                  @click.native="handleDelete(item)"
+                  @click.native="handleStateChange(item._id, true)"
                 >
                   <md-icon>close</md-icon>
+                </md-button>
+                <md-button
+                  v-if="item.isBloqued"
+                  class="md-just-icon md-info md-simple"
+                  @click.native="handleStateChange(item._id, false)"
+                >
+                  <md-icon>done</md-icon>
                 </md-button>
               </md-table-cell>
             </md-table-row>
@@ -117,9 +131,9 @@
       </md-card>
     </div>
     <add-user-model
-        :showDialogProp="isModalVisible"
-        @hide-dialog="setIsModalVisible"
-      />
+      :showDialogProp="isModalVisible"
+      @hide-dialog="setIsModalVisible"
+    />
   </div>
 </template>
 
@@ -134,7 +148,7 @@ import AddUserModel from "../Components/AddUserModel";
 export default {
   components: {
     Pagination,
-    "add-user-model":AddUserModel
+    "add-user-model": AddUserModel,
   },
   data() {
     return {
@@ -156,7 +170,7 @@ export default {
       isModalVisible: false,
     };
   },
-    computed: {
+  computed: {
     ...mapGetters({
       restricao: "userModule/restrictTo",
       users: "userModule/getAll",
@@ -188,10 +202,16 @@ export default {
         : this.tableData.length;
     },
     getPerfis() {
-      return!this.perfis ? [] : ["Todos", ...this.perfis.map((el) => el.perfil)];
+      return !this.perfis
+        ? []
+        : ["Todos", ...this.perfis.map((el) => el.perfil)];
     },
   },
   methods: {
+    ...mapActions({
+      updateUserState: "userModule/updateUserState",
+      getUsers: "userModule/getAll",
+    }),
     setIsModalVisible(option) {
       this.isModalVisible = option;
     },
@@ -206,11 +226,58 @@ export default {
     },
     handleLike(item) {},
     handleEdit(item) {},
-    handleDelete(item) {},
+    handleStateChange(id, state) {
+      if (state) {
+        Swal.fire({
+          title: "Tem a certeza que deseja bloquear a conta deste usuário?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sim",
+          cancelButtonText: "Não",
+        }).then((result) => {
+          if (result.value) {
+            this.changeState(id, state);
+          }
+        });
+      } else {
+        Swal.fire({
+          title: "Tem a certeza que deseja activar a conta deste usuário?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sim",
+          cancelButtonText: "Não",
+        }).then((result) => {
+          if (result.value) {
+            this.changeState(id, state);
+          }
+        });
+      }
+    },
+    changeState(id, state) {
+      this.updateUserState({ id, state })
+        .then((response) => {
+          this.getUsers();
+        })
+        .catch((error) => {
+          const message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+          this.notifyVue(message, "danger");
+        });
+    },
     deleteRow(item) {},
     getRole(role) {
       if (!role) return "";
       return role.perfil;
+    },
+    getAccountState(item) {
+      if (!item) return "Activo";
+      return "Bloqueado";
     },
     onSelectPerfil(perfil) {
       if (perfil == "Todos") this.tableData = this.users;
