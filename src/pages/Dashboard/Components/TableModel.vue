@@ -305,7 +305,7 @@ export default {
       }
     },
     items(values) {
-      this.tableData = this.items;
+      this.tableData = values;
     },
     fields(values) {
       this.footerTable = values;
