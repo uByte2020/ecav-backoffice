@@ -79,10 +79,11 @@
                     <md-icon>edit</md-icon>
                   </md-button>
                   <md-button
-                    v-show="restrictTo(0)"
+                    @click="deleteFormacao(item, item.id)"
+                    v-if="restrictTo(0)"
                     class="md-just-icon md-danger md-simple"
                   >
-                    <md-icon>close</md-icon>
+                    <md-icon>delete</md-icon>
                   </md-button>
                 </div>
               </md-table-cell>
@@ -179,13 +180,43 @@ export default {
       modalLicoesFormacao: false,
       modalHorariosFormacao: false,
       modalTypes: modalType,
-      items: [{ "1": "-" }],
+      items: [{ 1: "-" }],
       fields: ["1"],
       title: "Formadores",
       diasDaSemana: diaSemana.diasSemana,
     };
   },
   methods: {
+    ...mapActions({
+      ApagarFormacao: "formacaoModule/deleteFormacao",
+      getAllFormacoes: "formacaoModule/getAll",
+    }),
+    deleteFormacao(item, id) {
+      Swal.fire({
+        title: "Tem a certeza que deseja eliminar está formação?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sim",
+        cancelButtonText: "Não",
+      }).then((result) => {
+        if (result.value) {
+          this.ApagarFormacao({ formacaoId: id, formacao: item })
+            .then((response) => {
+              alert("foi eliminado");
+              this.getAllFormacoes();
+              this.$emit("hide-dialog", false);
+            })
+            .catch((error) => {
+              const message =
+                (error.response && error.response.data) ||
+                error.message ||
+                error.toString();
+            });
+        }
+      });
+    },
     setModalFormadoresFormacao(value) {
       this.modalFormadoresFormacao = value;
     },
@@ -393,7 +424,7 @@ export default {
   cursor: pointer;
 }
 
-.da-md-table-cell-actions button{
+.da-md-table-cell-actions button {
   margin-right: 2px;
 }
 </style>
