@@ -1,56 +1,73 @@
 import requestURL from "./../../utils/apiRequestURL";
 
 const licaoModule = {
-  namespaced: true,
-  state: {
-    licoes: [],
-  },
-  mutations: {
-    setLicoes(state, licoes) {
-      state.licoes = licoes;
+    namespaced: true,
+    state: {
+        licoes: [],
     },
-  },
-  actions: {
-    getAll({ commit }) {
-      return new Promise((resolve, reject) => {
-        axios.get(requestURL.LICOES).then(
-          (response) => {
-            if (response.data.data)
-              commit("setLicoes", response.data.data.docs);
-            resolve(response.data);
-          },
-          (error) => {
-            reject(error);
-          }
-        );
-      });
+    mutations: {
+        setLicoes(state, licoes) {
+            state.licoes = licoes;
+        },
     },
-    criarLicao({ commit, rootGetters }, licao) {
-      const jwt = rootGetters["userModule/getToken"];
-      return new Promise((resolve, reject) => {
-        axios
-          .post(requestURL.LICOES, licao, {
-            headers: { Authorization: jwt },
-          })
-          .then(
-            (response) => {
-              resolve(response.data);
-            },
-            (error) => {
-              reject(error);
-            }
-          );
-      });
+    actions: {
+        getAll({ commit }) {
+            return new Promise((resolve, reject) => {
+                axios.get(requestURL.LICOES).then(
+                    (response) => {
+                        if (response.data.data)
+                            commit("setLicoes", response.data.data.docs);
+                        resolve(response.data);
+                    },
+                    (error) => {
+                        reject(error);
+                    }
+                );
+            });
+        },
+        criarLicao({ commit, rootGetters }, licao) {
+            const jwt = rootGetters["userModule/getToken"];
+            return new Promise((resolve, reject) => {
+                axios
+                    .post(requestURL.LICOES, licao, {
+                        headers: { Authorization: jwt },
+                    })
+                    .then(
+                        (response) => {
+                            resolve(response.data);
+                        },
+                        (error) => {
+                            reject(error);
+                        }
+                    );
+            });
+        },
+        deleteLicao({ rootGetters }, { licaoId }) {
+            const jwt = rootGetters["userModule/getToken"];
+            return new Promise((resolve, reject) => {
+                axios
+                    .delete(requestURL.LICOES + `/${licaoId}`, {
+                        headers: { Authorization: jwt },
+                    })
+                    .then(
+                        (response) => {
+                            resolve(response.data);
+                        },
+                        (error) => {
+                            reject(error);
+                        }
+                    );
+            });
+        },
+        reset({ commit }) {
+            commit("setLicoes", []);
+        },
     },
-    reset({ commit }) {
-      commit("setLicoes", []);
+    getters: {
+        getAll: (state) => {
+            return state.licoes;
+        },
     },
-  },
-  getters: {
-    getAll: (state) => {
-      return state.licoes;
-    },
-  },
 };
 
 export default licaoModule;
