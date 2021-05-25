@@ -180,6 +180,9 @@ export default {
       modalAlunosMarcacao: false,
     };
   },
+  beforeMount(){
+    this.getAll();
+  },
   methods: {
     ...mapActions({
       deleteLicao: "licaoModule/deleteLicao",
