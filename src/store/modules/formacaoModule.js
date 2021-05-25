@@ -45,6 +45,24 @@ const formacaoModule = {
                     );
             });
         },
+        updateHorario({ rootGetters }, { formacaoId, horarios }) {
+            const jwt = rootGetters["userModule/getToken"];
+            const wrapper = { horarios: horarios };
+            return new Promise((resolve, reject) => {
+                axios
+                    .patch(`${requestURL.FORMACOES}/${formacaoId}`, wrapper, {
+                        headers: { Authorization: jwt },
+                    })
+                    .then(
+                        (response) => {
+                            resolve(response.data);
+                        },
+                        (error) => {
+                            reject(error);
+                        }
+                    );
+            });
+        },
         deleteFormacao({ rootGetters }, { formacaoId, formacao }) {
             const jwt = rootGetters["userModule/getToken"];
             return new Promise((resolve, reject) => {

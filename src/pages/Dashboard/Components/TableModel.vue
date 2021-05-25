@@ -57,10 +57,11 @@
                     <md-table-cell md-label="Actions">
                       <div class="da-md-table-cell-actions">
                         <md-button
-                          v-show="restrictTo(0)"
+                          @click="title == 'Horários' ? deleteHorario(item._id) : ''"
+                          v-if="restrictTo(0)"
                           class="md-just-icon md-danger md-simple"
                         >
-                          <md-icon>close</md-icon>
+                          <md-icon>delete</md-icon>
                         </md-button>
                       </div>
                     </md-table-cell>
@@ -116,14 +117,14 @@ export default {
     },
     fields: {
       type: Array,
-      default: function() {
+      default: function () {
         return ["1"];
       },
     },
     items: {
       type: Array,
-      default: function() {
-        return [{ "1": "-" }];
+      default: function () {
+        return [{ 1: "-" }];
       },
     },
   },
@@ -159,6 +160,23 @@ export default {
         }
         return b[sortBy].localeCompare(a[sortBy]);
       });
+    },
+    deleteHorario(item) {
+      Swal.fire({
+        title: "Tem a certeza que deseja eliminar este horário?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sim",
+        cancelButtonText: "Não",
+      }).then((result) => {
+        if (result.value) {
+          const newHorario=this.items.filter(el=>el._id!=item);
+          this.$emit("changeHorario",newHorario);
+        }
+      });
+      
     },
     addItem() {},
     handleLike(item) {
@@ -289,7 +307,7 @@ export default {
   width: 2% !important;
   height: 74% !important;
 }
-.da-md-table-cell-actions button{
+.da-md-table-cell-actions button {
   margin-right: 20px;
 }
 </style>

@@ -65,7 +65,7 @@
               <md-table-cell md-label="Horarios">
                 <a
                   class="da-link"
-                  @click="showTableModal(item.horarios, modalTypes.HORARIO)"
+                  @click="showTableModal(item._id,item.horarios, modalTypes.HORARIO)"
                   >Ver Horários</a
                 >
               </md-table-cell>
@@ -124,6 +124,7 @@
         :fields="getItemsFields"
         :items="getItems"
         :title="getTitle"
+        @changeHorario="alterarHorario"
       />
     </div>
   </div>
@@ -149,6 +150,7 @@ export default {
   data() {
     return {
       aluno: true,
+      currentFormation:'',
       currentSort: "name",
       currentSortOrder: "asc",
       pagination: {
@@ -190,7 +192,23 @@ export default {
     ...mapActions({
       ApagarFormacao: "formacaoModule/deleteFormacao",
       getAllFormacoes: "formacaoModule/getAll",
+      updateFormacaoHorarios: "formacaoModule/updateHorario",
     }),
+    alterarHorario(newHorario) {
+      this.updateFormacaoHorarios({ formacaoId: this.currentFormation, horarios: newHorario })
+        .then((response) => {
+          this.notifyVue("O horário foi eliminado", "success");
+          this.hideModal();
+          this.getAllFormacoes();
+          this.$emit("hide-dialog", false);
+        })
+        .catch((error) => {
+          const message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+        });
+    },
     deleteFormacao(item, id) {
       Swal.fire({
         title: "Tem a certeza que deseja eliminar está formação?",
@@ -204,7 +222,7 @@ export default {
         if (result.value) {
           this.ApagarFormacao({ formacaoId: id, formacao: item })
             .then((response) => {
-              this.notifyVue("A marcação foi eliminada","success");
+              this.notifyVue("A marcação foi eliminada", "success");
               this.getAllFormacoes();
               this.$emit("hide-dialog", false);
             })
@@ -244,7 +262,8 @@ export default {
       this.formadoresFromFormacao = formadores;
       this.setModalFormadoresFormacao(true);
     },
-    showTableModal(items, type) {
+    showTableModal(currentFormationId,items, type) {
+      this.currentFormation=currentFormationId;
       switch (type) {
         case this.modalTypes.CATEGORY:
           this.setItems(items);
