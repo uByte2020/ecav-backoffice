@@ -58,14 +58,18 @@
               <md-table-cell md-label="Licões">
                 <a
                   class="da-link"
-                  @click="showTableModal(item.licoes, modalTypes.LICAO)"
+                  @click="
+                    showTableModal(item._id, item.licoes, modalTypes.LICAO)
+                  "
                   >Ver Lições</a
                 >
               </md-table-cell>
               <md-table-cell md-label="Horarios">
                 <a
                   class="da-link"
-                  @click="showTableModal(item._id,item.horarios, modalTypes.HORARIO)"
+                  @click="
+                    showTableModal(item._id, item.horarios, modalTypes.HORARIO)
+                  "
                   >Ver Horários</a
                 >
               </md-table-cell>
@@ -125,6 +129,7 @@
         :items="getItems"
         :title="getTitle"
         @changeHorario="alterarHorario"
+        @changeLicoes="alterarLicoes"
       />
     </div>
   </div>
@@ -150,7 +155,7 @@ export default {
   data() {
     return {
       aluno: true,
-      currentFormation:'',
+      currentFormation: "",
       currentSort: "name",
       currentSortOrder: "asc",
       pagination: {
@@ -188,16 +193,39 @@ export default {
       diasDaSemana: diaSemana.diasSemana,
     };
   },
+  beforeMount(){
+    this.getAllFormacoes();
+  },
   methods: {
     ...mapActions({
       ApagarFormacao: "formacaoModule/deleteFormacao",
       getAllFormacoes: "formacaoModule/getAll",
       updateFormacaoHorarios: "formacaoModule/updateHorario",
+      updateFormacaoLicoes: "licaoModule/deleteLicao",
     }),
     alterarHorario(newHorario) {
-      this.updateFormacaoHorarios({ formacaoId: this.currentFormation, horarios: newHorario })
+      this.updateFormacaoHorarios({
+        formacaoId: this.currentFormation,
+        horarios: newHorario,
+      })
         .then((response) => {
           this.notifyVue("O horário foi eliminado", "success");
+          this.hideModal();
+          this.getAllFormacoes();
+          this.$emit("hide-dialog", false);
+        })
+        .catch((error) => {
+          const message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+        });
+    },
+    alterarLicoes(item) {
+      this.updateFormacaoLicoes({
+        licaoId: item,
+      }).then((response) => {
+          this.notifyVue("A lição foi eliminada", "success");
           this.hideModal();
           this.getAllFormacoes();
           this.$emit("hide-dialog", false);
@@ -262,8 +290,8 @@ export default {
       this.formadoresFromFormacao = formadores;
       this.setModalFormadoresFormacao(true);
     },
-    showTableModal(currentFormationId,items, type) {
-      this.currentFormation=currentFormationId;
+    showTableModal(currentFormationId, items, type) {
+      this.currentFormation = currentFormationId;
       switch (type) {
         case this.modalTypes.CATEGORY:
           this.setItems(items);
@@ -290,6 +318,7 @@ export default {
           this.setItems(
             items.map((el) => {
               return {
+                _id: el._id,
                 nome: el.nome,
                 categoria: el.categoria.categoria || "-",
               };

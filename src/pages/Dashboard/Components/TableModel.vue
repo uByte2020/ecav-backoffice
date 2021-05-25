@@ -57,7 +57,7 @@
                     <md-table-cell md-label="Actions">
                       <div class="da-md-table-cell-actions">
                         <md-button
-                          @click="title == 'Horários' ? deleteHorario(item._id) : ''"
+                          @click="title === 'Horários' ? deleteHorario(item._id) : title==='Lições' ? deleteLicao(item._id): ''"
                           v-if="restrictTo(0)"
                           class="md-just-icon md-danger md-simple"
                         >
@@ -177,6 +177,21 @@ export default {
         }
       });
       
+    },
+    deleteLicao(item){
+      Swal.fire({
+        title: "Tem a certeza que deseja eliminar este lição?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sim",
+        cancelButtonText: "Não",
+      }).then((result) => {
+        if (result.value) {
+          this.$emit("changeLicoes",item);
+        }
+      });
     },
     addItem() {},
     handleLike(item) {
