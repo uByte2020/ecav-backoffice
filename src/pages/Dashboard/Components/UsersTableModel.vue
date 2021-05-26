@@ -143,15 +143,15 @@ export default {
     users: {
       type: Array,
       default: function () {
-        return []
+        return [];
       },
     },
-    currentFormation:{
-      type:String,
-      default:""
-    }
+    currentFormation: {
+      type: String,
+      default: "",
+    },
   },
- components: {
+  components: {
     Pagination,
   },
   computed: {
@@ -206,7 +206,7 @@ export default {
   methods: {
     ...mapActions({
       deleteFormadorFormacao: "formacaoModule/updateFormadores",
-      getAll: "formacaoModule/getAll"
+      getAll: "formacaoModule/getAll",
     }),
     customSort(value) {
       return value.sort((a, b) => {
@@ -233,47 +233,41 @@ export default {
       });
     },
     async handleDelete(id) {
-      console.log(this.currentFormation);
-      const newFormadores=await this.tableData.filter(el=>el._id!=id);
-      Swal.fire({
-        title: "Tem a certeza que deseja eliminar este formador?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sim",
-        cancelButtonText: "Não",
-      }).then((result) => {
-        if (result.value) {
-          this.deleteFormadorFormacao({ formacaoId: this.currentFormation, formadores: newFormadores })
-            .then((response) => {
-              this.getAll();
-              this.notifyVue("O formador foi eliminado", "success");
-              this.$emit("hide-dialog", false);
+      const newFormadores = await this.tableData.filter((el) => el._id != id);
+      if (newFormadores.length === 0) {
+        this.notifyVue(
+          "Existe apenas um formador nesta formação, ele não pode ser eliminado",
+          "warning"
+        );
+      } else {
+        Swal.fire({
+          title: "Tem a certeza que deseja eliminar este formador?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sim",
+          cancelButtonText: "Não",
+        }).then((result) => {
+          if (result.value) {
+            this.deleteFormadorFormacao({
+              formacaoId: this.currentFormation,
+              formadores: newFormadores,
             })
-            .catch((error) => {
-              const message =
-                (error.response && error.response.data) ||
-                error.message ||
-                error.toString();
-            });
-        }
-      });
-      /*Swal.fire({
-        title: "Are you sure?",
-        text: `You won't be able to revert this!`,
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonClass: "md-button md-success btn-fill",
-        cancelButtonClass: "md-button md-danger btn-fill",
-        confirmButtonText: "Yes, delete it!",
-        buttonsStyling: false,
-      }).then((result) => {
-        if (result.value) {
-          this.deleteRow(item);
-          
-        }
-      });*/
+              .then((response) => {
+                this.getAll();
+                this.notifyVue("O formador foi eliminado", "success");
+                this.$emit("hide-dialog", false);
+              })
+              .catch((error) => {
+                const message =
+                  (error.response && error.response.data) ||
+                  error.message ||
+                  error.toString();
+              });
+          }
+        });
+      }
     },
     notifyVue(message, type) {
       this.$notify({
@@ -300,7 +294,7 @@ export default {
       keys: ["name", "email"],
       threshold: 0.3,
     });
-    this.tableData = this.users
+    this.tableData = this.users;
   },
   watch: {
     searchQuery(value) {
@@ -312,7 +306,7 @@ export default {
     },
     showDialogProp(value) {
       this.showDialog = value;
-      if(!this.showDialog){
+      if (!this.showDialog) {
         this.marcacao = {
           formador: null,
           categoria: null,
@@ -323,9 +317,9 @@ export default {
         };
       }
     },
-    users(values){
-      this.tableData = this.users
-    }
+    users(values) {
+      this.tableData = this.users;
+    },
   },
 };
 </script>
