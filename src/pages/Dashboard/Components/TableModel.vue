@@ -58,7 +58,7 @@
                       <div class="da-md-table-cell-actions">
                         <md-button
                           @click="title === 'Horários' ? deleteHorario(item._id) : title==='Lições' ? deleteLicao(item._id): ''"
-                          v-if="restrictTo(0)"
+                          v-if="restrictTo(0) && title!='Categorias'"
                           class="md-just-icon md-danger md-simple"
                         >
                           <md-icon>delete</md-icon>

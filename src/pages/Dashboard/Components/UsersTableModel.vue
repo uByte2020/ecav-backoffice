@@ -6,7 +6,7 @@
       :md-close-on-esc="false"
       :md-fullscreen="true"
     >
-      <md-dialog-title>Alunos</md-dialog-title>
+      <md-dialog-title>Formadores</md-dialog-title>
       <md-dialog-content>
         <div class="md-layout">
           <div class="md-layout-item">
@@ -68,9 +68,9 @@
                     <md-table-cell md-label="Actions">
                       <md-button
                         class="md-just-icon md-danger md-simple"
-                        @click.native="handleDelete(item)"
+                        @click.native="handleDelete(item._id)"
                       >
-                        <md-icon>close</md-icon>
+                        <md-icon>delete</md-icon>
                       </md-button>
                     </md-table-cell>
                   </md-table-row>
@@ -146,6 +146,10 @@ export default {
         return []
       },
     },
+    currentFormation:{
+      type:String,
+      default:""
+    }
   },
  components: {
     Pagination,
@@ -200,6 +204,10 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      deleteFormadorFormacao: "formacaoModule/updateFormadores",
+      getAll: "formacaoModule/getAll"
+    }),
     customSort(value) {
       return value.sort((a, b) => {
         const sortBy = this.currentSort;
@@ -224,8 +232,34 @@ export default {
         confirmButtonClass: "md-button md-info",
       });
     },
-    handleDelete(item) {
+    async handleDelete(id) {
+      console.log(this.currentFormation);
+      const newFormadores=await this.tableData.filter(el=>el._id!=id);
       Swal.fire({
+        title: "Tem a certeza que deseja eliminar este formador?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sim",
+        cancelButtonText: "Não",
+      }).then((result) => {
+        if (result.value) {
+          this.deleteFormadorFormacao({ formacaoId: this.currentFormation, formadores: newFormadores })
+            .then((response) => {
+              this.getAll();
+              this.notifyVue("O formador foi eliminado", "success");
+              this.$emit("hide-dialog", false);
+            })
+            .catch((error) => {
+              const message =
+                (error.response && error.response.data) ||
+                error.message ||
+                error.toString();
+            });
+        }
+      });
+      /*Swal.fire({
         title: "Are you sure?",
         text: `You won't be able to revert this!`,
         type: "warning",
@@ -237,14 +271,18 @@ export default {
       }).then((result) => {
         if (result.value) {
           this.deleteRow(item);
-          Swal.fire({
-            title: "Deleted!",
-            text: `You deleted ${item.name}`,
-            type: "success",
-            confirmButtonClass: "md-button md-success btn-fill",
-            buttonsStyling: false,
-          });
+          
         }
+      });*/
+    },
+    notifyVue(message, type) {
+      this.$notify({
+        timeout: 2500,
+        message,
+        icon: "add_alert",
+        horizontalAlign: "right",
+        verticalAlign: "top",
+        type: type,
       });
     },
     deleteRow(item) {

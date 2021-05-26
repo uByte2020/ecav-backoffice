@@ -44,14 +44,14 @@
               <md-table-cell md-label="Instrutores">
                 <a
                   class="da-link"
-                  @click="showModalFormadoresFormacao(item.formadores)"
+                  @click="showModalFormadoresFormacao(item._id,item.formadores)"
                   >Ver Formadores</a
                 >
               </md-table-cell>
               <md-table-cell md-label="Categorias">
                 <a
                   class="da-link"
-                  @click="showTableModal(item.categorias, modalTypes.CATEGORY)"
+                  @click="showTableModal(item._id,item.categorias, modalTypes.CATEGORY)"
                   >Ver Categorias</a
                 >
               </md-table-cell>
@@ -114,6 +114,7 @@
         :showDialogProp="modalFormadoresFormacao"
         @hide-dialog="setModalFormadoresFormacao"
         :users="getFormadoresByFormacao"
+        :currentFormation="currentFormation"
       />
 
       <!-- 
@@ -285,8 +286,9 @@ export default {
     showModal() {
       this.isModalVisible = true;
     },
-    showModalFormadoresFormacao(formadores) {
+    showModalFormadoresFormacao(id,formadores) {
       if (!formadores) formadores = [];
+      this.currentFormation=id;
       this.formadoresFromFormacao = formadores;
       this.setModalFormadoresFormacao(true);
     },
