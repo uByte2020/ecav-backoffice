@@ -53,7 +53,7 @@
               <md-table-cell md-label="Actions">
                 <div class="da-md-table-cell-actions">
                   <md-button
-                    v-show="restrictTo(0)"
+                    v-if="restrictTo(0)"
                     class="da-btn-action md-just-icon md-warning md-simple"
                     @click="callFormacaoDetalhe(item)"
                   >
@@ -61,7 +61,7 @@
                   </md-button>
                   <md-button
                     @click="apagarLicao(item._id, item)"
-                    v-if="restrictTo(0)"
+                    v-if="restrictTo()"
                     class="md-just-icon md-danger md-simple"
                   >
                     <md-icon>delete</md-icon>

@@ -88,7 +88,7 @@
                   <md-icon>done</md-icon>
                 </md-button>
                 <md-button
-                  v-if="restrictTo(0)"
+                  v-if="restrictTo()"
                   class="md-just-icon md-warning md-simple"
                 >
                   <md-icon>edit</md-icon>

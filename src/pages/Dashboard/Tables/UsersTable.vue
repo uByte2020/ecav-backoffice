@@ -79,17 +79,17 @@
               <md-table-cell md-label="Actions">
                 <md-button
                   v-if="!item.isBloqued"
-                  class="md-just-icon md-danger md-simple"
+                  class="md-just-icon md-info md-simple"
                   @click.native="handleStateChange(item._id, true)"
                 >
-                  <md-icon>close</md-icon>
+                  <md-icon>lock_open</md-icon>
                 </md-button>
                 <md-button
                   v-if="item.isBloqued"
-                  class="md-just-icon md-info md-simple"
+                  class="md-just-icon md-danger md-simple"
                   @click.native="handleStateChange(item._id, false)"
                 >
-                  <md-icon>done</md-icon>
+                  <md-icon>lock</md-icon>
                 </md-button>
               </md-table-cell>
             </md-table-row>
