@@ -7,7 +7,7 @@ import DashboardPlugin from "./material-dashboard";
 
 // Plugins
 import App from "./App.vue";
-import Chartist from "chartist";
+// import Chartist from "chartist";
 import VueLoading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 
@@ -78,7 +78,7 @@ router.beforeEach(async (to, from, next) => {
 const store = new Vuex.Store(storeSetup);
 
 // global library setup
-Vue.prototype.$Chartist = Chartist;
+// Vue.prototype.$Chartist = Chartist;
 
 /* eslint-disable no-new */
 new Vue({
