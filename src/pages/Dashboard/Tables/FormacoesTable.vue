@@ -77,7 +77,7 @@
                 <div class="da-md-table-cell-actions">
                   <md-button
                     v-show="restrictTo(0)"
-                    class="da-btn-action md-just-icon md-warning md-simple"
+                    class="da-btn-action md-just-icon md-warning "
                     @click="callFormacaoDetalhe(item)"
                   >
                     <md-icon>edit</md-icon>
@@ -85,7 +85,7 @@
                   <md-button
                     @click="deleteFormacao(item, item.id)"
                     v-if="restrictTo()"
-                    class="md-just-icon md-danger md-simple"
+                    class="md-just-icon md-danger"
                   >
                     <md-icon>delete</md-icon>
                   </md-button>
@@ -484,7 +484,12 @@ export default {
   cursor: pointer;
 }
 
-.da-md-table-cell-actions button {
-  margin-right: 2px;
+.da-md-table-cell-actions{
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-around !important;
+}
+.da-md-table-cell-actions .da-btn{
+  margin:2px !important;
 }
 </style>

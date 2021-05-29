@@ -77,20 +77,22 @@
                 getAccountState(item.isBloqued)
               }}</md-table-cell>
               <md-table-cell md-label="Actions">
-                <md-button
-                  v-if="!item.isBloqued"
-                  class="md-just-icon md-info md-simple"
-                  @click.native="handleStateChange(item._id, true)"
-                >
-                  <md-icon>lock_open</md-icon>
-                </md-button>
-                <md-button
-                  v-if="item.isBloqued"
-                  class="md-just-icon md-danger md-simple"
-                  @click.native="handleStateChange(item._id, false)"
-                >
-                  <md-icon>lock</md-icon>
-                </md-button>
+                <div class="da-md-table-cell-actions" >
+                  <md-button
+                    v-if="!item.isBloqued"
+                    class="md-just-icon md-info"
+                    @click.native="handleStateChange(item._id, true)"
+                  >
+                    <md-icon>lock_open</md-icon>
+                  </md-button>
+                  <md-button
+                    v-if="item.isBloqued"
+                    class="md-just-icon md-danger"
+                    @click.native="handleStateChange(item._id, false)"
+                  >
+                    <md-icon>lock</md-icon>
+                  </md-button>
+                </div>
               </md-table-cell>
             </md-table-row>
           </md-table>
@@ -331,5 +333,13 @@ export default {
 }
 .da-link {
   cursor: pointer;
+}
+.da-md-table-cell-actions{
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-around !important;
+}
+.da-md-table-cell-actions .da-btn{
+  margin:2px !important;
 }
 </style>
