@@ -73,33 +73,41 @@
                 >
               </md-table-cell>
               <md-table-cell md-label="Actions">
-                <md-button
-                  v-if="restrictTo(0, 1) && item.estado.estado == 'Pendente'"
-                  @click="updateMarcacao(item._id, 1)"
-                  class="md-just-icon md-primary md-info md-simple"
+                <div
+                  class="da-md-table-cell-actions"
                 >
-                  <md-icon>thumb_up</md-icon>
-                </md-button>
-                <md-button
-                  v-if="restrictTo(0, 1) && item.estado.estado == 'Confirmado'"
-                  @click="updateMarcacao(item._id, 2)"
-                  class="md-just-icon md-primary md-info md-simple"
-                >
-                  <md-icon>done</md-icon>
-                </md-button>
-                <md-button
-                  v-if="restrictTo()"
-                  class="md-just-icon md-warning md-simple"
-                >
-                  <md-icon>edit</md-icon>
-                </md-button>
-                <md-button
-                  v-if="restrictTo(0, 1) && item.estado.estado != 'Cancelado' && item.estado.estado != 'Realizado'"
-                  @click="updateMarcacao(item._id, 4)"
-                  class="md-just-icon md-danger md-simple"
-                >
-                  <md-icon>close</md-icon>
-                </md-button>
+                  <md-button
+                    v-if="restrictTo(0, 1) && item.estado.estado == 'Pendente'"
+                    @click="updateMarcacao(item._id, 1)"
+                    class="md-just-icon md-info da-btn"
+                  >
+                    <md-icon>thumb_up</md-icon>
+                  </md-button>
+                    <md-button
+                    v-if="restrictTo(0, 1) && item.estado.estado == 'Confirmado'"
+                    @click="updateMarcacao(item._id, 2)"
+                    class="md-just-icon md-primary md-info da-btn"
+                  >
+                    <md-icon>done</md-icon>
+                  </md-button>
+                  <md-button
+                    v-if="restrictTo()"
+                    class="md-just-icon md-warning da-btn"
+                  >
+                    <md-icon>edit</md-icon>
+                  </md-button>
+                  <md-button
+                    v-if="
+                      restrictTo(0, 1) &&
+                      item.estado.estado != 'Cancelado' &&
+                      item.estado.estado != 'Realizado'
+                    "
+                    @click="updateMarcacao(item._id, 4)"
+                    class="md-just-icon md-danger da-btn"
+                  >
+                    <md-icon>close</md-icon>
+                  </md-button>
+                </div>
               </md-table-cell>
             </md-table-row>
           </md-table>
@@ -395,5 +403,13 @@ export default {
 }
 .da-link {
   cursor: pointer;
+}
+.da-md-table-cell-actions{
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-around !important;
+}
+.da-md-table-cell-actions .da-btn{
+  margin:2px !important;
 }
 </style>

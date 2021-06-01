@@ -50,19 +50,20 @@
               <!-- <md-table-cell md-label="Estado">{{
                 item.estado.estado
               }}</md-table-cell> -->
+              
               <md-table-cell md-label="Actions">
                 <div class="da-md-table-cell-actions">
                   <md-button
                     v-if="restrictTo(0)"
-                    class="da-btn-action md-just-icon md-warning md-simple"
+                    class="md-just-icon md-warning"
                     @click="callFormacaoDetalhe(item)"
                   >
                     <md-icon>edit</md-icon>
                   </md-button>
                   <md-button
                     @click="apagarLicao(item._id, item)"
-                    v-if="restrictTo()"
-                    class="md-just-icon md-danger md-simple"
+                    v-if="restrictTo(0)"
+                    class="md-just-icon md-danger"
                   >
                     <md-icon>delete</md-icon>
                   </md-button>
@@ -321,7 +322,12 @@ export default {
 .da-link {
   cursor: pointer;
 }
-.da-md-table-cell-actions button {
-  margin-right: 2px;
+.da-md-table-cell-actions{
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-around !important;
 }
+/*.da-md-table-cell-actions .da-btn{
+  margin: !important;
+}*/
 </style>
