@@ -43,15 +43,15 @@ let authPages = {
         allowAnonymous: true,
       },
     },
-    {
-      path: "/lock",
-      name: "Lock",
-      component: Lock,
-      meta: {
-        allowAnonymous: true,
-      },
-    }
-  ]
+    // {
+    //   path: "/lock",
+    //   name: "Lock",
+    //   component: Lock,
+    //   meta: {
+    //     allowAnonymous: true,
+    //   },
+    // }
+  ],
 };
 
 const routes = [
