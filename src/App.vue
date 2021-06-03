@@ -5,3 +5,9 @@
 <script>
 export default {};
 </script>
+
+<style>
+.vue__time-picker-dropdown {
+  position: fixed!important;
+}
+</style>
