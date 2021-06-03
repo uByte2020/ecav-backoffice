@@ -11,6 +11,11 @@ import App from "./App.vue";
 import VueLoading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 
+// vue-timepicker
+import VueTimepicker from "vue2-timepicker";
+import "vue2-timepicker/dist/VueTimepicker.css";
+Vue.component("vue-timepicker", VueTimepicker);
+
 // router setup
 import routes from "./routes/routes";
 
