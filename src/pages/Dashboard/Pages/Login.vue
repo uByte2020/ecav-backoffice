@@ -64,8 +64,7 @@ export default {
           },
           error => {
             this.loading = false;
-            this.message =
-              (error.response && error.response.data) ||
+            this.message = error.response?.data?.message ||
               error.message ||
               error.toString();
               this.notifyVue(this.message.status===403 ? 'Credenciais Inválidas':this.message, 'danger');

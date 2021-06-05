@@ -239,10 +239,9 @@ export default {
           this.getMyMarcacoes();
         })
         .catch((error) => {
-          const message =
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString();
+          const message =error.response?.data?.message ||
+              error.message ||
+              error.toString();
           loader.hide();
           this.notifyVue(message, "danger");
         });
