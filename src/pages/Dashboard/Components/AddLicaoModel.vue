@@ -31,17 +31,19 @@
                 <div class="md-layout-item md-small-size-100 md-size-33">
                   <md-field>
                     <label for="categoria">Categoria</label>
-                    <md-select
+                    <md-select 
                       v-model="licao.categoria"
                       name="categoria"
                       id="categoria"
                     >
-                      <md-option
+                      <md-option 
                         v-for="(categoria, categoriaIdx) in getCategories"
                         :key="categoriaIdx"
                         :value="categoria._id"
                         >{{ categoria.categoria }}</md-option
                       >
+                      <md-option v-if="!licao.formacao" disabled>Selecione uma formação primeiro</md-option>
+                      <md-option v-if="licao.formacao && getCategories.length===0" disabled>Não existem categorias disponíveis para está formação</md-option>
                     </md-select>
                   </md-field>
                 </div>

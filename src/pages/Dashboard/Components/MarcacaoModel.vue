@@ -65,6 +65,8 @@
                             :value="categoria._id"
                             >{{ categoria.categoria }}</md-option
                           >
+                          <md-option v-if="!marcacao.formacao" disabled>Selecione uma formação primeiro</md-option>
+                          <md-option v-if="marcacao.formacao && getCategories.length===0" disabled>Não existem categorias para está formação</md-option>
                         </md-select>
                       </md-field>
                     </ValidationProvider>
@@ -93,6 +95,8 @@
                             :value="licao._id"
                             >{{ licao.nome }}</md-option
                           >
+                          <md-option v-if="!marcacao.categoria" disabled>Selecione uma categoria primeiro</md-option>
+                          <md-option v-if="marcacao.categoria && getLicoes.length===0" disabled>Não existem lições para está formação</md-option>
                         </md-select>
                       </md-field>
                     </ValidationProvider>
@@ -121,6 +125,8 @@
                             :value="formador._id"
                             >{{ formador.name }}</md-option
                           >
+                          <md-option v-if="!marcacao.licao" disabled>Selecione primeiro uma lição</md-option>
+                          <md-option v-if="marcacao.licao && getFormadores.length===0" disabled>Não existem formadores para está lição</md-option>
                         </md-select>
                       </md-field>
                     </ValidationProvider>
@@ -158,6 +164,8 @@
                             :value="time"
                             >{{ time }}</md-option
                           >
+                          <md-option v-if="!marcacao.data" disabled>Selecione primeiro uma data</md-option>
+                          <md-option v-if="marcacao.data && availibleTimes.length===0">Não existe um horário disponível para está data</md-option>
                         </md-select>
                       </md-field>
                     </ValidationProvider>
