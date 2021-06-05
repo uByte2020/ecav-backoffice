@@ -138,6 +138,7 @@
         :showDialogProp="modalAlunosMarcacao"
         @hide-dialog="setModalAlunosMarcacao"
         :users="getAlunosByMarcacao"
+        :title="title"
       />
     </div>
   </div>
@@ -226,6 +227,7 @@ export default {
       searchedData: [],
       fuseSearch: null,
       isModalVisible: false,
+      title: "Alunos",
       modalAlunosMarcacao: false,
     };
   },

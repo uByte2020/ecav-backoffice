@@ -6,7 +6,7 @@
       :md-close-on-esc="false"
       :md-fullscreen="true"
     >
-      <md-dialog-title>Formadores</md-dialog-title>
+      <md-dialog-title>{{title}}</md-dialog-title>
       <md-dialog-content>
         <div class="md-layout">
           <div class="md-layout-item">
@@ -77,27 +77,6 @@
                     </md-table-cell>
                   </md-table-row>
                 </md-table>
-                <div class="footer-table md-table">
-                  <table>
-                    <tfoot>
-                      <tr>
-                        <th
-                          v-for="item in footerTable"
-                          :key="item.name"
-                          class="md-table-head"
-                        >
-                          <div
-                            class="md-table-head-container md-ripple md-disabled"
-                          >
-                            <div class="md-table-head-label">
-                              {{ item }}
-                            </div>
-                          </div>
-                        </th>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
               </md-card-content>
               <md-card-actions md-alignment="space-between">
                 <div class="">
@@ -141,6 +120,10 @@ export default {
     headerColor: {
       type: String,
       default: "",
+    },
+    title:{
+      type:String,
+      default:"Formadores",
     },
     users: {
       type: Array,
