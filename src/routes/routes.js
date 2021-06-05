@@ -10,7 +10,6 @@ import Login from "@/pages/Dashboard/Pages/Login.vue";
 import Register from "@/pages/Dashboard/Pages/Register.vue";
 import FormacaoDetalhe from "@/pages/Dashboard/Pages/FormacaoDetalhe.vue";
 
-
 // TableList pages
 import TableMarcacao from "@/pages/Dashboard/Tables/TableMarcacao.vue";
 import UsersTable from "@/pages/Dashboard/Tables/UsersTable.vue";
@@ -20,7 +19,7 @@ import LicoesTable from "@/pages/Dashboard/Tables/LicoesTable.vue";
 // Calendar
 import Calendar from "@/pages/Dashboard/Calendar.vue";
 
-import store from '@/store';
+import store from "@/store";
 
 let authPages = {
     path: "/",
@@ -38,6 +37,24 @@ let authPages = {
             path: "/register",
             name: "Register",
             component: Register,
+            meta: {
+                allowAnonymous: true,
+            },
+        },
+        {
+            path: "/reset-password",
+            name: "ResetPassword",
+            component: () =>
+                import ("../pages/Dashboard/Pages/ResetPasswordEmail.vue"),
+            meta: {
+                allowAnonymous: true,
+            },
+        },
+        {
+            path: "/new-password",
+            name: "NovaPasse",
+            component: () =>
+                import ("../pages/Dashboard/Pages/ResetPasswordNewPassword.vue"),
             meta: {
                 allowAnonymous: true,
             },
@@ -88,7 +105,7 @@ const routes = [{
                 components: { default: UsersTable },
                 // beforeEnter(to, from, next) {
                 //   if (store.getters['userModule/restrictTo'](0)) {
-                //     next(); 
+                //     next();
                 //   } else {
                 //     next('/');
                 //   }
@@ -111,7 +128,7 @@ const routes = [{
                 props: true,
                 // beforeEnter(to, from, next) {
                 //   if (store.getters['userModule/restrictTo'](0)) {
-                //     next(); 
+                //     next();
                 //   } else {
                 //     next('/');
                 //   }
@@ -121,8 +138,8 @@ const routes = [{
                 path: "*",
                 name: "Página não encontrada",
                 component: () =>
-                    import ("../pages/Dashboard/Pages/NotFound.vue")
-            }
+                    import ("../pages/Dashboard/Pages/NotFound.vue"),
+            },
         ],
     },
 ];

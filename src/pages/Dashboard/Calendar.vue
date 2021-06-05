@@ -10,7 +10,6 @@
               :plugins="calendarPlugins"
               :events="getEvents"
               :selectable="true"
-              @dateClick="dateClick"
               :header="header"
               :buttonIcons="buttonIcons"
               :selectHelper="true"
@@ -68,7 +67,7 @@ export default {
     }
   },
   methods: {
-    dateClick: function(info) {
+    /*dateClick: function(info) {
       // on select we show the Sweet Alert modal with an input
       Swal.fire({
         title: "Create an Event",
@@ -90,7 +89,7 @@ export default {
           });
         }
       });
-    },
+    },*/
     setEvents(marcacoes){
       this.events = marcacoes.map(el=>{
         const event = {

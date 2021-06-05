@@ -12,7 +12,7 @@
             :class="[{ 'md-error': failed }, { 'md-valid': passed }]"
           >
             <md-icon>person</md-icon>
-            <label>Primeiro e Ultimo Nome</label>
+            <label>Primeiro e último Nome</label>
             <md-input v-model="user.name" type="text"></md-input>
 
             <slide-y-down-transition>
@@ -34,7 +34,7 @@
             :class="[{ 'md-error': failed }, { 'md-valid': passed }]"
           >
             <md-icon>email</md-icon>
-            <label>Email</label>
+            <label>E-mail</label>
             <md-input v-model="user.email" type="text"></md-input>
 
             <slide-y-down-transition>
@@ -101,7 +101,7 @@
             v-show="!loggedIn"
           >
             <md-icon>lock</md-icon>
-            <label>Password</label>
+            <label>Palavra-passe</label>
             <md-input v-model="user.password" type="password"></md-input>
 
             <slide-y-down-transition>
@@ -124,7 +124,7 @@
             v-show="!loggedIn"
           >
             <md-icon>lock</md-icon>
-            <label>Confirmar Password</label>
+            <label>Confirmar palavra-passe</label>
             <md-input v-model="user.passwordConfirm" type="password"></md-input>
 
             <slide-y-down-transition>
@@ -162,7 +162,7 @@
         </ValidationProvider>
         <!-- @click="handleRegister()" -->
         <div class="button-container">
-          <md-button href class="md-success md-round mt-4" slot="footer" type="submit"
+          <md-button href class="md-success md-round mt-4" style="width:100%" slot="footer" type="submit"
             >Registar</md-button
           >
           <md-button

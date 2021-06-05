@@ -61,7 +61,8 @@ export default {
   computed: {
     setBgImage() {
       let images = {
-        Pricing: "./img/bg-pricing.jpg",
+        ResetPassword: "./img/bg-pricing.jpg",
+        NovaPasse: "./img/bg-pricing.jpg",
         Login: "./img/login.jpg",
         Register: "./img/register.jpg",
         Lock: "./img/lock.jpg"

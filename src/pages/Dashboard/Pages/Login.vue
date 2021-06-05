@@ -8,32 +8,43 @@
         <h4 slot="title" class="title">Login</h4>
         <md-field class="md-form-group" slot="inputs">
           <md-icon>email</md-icon>
-          <label>Email...</label>
+          <label>E-mail</label>
           <md-input v-model="user.email" type="email"></md-input>
         </md-field>
         <md-field class="md-form-group" slot="inputs">
           <md-icon>lock_outline</md-icon>
-          <label>Password</label>
-          <md-input v-model="user.password" type="password" v-on:keyup.enter="handleLogin()"></md-input>
+          <label>Palavra-passe</label>
+          <md-input
+            v-model="user.password"
+            type="password"
+            v-on:keyup.enter="handleLogin()"
+          ></md-input>
         </md-field>
-        <md-field id="da-sign" class="md-form-group da-sign" slot="inputs">
+            <p slot="inputs" class="forget-password">
+              <router-link to="/reset-password">Esqueceu a sua palavra-passe?</router-link>
+            </p>
+        <md-field id="da-sign" class="md-form-group da-sign" slot="footer">
+          <md-button
+            id="da-button"
+            href
+            class="md-success md-round"
+            @click="handleLogin()"
+            >Entrar</md-button
+          >
           <div class="md-layout-item md-small-size-100 md-size-100">
             <p>
               Não tem uma conta?
-              <router-link to="/register">Registra-se já!</router-link>
+              <router-link to="/register">Regista-se já!</router-link>
             </p>
           </div>
         </md-field>
-        <md-button id="da-button" href class="md-success md-round mt-4" slot="footer" @click="handleLogin()"
-            >Entrar</md-button
-        >
       </login-card>
     </div>
   </div>
 </template>
 <script>
-import { LoginCard } from "@/components"; 
-import User from '@/model/user'
+import { LoginCard } from "@/components";
+import User from "@/model/user";
 import { createNamespacedHelpers } from "vuex";
 const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
 
@@ -44,12 +55,12 @@ export default {
   data() {
     return {
       type: ["", "info", "success", "warning", "danger"],
-      user: new User('','',''),
+      user: new User("", "", ""),
       loading: false,
-      message: ''
+      message: "",
     };
   },
-  methods:{
+  methods: {
     ...mapActions({
       login: "login",
     }),
@@ -60,15 +71,20 @@ export default {
       if (this.user.email && this.user.password) {
         this.login(this.user).then(
           () => {
-            router.push('/');
+            router.push("/");
           },
-          error => {
+          (error) => {
             this.loading = false;
             this.message =
               (error.response && error.response.data) ||
               error.message ||
               error.toString();
-              this.notifyVue(this.message.status===403 ? 'Credenciais Inválidas':this.message, 'danger');
+            this.notifyVue(
+              this.message.status === 403
+                ? "Credenciais Inválidas"
+                : this.message,
+              "danger"
+            );
           }
         );
       }
@@ -78,18 +94,18 @@ export default {
         timeout: 2500,
         message,
         icon: "add_alert",
-        horizontalAlign: 'right',
-        verticalAlign: 'top',
-        type: type
+        horizontalAlign: "right",
+        verticalAlign: "top",
+        type: type,
       });
     },
   },
-  computed:{
+  computed: {
     ...mapGetters({ loggedIn: "loggedIn" }),
   },
-  mounted(){
+  mounted() {
     // this.loggedIn
-  }
+  },
 };
 </script>
 
@@ -97,11 +113,20 @@ export default {
 .social-line {
   display: none;
 }
-#da-sign::after{
-  background-color: transparent!important;
+#da-sign::after {
+  background-color: transparent !important;
 }
-#da-button{
-  padding-top: 0!important;
-  margin-top:  0!important;
+.da-sign {
+  display: flex;
+  flex-direction: column;
+}
+#da-button {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+.forget-password{
+  padding:0 !important;
+  margin: 0 !important;
+  float: right;
 }
 </style>

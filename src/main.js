@@ -34,49 +34,49 @@ Vue.use(VueLoading);
 window.axios = axios;
 // configure router
 const router = new VueRouter({
-  mode: "history",
-  routes, // short for routes: routes
-  scrollBehavior: (to) => {
-    if (to.hash) {
-      return { selector: to.hash };
-    } else {
-      return { x: 0, y: 0 };
-    }
-  },
-  linkExactActiveClass: "nav-item active",
+    mode: "history",
+    routes, // short for routes: routes
+    scrollBehavior: (to) => {
+        if (to.hash) {
+            return { selector: to.hash };
+        } else {
+            return { x: 0, y: 0 };
+        }
+    },
+    linkExactActiveClass: "nav-item active",
 });
 
-router.beforeEach(async (to, from, next) => {
-  // const publicPages = ['/login', '/register'];
-  // const authRequired = !publicPages.includes(to.path);
-  // const loggedIn = localStorage.getItem('user');
+router.beforeEach(async(to, from, next) => {
+    // const publicPages = ['/login', '/register'];
+    // const authRequired = !publicPages.includes(to.path);
+    // const loggedIn = localStorage.getItem('user');
 
-  // // trying to access a restricted page + not logged in
-  // // redirect to login page
-  // if (authRequired && !loggedIn) {
-  //   next('/login');
-  // } else {
-  //   if(to.path==='/login' && loggedIn) next('/');
-  //   else next();
-  // }
-  let loggedIn = store.getters["userModule/loggedIn"];
-  const publicPages = ["/login", "/register"];
-  const authRequired = !publicPages.includes(to.path);
-  if (!loggedIn) {
-    try {
-      await store.dispatch("userModule/isLogged");
-      loggedIn = store.getters["userModule/loggedIn"];
-    } catch (err) {
-      if (authRequired) next("/login");
+    // // trying to access a restricted page + not logged in
+    // // redirect to login page
+    // if (authRequired && !loggedIn) {
+    //   next('/login');
+    // } else {
+    //   if(to.path==='/login' && loggedIn) next('/');
+    //   else next();
+    // }
+    let loggedIn = store.getters["userModule/loggedIn"];
+    const publicPages = ["/login", "/register", "/reset-password", "/new-password"];
+    const authRequired = !publicPages.includes(to.path);
+    if (!loggedIn) {
+        try {
+            await store.dispatch("userModule/isLogged");
+            loggedIn = store.getters["userModule/loggedIn"];
+        } catch (err) {
+            if (authRequired) next("/login");
+        }
     }
-  }
 
-  if (authRequired && !loggedIn) {
-    next("/login");
-  } else {
-    if(!authRequired && loggedIn) next('/');
-    else next();
-  }
+    if (authRequired && !loggedIn) {
+        next("/login");
+    } else {
+        if (!authRequired && loggedIn) next('/');
+        else next();
+    }
 });
 
 //configure Vuex
@@ -87,8 +87,8 @@ const store = new Vuex.Store(storeSetup);
 
 /* eslint-disable no-new */
 new Vue({
-  el: "#app",
-  render: (h) => h(App),
-  router,
-  store,
+    el: "#app",
+    render: (h) => h(App),
+    router,
+    store,
 });
