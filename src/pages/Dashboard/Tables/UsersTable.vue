@@ -80,14 +80,14 @@
                 <div class="da-md-table-cell-actions" >
                   <md-button
                     v-if="!item.isBloqued"
-                    class="md-just-icon md-info"
+                    class="md-just-icon md-round md-info"
                     @click.native="handleStateChange(item._id, true)"
                   >
                     <md-icon>lock_open</md-icon>
                   </md-button>
                   <md-button
                     v-if="item.isBloqued"
-                    class="md-just-icon md-danger"
+                    class="md-just-icon md-round md-danger"
                     @click.native="handleStateChange(item._id, false)"
                   >
                     <md-icon>lock</md-icon>

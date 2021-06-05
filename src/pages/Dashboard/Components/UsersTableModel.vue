@@ -66,12 +66,14 @@
                       item.endereco[0]
                     }}</md-table-cell>
                     <md-table-cell md-label="Actions">
-                      <md-button
-                        class="md-just-icon md-danger md-simple"
-                        @click.native="handleDelete(item._id)"
-                      >
-                        <md-icon>delete</md-icon>
-                      </md-button>
+                      <div class="da-md-table-cell-actions">
+                        <md-button
+                          class="md-just-icon md-round md-danger"
+                          @click.native="handleDelete(item._id)"
+                        >
+                          <md-icon>delete</md-icon>
+                        </md-button>
+                      </div>
                     </md-table-cell>
                   </md-table-row>
                 </md-table>
@@ -327,5 +329,10 @@ export default {
 <style lang="scss" scoped>
 .md-dialog .md-dialog-container {
   max-width: 768px;
+}
+.da-md-table-cell-actions{
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-around !important;
 }
 </style>

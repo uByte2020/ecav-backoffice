@@ -41,7 +41,7 @@
               <md-table-cell md-label="Lição" md-sort-by="name">
                 {{ item.nome }}
               </md-table-cell>
-              <md-table-cell md-label="Categoria">
+              <md-table-cell md-label="Categoria" >
                 {{ getCategoriaByLicao(item.categoria) }}</md-table-cell
               >
               <md-table-cell md-label="Formação" md-sort-by="aula">
@@ -51,10 +51,10 @@
                 item.estado.estado
               }}</md-table-cell> -->
               
-              <md-table-cell md-label="Actions">
+              <md-table-cell md-label="Actions" v-if="restrictTo()">
                 <div class="da-md-table-cell-actions">
                   <md-button
-                    v-if="restrictTo(0)"
+                    v-if="restrictTo()"
                     class="md-just-icon md-warning"
                     @click="callFormacaoDetalhe(item)"
                   >
@@ -62,12 +62,15 @@
                   </md-button>
                   <md-button
                     @click="apagarLicao(item._id, item)"
-                    v-if="restrictTo(0)"
+                    v-if="restrictTo()"
                     class="md-just-icon md-danger"
                   >
                     <md-icon>delete</md-icon>
                   </md-button>
                 </div>
+              </md-table-cell>
+              <md-table-cell>
+
               </md-table-cell>
             </md-table-row>
           </md-table>

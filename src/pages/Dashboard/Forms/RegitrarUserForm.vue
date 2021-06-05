@@ -162,8 +162,8 @@
         </ValidationProvider>
         <!-- @click="handleRegister()" -->
         <div class="button-container">
-          <md-button href class="md-success mt-4" slot="footer" type="submit"
-            >Registrar</md-button
+          <md-button href class="md-success md-round mt-4" slot="footer" type="submit"
+            >Registar</md-button
           >
           <md-button
             v-show="loggedIn"

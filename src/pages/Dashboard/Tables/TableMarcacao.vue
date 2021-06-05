@@ -32,7 +32,7 @@
                 <md-button
                   class="md-success"
                   @click="showModal"
-                  v-show="restrictTo(2)"
+                  v-if="restrictTo(2)"
                   >Criar Marcação</md-button
                 >
               </md-field>
@@ -72,27 +72,27 @@
                   >Ver Alunos</a
                 >
               </md-table-cell>
-              <md-table-cell md-label="Actions">
+              <md-table-cell md-label="Actions" v-if="restrictTo(0,1)">
                 <div
                   class="da-md-table-cell-actions"
                 >
                   <md-button
                     v-if="restrictTo(0, 1) && item.estado.estado == 'Pendente'"
                     @click="updateMarcacao(item._id, 1)"
-                    class="md-just-icon md-info da-btn"
+                    class="md-just-icon md-round md-info da-btn"
                   >
                     <md-icon>thumb_up</md-icon>
                   </md-button>
                     <md-button
                     v-if="restrictTo(0, 1) && item.estado.estado == 'Confirmado'"
                     @click="updateMarcacao(item._id, 2)"
-                    class="md-just-icon md-primary md-info da-btn"
+                    class="md-just-icon md-round md-primary md-info da-btn"
                   >
                     <md-icon>done</md-icon>
                   </md-button>
                   <md-button
                     v-if="restrictTo()"
-                    class="md-just-icon md-warning da-btn"
+                    class="md-just-icon md-round md-warning da-btn"
                   >
                     <md-icon>edit</md-icon>
                   </md-button>
@@ -103,11 +103,13 @@
                       item.estado.estado != 'Realizado'
                     "
                     @click="updateMarcacao(item._id, 4)"
-                    class="md-just-icon md-danger da-btn"
+                    class="md-just-icon md-round md-danger da-btn"
                   >
                     <md-icon>close</md-icon>
                   </md-button>
                 </div>
+              </md-table-cell>
+              <md-table-cell v-if="restrictTo(2)">
               </md-table-cell>
             </md-table-row>
           </md-table>

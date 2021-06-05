@@ -3,12 +3,20 @@
     <notifications></notifications>
     <div class="md-layout-item">
       <signup-card>
-        <h2 class="title text-center" slot="title">Registrar-se</h2>
+        <h2 class="title text-center" slot="title">Registar-se</h2>
         <div
           class="md-layout-item md-size-100 md-medium-size-100 md-small-size-100 mr-auto"
           slot="content-center"
         >
           <registrar-user-form @is-add="userRegistered"/>
+          <md-field id="da-sign" class="md-form-group da-sign" slot="inputs">
+          <div class="md-layout-item md-small-size-100 md-size-100">
+            <p>
+              Já tem uma conta?
+              <router-link to="/login">Iniciar sessão</router-link>
+            </p>
+          </div>
+        </md-field>
         </div>
       </signup-card>
     </div>

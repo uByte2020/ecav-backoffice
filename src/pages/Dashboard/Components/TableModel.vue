@@ -48,22 +48,27 @@
                   </md-table-toolbar>
                   <md-table-row slot="md-table-row" slot-scope="{ item }">
                     <md-table-cell
+                      
                       v-for="(field, index) in fields"
                       :key="index"
                       :md-label="field.name"
                       md-sort-by="name"
                       >{{ item[field.field] }}</md-table-cell
                     >
-                    <md-table-cell md-label="Actions">
+                    
+                    <md-table-cell md-label="Actions" v-if="restrictTo()">
                       <div class="da-md-table-cell-actions">
                         <md-button
                           @click="title === 'Horários' ? deleteHorario(item._id) : title==='Lições' ? deleteLicao(item._id): ''"
                           v-if="restrictTo() && title!='Categorias'"
-                          class="md-just-icon md-danger md-simple"
+                          class="md-just-icon md-round md-danger"
                         >
                           <md-icon>delete</md-icon>
                         </md-button>
                       </div>
+                    </md-table-cell>
+                    <md-table-cell  v-if="title==='Categorias'">
+                      
                     </md-table-cell>
                   </md-table-row>
                 </md-table>
@@ -151,6 +156,7 @@ export default {
       newItem: null,
     };
   },
+  
   methods: {
     customSort(value) {
       return value.sort((a, b) => {

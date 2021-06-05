@@ -73,23 +73,25 @@
                   >Ver Horários</a
                 >
               </md-table-cell>
-              <md-table-cell md-label="Actions">
+              <md-table-cell md-label="Actions" v-if="restrictTo(0)">
                 <div class="da-md-table-cell-actions">
                   <md-button
                     v-show="restrictTo(0)"
-                    class="da-btn-action md-just-icon md-warning "
+                    class="da-btn-action md-round md-just-icon md-warning "
                     @click="callFormacaoDetalhe(item)"
                   >
                     <md-icon>edit</md-icon>
                   </md-button>
                   <md-button
                     @click="deleteFormacao(item, item.id)"
-                    v-if="restrictTo()"
-                    class="md-just-icon md-danger"
+                    v-if="restrictTo(0)"
+                    class="md-just-icon md-round md-danger"
                   >
                     <md-icon>delete</md-icon>
                   </md-button>
                 </div>
+              </md-table-cell>
+              <md-table-cell v-if="restrictTo(1)">
               </md-table-cell>
             </md-table-row>
           </md-table>
