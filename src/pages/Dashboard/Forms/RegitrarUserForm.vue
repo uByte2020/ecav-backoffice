@@ -234,10 +234,9 @@ export default {
           if(this.loggedIn) this.notifyVue('Utilizador Registrado com Sucesso', "success");
         }).catch(
         (error) => {
-          this.message =
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString();
+          this.message == error.response?.data?.message ||
+              error.message ||
+              error.toString();
             loader.hide();
           this.notifyVue(this.message, "danger");
           this.successful = false;

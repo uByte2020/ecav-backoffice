@@ -109,8 +109,7 @@ export default {
           this.$emit("hide-dialog", false);
         })
         .catch((error) => {
-          const message =
-              (error.response && error.response.data) ||
+          const message =error.response?.data?.message ||
               error.message ||
               error.toString();
           loader.hide();

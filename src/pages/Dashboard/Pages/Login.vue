@@ -75,8 +75,7 @@ export default {
           },
           (error) => {
             this.loading = false;
-            this.message =
-              (error.response && error.response.data) ||
+            this.message = error.response?.data?.message ||
               error.message ||
               error.toString();
             this.notifyVue(
