@@ -234,7 +234,7 @@ export default {
           if(this.loggedIn) this.notifyVue('Utilizador Registrado com Sucesso', "success");
         }).catch(
         (error) => {
-          this.message == error.response?.data?.message ||
+          this.message = error.response?.data?.message ||
               error.message ||
               error.toString();
             loader.hide();
