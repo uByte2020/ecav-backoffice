@@ -14,6 +14,14 @@
               :buttonIcons="buttonIcons"
               :selectHelper="true"
               :editable="false"
+              :slotLabelFormat="[
+                {
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  omitZeroMinute: true,
+                  meridiem: 'short',
+                },
+              ]"
             />
           </md-card-content>
         </md-card>
@@ -38,13 +46,12 @@ export default {
   components: {
     FullCalendar,
   },
-  props: {
-  },
+  props: {},
   data() {
     return {
       calendarPlugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
       header: {
-        center: "dayGridMonth,timeGridWeek,timeGridDay",
+        // center: "dayGridMonth,timeGridWeek,timeGridDay",
         right: "prev,next,today",
       },
       buttonIcons: {
@@ -54,17 +61,18 @@ export default {
         prevYear: "fa-angle-double-left",
         nextYear: "fa-angle-double-right",
       },
+      slotLabelFormat: { hour12: false, hour: "2-digit", minute: "2-digit" },
       events: [],
     };
   },
-  computed:{
+  computed: {
     ...mapGetters({
       restricao: "userModule/restrictTo",
       marcacoes: "marcacaoModule/getAll",
     }),
-    getEvents(){
+    getEvents() {
       return this.events;
-    }
+    },
   },
   methods: {
     /*dateClick: function(info) {
@@ -90,8 +98,8 @@ export default {
         }
       });
     },*/
-    setEvents(marcacoes){
-      this.events = marcacoes.map(el=>{
+    setEvents(marcacoes) {
+      this.events = marcacoes.map((el) => {
         const event = {
           title: this.getTitle(el.licao),
           start: new Date(el.data),
@@ -102,7 +110,7 @@ export default {
       });
     },
     className(estado) {
-      if(!estado) return "event-default";
+      if (!estado) return "event-default";
       switch (estado.estadoCode) {
         case 1:
           return "event-green";
@@ -116,24 +124,23 @@ export default {
           return "event-default";
       }
     },
-    getTitle(licao){
-      let title = '';
-      if(!licao) return title;
+    getTitle(licao) {
+      let title = "";
+      if (!licao) return title;
       // title = licao.nome;
-      if(licao.formacao_detalhe) title=licao.formacao_detalhe.nome;
-      if(licao.categoria) title+=`-${licao.categoria.categoria}`;
+      if (licao.formacao_detalhe) title = licao.formacao_detalhe.nome;
+      if (licao.categoria) title += `-${licao.categoria.categoria}`;
       return title;
-    }
+    },
   },
-  mounted(){
+  mounted() {
     this.setEvents(this.marcacoes);
   },
-  watch:{
-    marcacoes(value){
+  watch: {
+    marcacoes(value) {
       this.setEvents(value);
-    }
-  }
-
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

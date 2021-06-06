@@ -169,8 +169,7 @@ export default {
       return this.restricao;
     },
     identity() {
-      if (this.restrictTo(0, 1)) return "Aluno";
-      else return "Instrutor";
+      return "Instrutor";
     },
     queriedData() {
       let result = this.tableData;
