@@ -60,7 +60,7 @@ router.beforeEach(async(to, from, next) => {
     //   else next();
     // }
     let loggedIn = store.getters["userModule/loggedIn"];
-    const publicPages = ["/login", "/register", "/reset-password", "/new-password"];
+    const publicPages = ["/login", "/register", "/reset-password", "/new-password/:resetToken"];
     const authRequired = !publicPages.includes(to.path);
     if (!loggedIn) {
         try {

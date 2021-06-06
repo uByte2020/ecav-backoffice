@@ -13,9 +13,10 @@
         </md-field>
         <md-field id="da-sign" class="md-form-group da-sign" slot="footer">
           <md-button
+            @click="sendEmail()"
             id="da-button"
             class="md-success md-round"
-            >Redefinir palavra-passe</md-button
+            >Enviar</md-button
           >
         </md-field>
       </login-card>
@@ -24,6 +25,8 @@
 </template>
 <script>
 import { LoginCard } from "@/components";
+import { createNamespacedHelpers } from "vuex";
+const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
 export default {
   components: {
     LoginCard,
@@ -32,11 +35,29 @@ export default {
     return {
       type: ["", "info", "success", "warning", "danger"],
       loading: false,
-      email:'',
+      email: "",
       message: "",
     };
   },
   methods: {
+    ...mapActions({
+      forgotPassword: "forgotPassword",
+    }),
+    sendEmail() {
+      this.forgotPassword(this.email).then(
+        (response) => {
+          this.message = response?.message || response.toString();
+          this.notifyVue(this.message, "success");
+          this.email = '';
+        },
+        (error) => {
+          this.loading = false;
+          this.message =
+            error.response?.data?.message || error.message || error.toString();
+          this.notifyVue(this.message, "danger");
+        }
+      );
+    },
     notifyVue(message, type) {
       this.$notify({
         timeout: 2500,
@@ -66,8 +87,8 @@ export default {
   padding-top: 0 !important;
   margin-top: 0 !important;
 }
-.forget-password{
-  padding:0 !important;
+.forget-password {
+  padding: 0 !important;
   margin: 0 !important;
   float: right;
 }

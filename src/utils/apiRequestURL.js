@@ -12,4 +12,5 @@ export default {
   MARCACOES: `${BaseURL.API_URL}/marcacoes`,
   MYMARCACOES: `${BaseURL.API_URL}/marcacoes/MyMarcacoes`,
   IS_LOGGED: `${BaseURL.API_URL}/users/isLogged`,
+  FORGOT_PASSWORD: `${BaseURL.API_URL}/users/forgotPassword`,
 };

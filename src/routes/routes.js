@@ -51,13 +51,14 @@ let authPages = {
             },
         },
         {
-            path: "/new-password",
+            path: "/new-password/:resetToken",
             name: "NovaPasse",
             component: () =>
                 import ("../pages/Dashboard/Pages/ResetPasswordNewPassword.vue"),
             meta: {
                 allowAnonymous: true,
             },
+            props: true,
         },
         // {
         //   path: "/lock",

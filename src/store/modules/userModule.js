@@ -156,6 +156,16 @@ const userModule = {
           );
       });
     },
+    forgotPassword: ({ commit }, email) => {
+      return AuthService.forgotPassword(email).then(
+        (response) => {
+          return Promise.resolve(response);
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
+      );
+    },
     reset({ commit }) {
       commit("logout");
       commit("setUsers", []);

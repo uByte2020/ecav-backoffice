@@ -57,6 +57,14 @@ class AuthService {
     });
   }
 
+  forgotPassword(email) {
+    return axios.post(requestURL.FORGOT_PASSWORD, { email }).then((response) => {
+      if (response.data) {
+        return response.data;
+      }
+    });
+  }
+
   logout() {
     return axios
       .get(requestURL.LOGOUT)
