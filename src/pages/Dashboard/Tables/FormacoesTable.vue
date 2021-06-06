@@ -84,7 +84,7 @@
                   </md-button>
                   <md-button
                     @click="deleteFormacao(item, item.id)"
-                    v-if="restrictTo(0)"
+                    v-if="restrictTo(-1)"
                     class="md-just-icon md-round md-danger"
                   >
                     <md-icon>delete</md-icon>
