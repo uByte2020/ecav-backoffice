@@ -14,14 +14,7 @@
               :buttonIcons="buttonIcons"
               :selectHelper="true"
               :editable="false"
-              :slotLabelFormat="[
-                {
-                  hour: 'numeric',
-                  minute: '2-digit',
-                  omitZeroMinute: true,
-                  meridiem: 'short',
-                },
-              ]"
+              :slotLabelFormat="slotLabelFormat"
             />
           </md-card-content>
         </md-card>
@@ -61,7 +54,12 @@ export default {
         prevYear: "fa-angle-double-left",
         nextYear: "fa-angle-double-right",
       },
-      slotLabelFormat: { hour12: false, hour: "2-digit", minute: "2-digit" },
+      slotLabelFormat: {
+        hour: "numeric",
+        minute: "2-digit",
+        omitZeroMinute: true,
+        meridiem: "short",
+      },
       events: [],
     };
   },
