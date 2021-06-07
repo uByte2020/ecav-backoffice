@@ -2,12 +2,9 @@
   <div class="md-layout da-layout">
     <notifications></notifications>
     <div class="md-layout-item">
-      <signup-card>
-        <h2 class="title text-center" slot="title">Registar-se</h2>
-        <div
-          class="md-layout-item md-size-100 md-medium-size-100 md-small-size-100 mr-auto"
-          slot="content-center"
-        >
+      <login-card header-color="green">
+       <h4 slot="title" class="title">Resgistar-se</h4>
+        <div slot="inputs">
           <registrar-user-form @is-add="userRegistered"/>
           <md-field id="da-sign" class="md-form-group da-sign" slot="inputs">
           <div class="md-layout-item md-small-size-100 md-size-100">
@@ -18,18 +15,19 @@
           </div>
         </md-field>
         </div>
-      </signup-card>
+      </login-card>
     </div>
   </div>
 </template>
 <script>
-import { SignupCard } from "@/components";
+import { LoginCard } from "@/components";
 import { mapGetters, mapActions } from "vuex";
 import { RegitrarUserForm } from "@/pages";
 export default {
   components: {
+    LoginCard,
     "registrar-user-form": RegitrarUserForm,
-    SignupCard,
+    
   },
   data() {
     return {};
