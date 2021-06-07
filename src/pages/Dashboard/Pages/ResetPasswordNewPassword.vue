@@ -8,7 +8,7 @@
         <h4 slot="title" class="title">Criar nova palavra-passe</h4>
         <div slot="inputs">
           <ValidationObserver v-slot="{ handleSubmit }">
-            <form @submit.prevent="handleSubmit(resetPassword)">
+            <form @submit.prevent="handleSubmit(resetPass)">
               <ValidationProvider
                 name="password"
                 rules="required|confirmed:confirmation"
@@ -20,7 +20,11 @@
                 >
                   <md-icon>lock</md-icon>
                   <label>Palavra-passe</label>
-                  <md-input v-model="password" type="password"></md-input>
+                  <md-input
+                    v-model="password"
+                    name="password"
+                    type="password"
+                  ></md-input>
 
                   <slide-y-down-transition>
                     <md-icon class="error" v-show="failed">close</md-icon>
@@ -43,6 +47,7 @@
                   <md-icon>lock</md-icon>
                   <label>Confirmar palavra-passe</label>
                   <md-input
+                    name="confirmPassword"
                     v-model="confirmPassword"
                     type="password"
                   ></md-input>
@@ -75,13 +80,14 @@ import { LoginCard } from "@/components";
 import { SlideYDownTransition } from "vue2-transitions";
 import { extend } from "vee-validate";
 import { confirmed } from "vee-validate/dist/rules";
+import { mapActions } from "vuex";
 
 extend("confirmed", confirmed);
 
 export default {
   components: {
     LoginCard,
-    SlideYDownTransition
+    SlideYDownTransition,
   },
   data() {
     return {
@@ -91,9 +97,31 @@ export default {
       confirmPassword: "",
       loading: false,
       message: "",
+      token:this.$route.params.resetToken,
     };
   },
   methods: {
+    ...mapActions({
+      resetPassword: "userModule/resetPassword",
+    }),
+    resetPass() {
+      console.log(this.token)
+      this.resetPassword({
+        password: this.password,
+        confirmPassword: this.confirmPassword,
+        token:this.token
+      })
+        .then((response) => {
+          this.notifyVue("A sua palavra-passe foi atualizada", "success");
+          this.getAll();
+          this.$emit("hide-dialog", false);
+        })
+        .catch((error) => {
+          const message =
+            error.response?.data?.message || error.message || error.toString();
+          this.notifyVue(message, "danger");
+        });
+    },
     notifyVue(message, type) {
       this.$notify({
         timeout: 2500,
@@ -103,9 +131,6 @@ export default {
         verticalAlign: "top",
         type: type,
       });
-    },
-    resetPassword() {
-      alert("oi");
     },
   },
 };
