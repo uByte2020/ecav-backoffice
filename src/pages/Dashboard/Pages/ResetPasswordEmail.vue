@@ -44,10 +44,16 @@ export default {
       forgotPassword: "forgotPassword",
     }),
     sendEmail() {
+        let loader = this.$loading.show({
+        container: this.$refs.registerForm,
+        onCancel: this.onCancel,
+        background: "transparent",
+      });
       this.forgotPassword(this.email).then(
         (response) => {
           this.message = response?.message || response.toString();
           this.notifyVue(this.message, "success");
+          loader.hide();
           this.email = '';
         },
         (error) => {
