@@ -65,15 +65,23 @@ export default {
       login: "login",
     }),
     handleLogin() {
+
+      let loader = this.$loading.show({
+        container: this.$refs.registerForm,
+        onCancel: this.onCancel,
+        background: "transparent",
+      });
       this.loading = true;
       const router = this.$router;
 
       if (this.user.email && this.user.password) {
         this.login(this.user).then(
           () => {
+            loader.hide();
             router.push("/");
           },
           (error) => {
+            loader.hide();
             this.loading = false;
             this.message = error.response?.data?.message ||
               error.message ||

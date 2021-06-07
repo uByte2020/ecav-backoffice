@@ -35,7 +35,7 @@
           >
             <md-icon>email</md-icon>
             <label>E-mail</label>
-            <md-input v-model="user.email" type="text"></md-input>
+            <md-input v-model="user.email" type="email"></md-input>
 
             <slide-y-down-transition>
               <md-icon class="error" v-show="failed">close</md-icon>
@@ -142,7 +142,7 @@
           v-slot="{ passed, failed }"
         >
           <md-field
-            v-show="loggedIn && restrictTo(0, 1)"
+            v-if="loggedIn && restrictTo(0, 1)"
             class="md-form-group"
             :class="[{ 'md-error': failed }, { 'md-valid': passed }]"
           >
