@@ -6,37 +6,88 @@
     >
       <login-card header-color="green">
         <h4 slot="title" class="title">Criar nova palavra-passe</h4>
-        <md-field class="md-form-group" slot="inputs">
-          <md-icon>lock_outline</md-icon>
-          <label>Palavra-passe</label>
-          <md-input v-model="password" type="password"></md-input>
-        </md-field>
-        <md-field class="md-form-group" slot="inputs">
-          <md-icon>lock_outline</md-icon>
-          <label>Confirmar palavra-passe</label>
-          <md-input v-model="confirmPassword" type="password"></md-input>
-        </md-field>
-        <md-field id="da-sign" class="md-form-group da-sign" slot="footer">
-          <md-button id="da-button" class="md-success md-round"
-            >Redefinir palavra-passe</md-button
-          >
-        </md-field>
+        <div slot="inputs">
+          <ValidationObserver v-slot="{ handleSubmit }">
+            <form @submit.prevent="handleSubmit(resetPassword)">
+              <ValidationProvider
+                name="password"
+                rules="required|confirmed:confirmation"
+                v-slot="{ passed, failed }"
+              >
+                <md-field
+                  class="md-form-group"
+                  :class="[{ 'md-error': failed }, { 'md-valid': passed }]"
+                >
+                  <md-icon>lock</md-icon>
+                  <label>Palavra-passe</label>
+                  <md-input v-model="password" type="password"></md-input>
+
+                  <slide-y-down-transition>
+                    <md-icon class="error" v-show="failed">close</md-icon>
+                  </slide-y-down-transition>
+                  <slide-y-down-transition>
+                    <md-icon class="success" v-show="passed">done</md-icon>
+                  </slide-y-down-transition>
+                </md-field>
+              </ValidationProvider>
+
+              <ValidationProvider
+                vid="confirmation"
+                rules="required"
+                v-slot="{ passed, failed }"
+              >
+                <md-field
+                  class="md-form-group"
+                  :class="[{ 'md-error': failed }, { 'md-valid': passed }]"
+                >
+                  <md-icon>lock</md-icon>
+                  <label>Confirmar palavra-passe</label>
+                  <md-input
+                    v-model="confirmPassword"
+                    type="password"
+                  ></md-input>
+
+                  <slide-y-down-transition>
+                    <md-icon class="error" v-show="failed">close</md-icon>
+                  </slide-y-down-transition>
+                  <slide-y-down-transition>
+                    <md-icon class="success" v-show="passed">done</md-icon>
+                  </slide-y-down-transition>
+                </md-field>
+              </ValidationProvider>
+              <md-field id="da-sign" class="md-form-group da-sign">
+                <md-button
+                  type="submit"
+                  id="da-button"
+                  class="md-success md-round"
+                  >Redefinir palavra-passe</md-button
+                >
+              </md-field>
+            </form>
+          </ValidationObserver>
+        </div>
       </login-card>
     </div>
   </div>
 </template>
 <script>
 import { LoginCard } from "@/components";
+import { SlideYDownTransition } from "vue2-transitions";
+import { extend } from "vee-validate";
+import { confirmed } from "vee-validate/dist/rules";
+
+extend("confirmed", confirmed);
 
 export default {
   components: {
     LoginCard,
+    SlideYDownTransition
   },
   data() {
     return {
       type: ["", "info", "success", "warning", "danger"],
       email: "",
-      password:"",
+      password: "",
       confirmPassword: "",
       loading: false,
       message: "",
@@ -52,6 +103,9 @@ export default {
         verticalAlign: "top",
         type: type,
       });
+    },
+    resetPassword() {
+      alert("oi");
     },
   },
 };

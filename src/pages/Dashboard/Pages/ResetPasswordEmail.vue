@@ -6,19 +6,40 @@
     >
       <login-card header-color="green">
         <h4 slot="title" class="title">Redefinir palavra-passe</h4>
-        <md-field class="md-form-group" slot="inputs">
-          <md-icon>email</md-icon>
-          <label>E-mail</label>
-          <md-input v-model="email" type="email"></md-input>
-        </md-field>
-        <md-field id="da-sign" class="md-form-group da-sign" slot="footer">
-          <md-button
-            @click="sendEmail()"
-            id="da-button"
-            class="md-success md-round"
-            >Enviar</md-button
-          >
-        </md-field>
+        <div slot="inputs">
+          <ValidationObserver v-slot="{ handleSubmit }">
+            <form @submit.prevent="handleSubmit(sendEmail)">
+              <ValidationProvider
+                name="email"
+                rules="required|email"
+                v-slot="{ passed, failed }"
+              >
+                <md-field
+                  class="md-form-group"
+                  :class="[{ 'md-error': failed }, { 'md-valid': passed }]"
+                >
+                  <md-icon>email</md-icon>
+                  <label>E-mail</label>
+                  <md-input v-model="email" type="email"></md-input>
+                  <slide-y-down-transition>
+                    <md-icon class="error" v-show="failed">close</md-icon>
+                  </slide-y-down-transition>
+                  <slide-y-down-transition>
+                    <md-icon class="success" v-show="passed">done</md-icon>
+                  </slide-y-down-transition>
+                </md-field>
+              </ValidationProvider>
+              <md-field id="da-sign" class="md-form-group da-sign">
+                <md-button
+                  type="submit"
+                  id="da-button"
+                  class="md-success md-round"
+                  >Enviar</md-button
+                >
+              </md-field>
+            </form>
+          </ValidationObserver>
+        </div>
       </login-card>
     </div>
   </div>
@@ -27,9 +48,17 @@
 import { LoginCard } from "@/components";
 import { createNamespacedHelpers } from "vuex";
 const { mapGetters, mapActions } = createNamespacedHelpers("userModule");
+import { SlideYDownTransition } from "vue2-transitions";
+import { extend } from "vee-validate";
+import { required, email } from "vee-validate/dist/rules";
+
+extend("email", email);
+extend("required", required);
+
 export default {
   components: {
     LoginCard,
+    SlideYDownTransition,
   },
   data() {
     return {
@@ -44,7 +73,7 @@ export default {
       forgotPassword: "forgotPassword",
     }),
     sendEmail() {
-        let loader = this.$loading.show({
+      let loader = this.$loading.show({
         container: this.$refs.registerForm,
         onCancel: this.onCancel,
         background: "transparent",
@@ -54,7 +83,7 @@ export default {
           this.message = response?.message || response.toString();
           this.notifyVue(this.message, "success");
           loader.hide();
-          this.email = '';
+          this.email = "";
         },
         (error) => {
           this.loading = false;
