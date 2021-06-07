@@ -60,22 +60,22 @@ router.beforeEach(async(to, from, next) => {
     //   else next();
     // }
     let loggedIn = store.getters["userModule/loggedIn"];
-    const publicPages = ["/login", "/register", "/reset-password", "/new-password/:resetToken"];
-    const authRequired = !publicPages.includes(to.path);
-    console.log(to.meta.allowAnonymous)
+    const publicPages = ["Login", "Register", "ResetPassword", "NovaPasse"];
+    const authNotRequired = !publicPages.includes(to.name);
+    //console.log(to.meta.allowAnonymous)
     if (!loggedIn) {
         try {
             await store.dispatch("userModule/isLogged");
             loggedIn = store.getters["userModule/loggedIn"];
         } catch (err) {
-            if (authRequired) next("/login");
+            //
         }
     }
 
-    if (authRequired && !loggedIn) {
+    if (authNotRequired && !loggedIn) {
         next("/login");
     } else {
-        if (!authRequired && loggedIn) next('/');
+        if (!authNotRequired && loggedIn) next('/');
         else next();
     }
 });
