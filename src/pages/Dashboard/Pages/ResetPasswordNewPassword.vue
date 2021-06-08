@@ -105,7 +105,7 @@ export default {
       resetPassword: "userModule/resetPassword",
     }),
     resetPass() {
-      console.log(this.token)
+      // console.log(this.token)
       this.resetPassword({
         password: this.password,
         confirmPassword: this.confirmPassword,
