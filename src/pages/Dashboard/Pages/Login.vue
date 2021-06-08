@@ -6,38 +6,42 @@
     >
       <login-card header-color="green">
         <h4 slot="title" class="title">Login</h4>
-        <md-field class="md-form-group" slot="inputs">
-          <md-icon>email</md-icon>
-          <label>E-mail</label>
-          <md-input v-model="user.email" type="email"></md-input>
-        </md-field>
-        <md-field class="md-form-group" slot="inputs">
-          <md-icon>lock_outline</md-icon>
-          <label>Palavra-passe</label>
-          <md-input
-            v-model="user.password"
-            type="password"
-            v-on:keyup.enter="handleLogin()"
-          ></md-input>
-        </md-field>
-            <p slot="inputs" class="forget-password">
-              <router-link to="/reset-password">Esqueceu a sua palavra-passe?</router-link>
-            </p>
-        <md-field id="da-sign" class="md-form-group da-sign" slot="footer">
-          <md-button
-            id="da-button"
-            href
-            class="md-success md-round"
-            @click="handleLogin()"
-            >Entrar</md-button
-          >
-          <div class="md-layout-item md-small-size-100 md-size-100">
-            <p>
-              Não tem uma conta?
-              <router-link to="/register">Regista-se já!</router-link>
-            </p>
-          </div>
-        </md-field>
+        <div slot="inputs" ref="logincard">
+          <md-field class="md-form-group">
+            <md-icon>email</md-icon>
+            <label>E-mail</label>
+            <md-input v-model="user.email" type="email"></md-input>
+          </md-field>
+          <md-field class="md-form-group">
+            <md-icon>lock_outline</md-icon>
+            <label>Palavra-passe</label>
+            <md-input
+              v-model="user.password"
+              type="password"
+              v-on:keyup.enter="handleLogin()"
+            ></md-input>
+          </md-field>
+          <p class="forget-password">
+            <router-link to="/reset-password"
+              >Esqueceu a sua palavra-passe?</router-link
+            >
+          </p>
+          <md-field id="da-sign" class="md-form-group da-sign" >
+            <md-button
+              id="da-button"
+              href
+              class="md-success md-round"
+              @click="handleLogin()"
+              >Entrar</md-button
+            >
+            <div class="md-layout-item md-small-size-100 md-size-100">
+              <p>
+                Não tem uma conta?
+                <router-link to="/register">Regista-se já!</router-link>
+              </p>
+            </div>
+          </md-field>
+        </div>
       </login-card>
     </div>
   </div>
@@ -65,9 +69,8 @@ export default {
       login: "login",
     }),
     handleLogin() {
-
       let loader = this.$loading.show({
-        container: this.$refs.registerForm,
+        container: this.$refs.logincard,
         onCancel: this.onCancel,
         background: "transparent",
       });
@@ -83,7 +86,8 @@ export default {
           (error) => {
             loader.hide();
             this.loading = false;
-            this.message = error.response?.data?.message ||
+            this.message =
+              error.response?.data?.message ||
               error.message ||
               error.toString();
             this.notifyVue(
@@ -131,8 +135,8 @@ export default {
   padding-top: 0 !important;
   margin-top: 0 !important;
 }
-.forget-password{
-  padding:0 !important;
+.forget-password {
+  padding: 0 !important;
   margin: 0 !important;
   float: right;
 }

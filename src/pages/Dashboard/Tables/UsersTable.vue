@@ -96,25 +96,6 @@
               </md-table-cell>
             </md-table-row>
           </md-table>
-          <div class="footer-table md-table">
-            <table>
-              <tfoot>
-                <tr>
-                  <th
-                    v-for="item in footerTable"
-                    :key="item.name"
-                    class="md-table-head"
-                  >
-                    <div class="md-table-head-container md-ripple md-disabled">
-                      <div class="md-table-head-label">
-                        {{ item }}
-                      </div>
-                    </div>
-                  </th>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
         </md-card-content>
         <md-card-actions md-alignment="space-between">
           <div class="">
