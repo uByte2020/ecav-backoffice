@@ -48,27 +48,31 @@
                   </md-table-toolbar>
                   <md-table-row slot="md-table-row" slot-scope="{ item }">
                     <md-table-cell
-                      
                       v-for="(field, index) in fields"
                       :key="index"
                       :md-label="field.name"
                       md-sort-by="name"
                       >{{ item[field.field] }}</md-table-cell
                     >
-                    
+
                     <md-table-cell md-label="Actions" v-if="restrictTo()">
                       <div class="da-md-table-cell-actions">
                         <md-button
-                          @click="title === 'Horários' ? deleteHorario(item._id) : title==='Lições' ? deleteLicao(item._id): ''"
-                          v-if="restrictTo() && title!='Categorias'"
+                          @click="
+                            title === 'Horários'
+                              ? deleteHorario(item._id)
+                              : title === 'Lições'
+                              ? deleteLicao(item._id)
+                              : ''
+                          "
+                          v-if="restrictTo() && title != 'Categorias'"
                           class="md-just-icon md-round md-danger"
                         >
                           <md-icon>delete</md-icon>
                         </md-button>
                       </div>
                     </md-table-cell>
-                    <md-table-cell  v-if="title==='Categorias'">
-                      
+                    <md-table-cell v-if="title === 'Categorias'">
                     </md-table-cell>
                   </md-table-row>
                 </md-table>
@@ -76,7 +80,7 @@
               <md-card-actions md-alignment="space-between">
                 <div class="">
                   <p class="card-category">
-                    Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+                    Mostrando {{ from + 1 }} - {{ to }} de {{ total }} entradas
                   </p>
                 </div>
                 <pagination
@@ -156,7 +160,7 @@ export default {
       newItem: null,
     };
   },
-  
+
   methods: {
     customSort(value) {
       return value.sort((a, b) => {
@@ -178,13 +182,12 @@ export default {
         cancelButtonText: "Não",
       }).then((result) => {
         if (result.value) {
-          const newHorario=this.items.filter(el=>el._id!=item);
-          this.$emit("changeHorario",newHorario);
+          const newHorario = this.items.filter((el) => el._id != item);
+          this.$emit("changeHorario", newHorario);
         }
       });
-      
     },
-    deleteLicao(item){
+    deleteLicao(item) {
       Swal.fire({
         title: "Tem a certeza que deseja eliminar este lição?",
         icon: "warning",
@@ -195,7 +198,7 @@ export default {
         cancelButtonText: "Não",
       }).then((result) => {
         if (result.value) {
-          this.$emit("changeLicoes",item);
+          this.$emit("changeLicoes", item);
         }
       });
     },

@@ -6,7 +6,7 @@
       :md-close-on-esc="false"
       :md-fullscreen="true"
     >
-      <md-dialog-title>{{title}}</md-dialog-title>
+      <md-dialog-title>{{ title }}</md-dialog-title>
       <md-dialog-content>
         <div class="md-layout">
           <div class="md-layout-item">
@@ -81,7 +81,7 @@
               <md-card-actions md-alignment="space-between">
                 <div class="">
                   <p class="card-category">
-                    Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+                    Mostrando {{ from + 1 }} - {{ to }} de {{ total }} entradas
                   </p>
                 </div>
                 <pagination
@@ -121,9 +121,9 @@ export default {
       type: String,
       default: "",
     },
-    title:{
-      type:String,
-      default:"Formadores",
+    title: {
+      type: String,
+      default: "Formadores",
     },
     users: {
       type: Array,
@@ -313,7 +313,7 @@ export default {
 .md-dialog .md-dialog-container {
   max-width: 768px;
 }
-.da-md-table-cell-actions{
+.da-md-table-cell-actions {
   width: 100% !important;
   display: flex !important;
   justify-content: space-around !important;

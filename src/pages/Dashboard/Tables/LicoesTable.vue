@@ -79,7 +79,7 @@
         <md-card-actions md-alignment="space-between">
           <div class="">
             <p class="card-category">
-              Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+              Mostrando {{ from + 1 }} - {{ to }} de {{ total }} entradas
             </p>
           </div>
           <pagination
