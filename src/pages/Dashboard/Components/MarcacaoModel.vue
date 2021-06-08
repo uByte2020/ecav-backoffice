@@ -125,8 +125,8 @@
                             :value="formador._id"
                             >{{ formador.name }}</md-option
                           >
-                          <md-option v-if="!marcacao.licao" disabled>Selecione primeiro uma lição</md-option>
-                          <md-option v-if="marcacao.licao && getFormadores.length===0" disabled>Não existem formadores para está lição</md-option>
+                          <md-option v-if="!marcacao.formacao" disabled>Selecione primeiro uma formação</md-option>
+                          <md-option v-if="marcacao.formacao && getFormadores.length===0" disabled>Não existem formadores para está formação</md-option>
                         </md-select>
                       </md-field>
                     </ValidationProvider>
