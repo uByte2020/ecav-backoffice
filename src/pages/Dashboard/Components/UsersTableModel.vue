@@ -27,7 +27,7 @@
                 >
                   <md-table-toolbar>
                     <md-field>
-                      <label for="pages">Per page</label>
+                      <label for="pages">Por página</label>
                       <md-select v-model="pagination.perPage" name="pages">
                         <md-option
                           v-for="item in pagination.perPageOptions"
@@ -221,7 +221,7 @@ export default {
       const newFormadores = await this.tableData.filter((el) => el._id != id);
       if (newFormadores.length === 0) {
         this.notifyVue(
-          "Existe apenas um formador nesta formação, ele não pode ser eliminado",
+          `Existe apenas um ${this.title==="Formadores" ? 'formador':'aluno'} nesta formação, ele não pode ser eliminado`,
           "warning"
         );
       } else {
