@@ -23,7 +23,7 @@
                   class="mb-3"
                   clearable
                   style="width: 200px"
-                  placeholder="Search records"
+                  placeholder="Procurar"
                   v-model="searchQuery"
                 >
                 </md-input>

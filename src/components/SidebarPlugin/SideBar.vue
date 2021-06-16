@@ -7,19 +7,14 @@
     :style="sidebarStyle"
   >
     <div class="logo">
-      <a
-        href="#"
-        class="simple-text logo-mini"
-      >
+      <router-link to="/dashboard" class="simple-text logo-mini">
         <div class="logo-img">
           <img id="logotipo-img" :src="logo" />
         </div>
-      </a>
-      <a
-        class="simple-text logo-normal"
-      >
-        <template >{{ title }}</template>
-      </a>
+      </router-link>
+      <router-link to="/dashboard" class="simple-text logo-normal">
+        <template>{{ title }}</template>
+      </router-link>
       <div class="navbar-minimize">
         <md-button
           id="minimizeSidebar"
@@ -53,22 +48,29 @@
             </sidebar-item>
           </sidebar-item>
         </slot>
+        <hr class="da-divider" />
+        <md-list-item @click="logout()">
+          <i class="material-icons">logout</i>
+          <p style="color: white">Sair</p>
+        </md-list-item>
       </md-list>
     </div>
   </div>
 </template>
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("userModule");
 export default {
   name: "sidebar",
   props: {
     title: {
       type: String,
-      default: "ECAV"
+      default: "ECAV",
     },
     activeColor: {
       type: String,
       default: "green",
-      validator: value => {
+      validator: (value) => {
         let acceptedValues = [
           "",
           "purple",
@@ -76,39 +78,39 @@ export default {
           "green",
           "orange",
           "danger",
-          "rose"
+          "rose",
         ];
         return acceptedValues.indexOf(value) !== -1;
-      }
+      },
     },
     backgroundImage: {
       type: String,
-      default: "./img/sidebar-2.jpg"
+      default: "./img/sidebar-2.jpg",
     },
     backgroundColor: {
       type: String,
       default: "black",
-      validator: value => {
+      validator: (value) => {
         let acceptedValues = ["", "black", "white", "red"];
         return acceptedValues.indexOf(value) !== -1;
-      }
+      },
     },
     logo: {
       type: String,
-      default: "./img/vue-logo.png"
+      default: "./img/vue-logo.png",
     },
     sidebarLinks: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     autoClose: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   provide() {
     return {
-      autoClose: this.autoClose
+      autoClose: this.autoClose,
     };
   },
   methods: {
@@ -116,24 +118,36 @@ export default {
       if (this.$sidebar) {
         this.$sidebar.toggleMinimize();
       }
-    }
+    },
+    ...mapActions({
+      logoutStore: "logout",
+    }),
+    logout() {
+      this.logoutStore()
+        .then((response) => {
+          this.$router.push("/login");
+        })
+        .catch((err) => {
+          this.$router.push("/login");
+        });
+    },
   },
   computed: {
     sidebarStyle() {
       return {
-        backgroundImage: `url(${this.backgroundImage})`
+        backgroundImage: `url(${this.backgroundImage})`,
       };
-    }
+    },
   },
   beforeDestroy() {
     if (this.$sidebar.showSidebar) {
       this.$sidebar.showSidebar = false;
     }
-  }
+  },
 };
 </script>
 <style>
-#logotipo-img{
+#logotipo-img {
   width: 100%;
   top: 0;
 }
@@ -142,5 +156,10 @@ export default {
   .nav-mobile-menu {
     display: none;
   }
+}
+.da-divider {
+  border-color: rgb(71, 71, 71);
+  height: 0.5px;
+  margin: 10px 10px;
 }
 </style>
