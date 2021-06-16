@@ -32,13 +32,14 @@
           :link="{ name: 'Utilizadores', icon: 'people', path: '/users' }"
         ></sidebar-item>
         <sidebar-item
-          v-show="restrictTo(0,1)"
+          v-show="restrictTo(0, 1)"
           :link="{ name: 'Formações', icon: 'assignment', path: '/formacoes' }"
         ></sidebar-item>
         <sidebar-item
-          v-show="restrictTo(0,1)"
+          v-show="restrictTo(0, 1)"
           :link="{ name: 'Lições', icon: 'assignment', path: '/licoes' }"
         ></sidebar-item>
+        <mobile-menu></mobile-menu>
       </template>
     </side-bar>
     <div class="main-panel">
@@ -94,6 +95,7 @@ function reinitScrollbar() {
 
 import TopNavbar from "./TopNavbar.vue";
 import ContentFooter from "./ContentFooter.vue";
+import MobileMenu from "./Extra/MobileMenu.vue";
 import FixedPlugin from "../../FixedPlugin.vue";
 import UserMenu from "./Extra/UserMenu.vue";
 import { ZoomCenterTransition } from "vue2-transitions";
@@ -106,6 +108,7 @@ export default {
   components: {
     TopNavbar,
     ContentFooter,
+    MobileMenu,
     UserMenu,
     ZoomCenterTransition,
   },
@@ -135,7 +138,7 @@ export default {
       getAllLicoes: "licaoModule/getAll",
       getMyMarcacoes: "marcacaoModule/getMyMarcacoes",
       getAllMarcacoes: "marcacaoModule/getAll",
-      getPerfis: "perfilModule/getAll"
+      getPerfis: "perfilModule/getAll",
     }),
   },
   updated() {

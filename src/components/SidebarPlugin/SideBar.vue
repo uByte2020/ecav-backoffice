@@ -48,11 +48,6 @@
             </sidebar-item>
           </sidebar-item>
         </slot>
-        <hr class="da-divider" />
-        <md-list-item @click="logout()">
-          <i class="material-icons">logout</i>
-          <p style="color: white">Sair</p>
-        </md-list-item>
       </md-list>
     </div>
   </div>
