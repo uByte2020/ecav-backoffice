@@ -23,7 +23,7 @@
                   class="mb-3"
                   clearable
                   style="width: 200px"
-                  placeholder="Search records"
+                  placeholder="Procurar"
                   v-model="searchQuery"
                 >
                 </md-input>
@@ -51,7 +51,7 @@
                 item.estado.estado
               }}</md-table-cell> -->
               
-              <md-table-cell md-label="Actions" v-if="restrictTo()">
+              <md-table-cell md-label="Acções" v-if="restrictTo()">
                 <div class="da-md-table-cell-actions">
                   <md-button
                     v-if="restrictTo()"

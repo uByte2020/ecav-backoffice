@@ -41,7 +41,7 @@
                   class="mb-3"
                   clearable
                   style="width: 200px"
-                  placeholder="Search records"
+                  placeholder="Procurar"
                   v-model="searchQuery"
                 >
                 </md-input>
@@ -76,7 +76,7 @@
               <md-table-cell md-label="Estado">{{
                 getAccountState(item.isBloqued)
               }}</md-table-cell>
-              <md-table-cell md-label="Actions">
+              <md-table-cell md-label="Acções">
                 <div class="da-md-table-cell-actions" >
                   <md-button
                     v-if="!item.isBloqued"

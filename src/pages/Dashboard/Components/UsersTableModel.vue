@@ -65,7 +65,7 @@
                     <md-table-cell md-label="Endereço">{{
                       item.endereco[0]
                     }}</md-table-cell>
-                    <md-table-cell md-label="Actions">
+                    <md-table-cell md-label="Acções">
                       <div class="da-md-table-cell-actions">
                         <md-button
                           class="md-just-icon md-round md-danger"

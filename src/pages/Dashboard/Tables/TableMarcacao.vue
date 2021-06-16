@@ -72,7 +72,7 @@
                   >Ver Alunos</a
                 >
               </md-table-cell>
-              <md-table-cell md-label="Actions" v-if="restrictTo(0,1)">
+              <md-table-cell md-label="Acções" v-if="restrictTo(0,1)">
                 <div
                   class="da-md-table-cell-actions"
                 >
