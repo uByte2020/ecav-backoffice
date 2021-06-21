@@ -6,7 +6,7 @@
       :background-image="sidebarBackgroundImage"
       :data-background-color="sidebarBackgroundColor"
     >
-      <user-menu></user-menu>
+      <user-menu :avatar="getUserPhoto"></user-menu>
       <template slot="links">
         <sidebar-item
           :link="{ name: 'Dashboard', icon: 'dashboard', path: '/dashboard' }"
@@ -159,6 +159,7 @@ export default {
     ...mapGetters({
       restricao: "userModule/restrictTo",
       getUser: "userModule/getUser",
+       getUserPhoto:"userModule/getUserPhoto" 
     }),
     restrictTo() {
       return this.restricao;

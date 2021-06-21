@@ -14,4 +14,5 @@ export default {
     IS_LOGGED: `${BaseURL.API_URL}/users/isLogged`,
     FORGOT_PASSWORD: `${BaseURL.API_URL}/users/forgotPassword`,
     RESET_PASSWORD: `${BaseURL.API_URL}/users/resetPassword`,
+    PROFILE_PHOTO: `${BaseURL.SERVER_URL}/img/users`
 };

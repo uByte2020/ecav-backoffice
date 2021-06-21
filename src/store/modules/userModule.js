@@ -167,18 +167,16 @@ const userModule = {
             );
         },
         resetPassword: ({ commit }, { password, passwordConfirm, token }) => {
-            const wrapper = { password: password, passwordConfirm: passwordConfirm }
+            const wrapper = { password: password, passwordConfirm: passwordConfirm };
             return new Promise((resolve, reject) => {
-                axios
-                    .patch(requestURL.RESET_PASSWORD + `/${token}`, wrapper)
-                    .then(
-                        (response) => {
-                            resolve(response.data);
-                        },
-                        (error) => {
-                            reject(error);
-                        }
-                    );
+                axios.patch(requestURL.RESET_PASSWORD + `/${token}`, wrapper).then(
+                    (response) => {
+                        resolve(response.data);
+                    },
+                    (error) => {
+                        reject(error);
+                    }
+                );
             });
         },
         reset({ commit }) {
@@ -208,6 +206,9 @@ const userModule = {
         },
         getFormadores: (state) => {
             return state.users.filter((u) => u.role.perfilCode == 1);
+        },
+        getUserPhoto: (state) => {
+            return `${requestURL.PROFILE_PHOTO}/${state.user.photo}`;
         },
     },
 };

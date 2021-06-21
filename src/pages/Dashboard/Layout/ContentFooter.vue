@@ -3,7 +3,7 @@
     <div class="container">
       <div class="copyright text-center">
         &copy; {{ new Date().getFullYear() }}
-        TryteCom - Todos direitos reservados
+        G31Plus - Todos direitos reservados
       </div>
     </div>
   </footer>
