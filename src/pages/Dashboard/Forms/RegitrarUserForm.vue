@@ -1,7 +1,7 @@
 <template>
   <div ref="registerForm">
     <ValidationObserver v-slot="{ handleSubmit }">
-      <form @submit.prevent="handleSubmit(submit)">
+      <form @submit.prevent="handleSubmit(submit())">
         <ValidationProvider
           name="first_last_name"
           rules="required"
@@ -162,13 +162,18 @@
         </ValidationProvider>
         <!-- @click="handleRegister()" -->
         <div class="button-container">
-          <md-button href class="md-success md-round mt-4" style="width:100%" slot="footer" type="submit"
+          <md-button
+            href
+            class="md-success md-round mt-4"
+            style="width: 100%"
+            slot="footer"
+            type="submit"
             >Registar</md-button
           >
           <md-button
             v-show="loggedIn"
             slot="footer"
-            class="md-warning  mt-4"
+            class="md-warning mt-4"
             @click="$emit('close', true)"
             >Cancelar</md-button
           >
@@ -206,7 +211,7 @@ export default {
       successful: false,
       message: "",
       boolean: false,
-      loggedIn: false
+      loggedIn: false,
     };
   },
   methods: {
@@ -224,24 +229,25 @@ export default {
         background: "transparent",
       });
 
-      const request = this.loggedIn ? this.createUser(this.user):this.register(this.user);
-      
-      request.then(
-        (data) => {
+      const request = this.loggedIn
+        ? this.createUser(this.user)
+        : this.register(this.user);
+
+      request
+        .then((data) => {
           this.successful = true;
           loader.hide();
-          this.$emit('is-add', true);
-          if(this.loggedIn) this.notifyVue('Utilizador Registrado com Sucesso', "success");
-        }).catch(
-        (error) => {
-          this.message = error.response?.data?.message ||
-              error.message ||
-              error.toString();
-            loader.hide();
+          this.$emit("is-add", true);
+          if (this.loggedIn)
+            this.notifyVue("Utilizador Registrado com Sucesso", "success");
+        })
+        .catch((error) => {
+          this.message =
+            error.response?.data?.message || error.message || error.toString();
+          loader.hide();
           this.notifyVue(this.message, "danger");
           this.successful = false;
-        }
-      );
+        });
     },
     notifyVue(message, type) {
       this.$notify({
@@ -258,7 +264,7 @@ export default {
     this.loggedIn = this.loggedInProp;
     if (!this.loggedIn) {
       this.user.role = 2;
-    }else{
+    } else {
       this.user.password = "ecav123";
       this.user.passwordConfirm = "ecav123";
     }
@@ -277,11 +283,11 @@ export default {
       return this.restricao;
     },
   },
-  watch:{
-    loggedInProp(value){
+  watch: {
+    loggedInProp(value) {
       this.loggedIn = value;
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
