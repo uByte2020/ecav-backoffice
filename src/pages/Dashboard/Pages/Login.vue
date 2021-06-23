@@ -47,7 +47,7 @@
                   v-show="!loggedIn"
                 >
                   <md-icon>lock</md-icon>
-                  <label>Confirmar palavra-passe</label>
+                  <label>Palavra-passe</label>
                   <md-input v-model="user.password" type="password"></md-input>
 
                   <slide-y-down-transition>
