@@ -78,10 +78,10 @@ export default {
         return acceptedValues.indexOf(value) !== -1;
       },
     },
-    backgroundImage: {
+    /*backgroundImage: {
       type: String,
       default: "./img/sidebar-2.jpg",
-    },
+    },*/
     backgroundColor: {
       type: String,
       default: "black",
@@ -92,7 +92,7 @@ export default {
     },
     logo: {
       type: String,
-      default: "./img/vue-logo.png",
+      default: "./img/Ecav50anos.jpg",
     },
     sidebarLinks: {
       type: Array,
