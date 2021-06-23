@@ -1,6 +1,6 @@
 <template>
   <md-card class="md-card-profile">
-    <div class="md-card-avatar">
+    <div class="md-card-avatar" ref="profilePhoto">
       <img class="img" :src="getUserPhoto" />
     </div>
 
@@ -48,7 +48,7 @@ export default {
     },
     updateProfilePhoto(event) {
       let loader = this.$loading.show({
-        container: this.$refs.logincard,
+        container: this.$refs.profilePhoto,
         onCancel: this.onCancel,
         background: "transparent",
       });
@@ -84,7 +84,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({ getUser: "getUser", getUserPhoto:"getUserPhoto" }),
+    ...mapGetters({ getUser: "getUser", getUserPhoto: "getUserPhoto" }),
   },
 };
 </script>
